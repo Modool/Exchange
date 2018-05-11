@@ -31,6 +31,8 @@
     self.tipsLabel.text = @"* 只能查看最近两天的订单";
     self.tipsLabel.font = [UIFont systemFontOfSize:12];
     self.tipsLabel.textColor = [UIColor redColor];
+    
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 }
 
 - (void)bindViewModel{

@@ -26,8 +26,6 @@
 
 @property (nonatomic, strong) id<EXHTTPClient> client;
 
-@property (nonatomic, strong) EXExchange *exchange;
-
 @property (nonatomic, strong) RACCommand *hideCommand;
 
 @property (nonatomic, assign) BOOL hide;
@@ -38,14 +36,14 @@
 
 - (instancetype)initWithServices:(id<RACViewModelServices>)services params:(NSDictionary *)params{
     if (self = [super initWithServices:services params:params]) {
-        self.title = @"资产";
+        _exchange = params[@keypath(self, exchange)];
+        self.title = _exchange.name;
+        self.client = _exchange.client;
+        
         self.rowHeight = 60;
         self.style = UITableViewStyleGrouped;
         self.viewControllerClass = EXClass(EXBalanceViewController);
         self.itemClasses = @{EXClassName(EXBalanceItemViewModel): EXClass(EXBalanceCell)};
-        
-        self.exchange = params[@keypath(self, exchange)];
-        self.client = self.exchange.client;
     }
     return self;
 }

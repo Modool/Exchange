@@ -35,6 +35,7 @@
     [super loadView];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     
     self.saveBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:nil action:nil];
     self.navigationItem.rightBarButtonItem = self.saveBarButtonItem;
@@ -88,7 +89,7 @@
     [self.scanButton setTitle:@"扫描二维码" forState:UIControlStateNormal];
     [self.scanButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.view addSubview:self.scanButton];
-    
+
     [self _installConstraints];
 }
 
@@ -129,7 +130,7 @@
 
 - (void)_installConstraints{
     [self.appkeyTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(80);
+        make.top.equalTo(self.mas_topLayoutGuide).offset(20);
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
     }];

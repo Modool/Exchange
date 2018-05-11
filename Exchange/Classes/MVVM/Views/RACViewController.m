@@ -38,6 +38,14 @@
     return self;
 }
 
+- (void)loadView{
+    [super loadView];
+    
+    if (@available(iOS 11, *)) {
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    }
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     

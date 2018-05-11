@@ -12,6 +12,8 @@
 @class EXExchange;
 @interface EXBalanceViewModel : RACTableViewModel
 
+@property (nonatomic, strong, readonly) EXExchange *exchange;
+
 @property (nonatomic, strong, readonly) NSArray<EXBalanceItemViewModel *> *viewModels;
 
 @property (nonatomic, strong, readonly) RACCommand *hideCommand;

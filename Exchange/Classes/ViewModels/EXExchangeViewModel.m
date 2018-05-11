@@ -38,6 +38,7 @@ NSString * const EXExchangeViewModelSecretKey = @"secretKey";
 - (instancetype)initWithServices:(id<RACViewModelServices>)services params:(NSDictionary *)params{
     if (self = [super initWithServices:services params:params]) {
         _exchange = params[@keypath(self, exchange)];
+        self.title = _exchange.name;
         self.APIKey = _exchange.APIKey;
         self.secretKey = _exchange.secretKey;
         self.CNYRate = _exchange.CNYRate;
