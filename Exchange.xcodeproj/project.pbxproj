@@ -66,7 +66,7 @@
 		0853A464208E16C100F8A04C /* EXProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A463208E16C100F8A04C /* EXProduct.m */; };
 		0853A467208E22B400F8A04C /* EXQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A466208E22B400F8A04C /* EXQRCodeViewController.m */; };
 		0853A46A208E237600F8A04C /* EXQRCodeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A469208E237600F8A04C /* EXQRCodeViewModel.m */; };
-		0853A46E208E2AFF00F8A04C /* EXQRCodeScaner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A46D208E2AFF00F8A04C /* EXQRCodeScaner.m */; };
+		0853A46E208E2AFF00F8A04C /* EXQRCodeScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A46D208E2AFF00F8A04C /* EXQRCodeScanner.m */; };
 		0853A471208E3C5700F8A04C /* EXBalance.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A470208E3C5700F8A04C /* EXBalance.m */; };
 		0853A474208E3D6700F8A04C /* EXTicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A473208E3D6700F8A04C /* EXTicker.m */; };
 		0853A484208E3F1700F8A04C /* EXDepth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A483208E3F1700F8A04C /* EXDepth.m */; };
@@ -94,6 +94,10 @@
 		0853A53F20902E0000F8A04C /* EXSocketManager+EXLoaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A53E20902E0000F8A04C /* EXSocketManager+EXLoaderItem.m */; };
 		0853A55220904C1900F8A04C /* EXSocketManager+SRWebSocketDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A55120904C1900F8A04C /* EXSocketManager+SRWebSocketDelegate.m */; };
 		0853A5582090634700F8A04C /* EXProductManager+EXSocketManagerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853A5572090634700F8A04C /* EXProductManager+EXSocketManagerDelegate.m */; };
+		0856E69F20A95B090063C2D5 /* EXImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0856E69E20A95B090063C2D5 /* EXImagePickerController.m */; };
+		0856E6A220A95BCF0063C2D5 /* EXImagePickerViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0856E6A120A95BCF0063C2D5 /* EXImagePickerViewModel.m */; };
+		0856E6A420A9637F0063C2D5 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0856E6A320A9637F0063C2D5 /* Photos.framework */; };
+		0856E6A620A963860063C2D5 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0856E6A520A963860063C2D5 /* MobileCoreServices.framework */; };
 		087390132017092000CF9D48 /* EXSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 087390122017092000CF9D48 /* EXSwitchTableViewCell.m */; };
 		0873901620170A0600CF9D48 /* EXExchangeEntranceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0873901520170A0600CF9D48 /* EXExchangeEntranceCell.m */; };
 		0873901920170A1F00CF9D48 /* EXExchangeEntranceItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0873901820170A1F00CF9D48 /* EXExchangeEntranceItemViewModel.m */; };
@@ -137,7 +141,6 @@
 		08EE34262015FE22001B42FC /* RACViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE340C2015FE22001B42FC /* RACViewController.m */; };
 		08EE34272015FE22001B42FC /* RACDoubleTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE340F2015FE22001B42FC /* RACDoubleTitleView.m */; };
 		08EE34282015FE22001B42FC /* RACLoadingTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE34112015FE22001B42FC /* RACLoadingTitleView.m */; };
-		08EE34292015FE22001B42FC /* RACCommand+MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE34142015FE22001B42FC /* RACCommand+MBProgressHUD.m */; };
 		08EE342A2015FE22001B42FC /* RACSignal+RACFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE34182015FE22001B42FC /* RACSignal+RACFilter.m */; };
 		08EE342B2015FE22001B42FC /* RACSignal+RACMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE341A2015FE22001B42FC /* RACSignal+RACMap.m */; };
 		08EE342C2015FE22001B42FC /* RACSignal+RACReduce.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE341C2015FE22001B42FC /* RACSignal+RACReduce.m */; };
@@ -280,8 +283,8 @@
 		0853A466208E22B400F8A04C /* EXQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXQRCodeViewController.m; sourceTree = "<group>"; };
 		0853A468208E237600F8A04C /* EXQRCodeViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXQRCodeViewModel.h; sourceTree = "<group>"; };
 		0853A469208E237600F8A04C /* EXQRCodeViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXQRCodeViewModel.m; sourceTree = "<group>"; };
-		0853A46C208E2AFF00F8A04C /* EXQRCodeScaner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXQRCodeScaner.h; sourceTree = "<group>"; };
-		0853A46D208E2AFF00F8A04C /* EXQRCodeScaner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXQRCodeScaner.m; sourceTree = "<group>"; };
+		0853A46C208E2AFF00F8A04C /* EXQRCodeScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXQRCodeScanner.h; sourceTree = "<group>"; };
+		0853A46D208E2AFF00F8A04C /* EXQRCodeScanner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXQRCodeScanner.m; sourceTree = "<group>"; };
 		0853A46F208E3C5700F8A04C /* EXBalance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXBalance.h; sourceTree = "<group>"; };
 		0853A470208E3C5700F8A04C /* EXBalance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXBalance.m; sourceTree = "<group>"; };
 		0853A472208E3D6700F8A04C /* EXTicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTicker.h; sourceTree = "<group>"; };
@@ -396,6 +399,12 @@
 		08542FBD20A0549900A27813 /* SVPullToRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SVPullToRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08542FBF20A0549900A27813 /* UITableView_FDTemplateLayoutCell.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UITableView_FDTemplateLayoutCell.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08542FC120A0549900A27813 /* YYModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = YYModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0856E69D20A95B090063C2D5 /* EXImagePickerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXImagePickerController.h; sourceTree = "<group>"; };
+		0856E69E20A95B090063C2D5 /* EXImagePickerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXImagePickerController.m; sourceTree = "<group>"; };
+		0856E6A020A95BCF0063C2D5 /* EXImagePickerViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXImagePickerViewModel.h; sourceTree = "<group>"; };
+		0856E6A120A95BCF0063C2D5 /* EXImagePickerViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXImagePickerViewModel.m; sourceTree = "<group>"; };
+		0856E6A320A9637F0063C2D5 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		0856E6A520A963860063C2D5 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		087390112017092000CF9D48 /* EXSwitchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXSwitchTableViewCell.h; sourceTree = "<group>"; };
 		087390122017092000CF9D48 /* EXSwitchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXSwitchTableViewCell.m; sourceTree = "<group>"; };
 		0873901420170A0600CF9D48 /* EXExchangeEntranceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXExchangeEntranceCell.h; sourceTree = "<group>"; };
@@ -495,8 +504,6 @@
 		08EE340F2015FE22001B42FC /* RACDoubleTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACDoubleTitleView.m; sourceTree = "<group>"; };
 		08EE34102015FE22001B42FC /* RACLoadingTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACLoadingTitleView.h; sourceTree = "<group>"; };
 		08EE34112015FE22001B42FC /* RACLoadingTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACLoadingTitleView.m; sourceTree = "<group>"; };
-		08EE34132015FE22001B42FC /* RACCommand+MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACCommand+MBProgressHUD.h"; sourceTree = "<group>"; };
-		08EE34142015FE22001B42FC /* RACCommand+MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACCommand+MBProgressHUD.m"; sourceTree = "<group>"; };
 		08EE34152015FE22001B42FC /* RACMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACMacros.h; sourceTree = "<group>"; };
 		08EE34172015FE22001B42FC /* RACSignal+RACFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+RACFilter.h"; sourceTree = "<group>"; };
 		08EE34182015FE22001B42FC /* RACSignal+RACFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+RACFilter.m"; sourceTree = "<group>"; };
@@ -538,6 +545,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0856E6A620A963860063C2D5 /* MobileCoreServices.framework in Frameworks */,
+				0856E6A420A9637F0063C2D5 /* Photos.framework in Frameworks */,
 				08423A58208D88A800623A96 /* libicucore.tbd in Frameworks */,
 				08B35C7D209C340C007B83DF /* NetworkExtension.framework in Frameworks */,
 				D7C6E1A94EF830DC6C1E17D3 /* Pods_Exchange_targets_Exchange.framework in Frameworks */,
@@ -654,6 +663,8 @@
 				08B35C99209C4940007B83DF /* EXProductDetailTradeViewModel.m */,
 				08B35C98209C4940007B83DF /* EXProductDetailDepthViewModel.h */,
 				08B35C9B209C4940007B83DF /* EXProductDetailDepthViewModel.m */,
+				0856E6A020A95BCF0063C2D5 /* EXImagePickerViewModel.h */,
+				0856E6A120A95BCF0063C2D5 /* EXImagePickerViewModel.m */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -708,6 +719,8 @@
 				0850095320949CF9009C2061 /* EXSearchProductViewController.m */,
 				0886C521209AE375005E6688 /* EXProductDetailViewController.h */,
 				0886C522209AE375005E6688 /* EXProductDetailViewController.m */,
+				0856E69D20A95B090063C2D5 /* EXImagePickerController.h */,
+				0856E69E20A95B090063C2D5 /* EXImagePickerController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -775,8 +788,8 @@
 		0853A46B208E2AEC00F8A04C /* Scaner */ = {
 			isa = PBXGroup;
 			children = (
-				0853A46C208E2AFF00F8A04C /* EXQRCodeScaner.h */,
-				0853A46D208E2AFF00F8A04C /* EXQRCodeScaner.m */,
+				0853A46C208E2AFF00F8A04C /* EXQRCodeScanner.h */,
+				0853A46D208E2AFF00F8A04C /* EXQRCodeScanner.m */,
 			);
 			path = Scaner;
 			sourceTree = "<group>";
@@ -1049,8 +1062,6 @@
 		08EE34122015FE22001B42FC /* RAC */ = {
 			isa = PBXGroup;
 			children = (
-				08EE34132015FE22001B42FC /* RACCommand+MBProgressHUD.h */,
-				08EE34142015FE22001B42FC /* RACCommand+MBProgressHUD.m */,
 				08EE34152015FE22001B42FC /* RACMacros.h */,
 				08EE34172015FE22001B42FC /* RACSignal+RACFilter.h */,
 				08EE34182015FE22001B42FC /* RACSignal+RACFilter.m */,
@@ -1138,6 +1149,8 @@
 		9240D83FFEC3064BC862BA69 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0856E6A520A963860063C2D5 /* MobileCoreServices.framework */,
+				0856E6A320A9637F0063C2D5 /* Photos.framework */,
 				08542F7320A0547300A27813 /* ACArchiverCenter.framework */,
 				08542F9B20A0549900A27813 /* ACArchiverCenter.framework */,
 				08542F9D20A0549900A27813 /* AFNetworking.framework */,
@@ -1383,7 +1396,6 @@
 				0873902420172BFC00CF9D48 /* EXHTTPClient.m in Sources */,
 				0853A4F0208F4A0300F8A04C /* EXOKExHTTPClient+EXKLine.m in Sources */,
 				0853A503208F7AC800F8A04C /* EXProductManager.m in Sources */,
-				08EE34292015FE22001B42FC /* RACCommand+MBProgressHUD.m in Sources */,
 				089A72202019E0D200697439 /* EXExchangeManager.m in Sources */,
 				0853A4ED208F499200F8A04C /* EXOKExHTTPClient+EXTrade.m in Sources */,
 				089A72102019DB3100697439 /* EXCompatQueue.m in Sources */,
@@ -1396,6 +1408,7 @@
 				0853A4F9208F5AB200F8A04C /* EXOKExHTTPClient+EXWithdraw.m in Sources */,
 				08EE345020160E8C001B42FC /* NSData+EXAdditions.m in Sources */,
 				0886C526209AE414005E6688 /* EXProductDetailTickerViewModel.m in Sources */,
+				0856E69F20A95B090063C2D5 /* EXImagePickerController.m in Sources */,
 				0851D3832091A4CE00ABF3AB /* EXCollectedTransactionViewModel.m in Sources */,
 				08EE342A2015FE22001B42FC /* RACSignal+RACFilter.m in Sources */,
 				080B9FD6201635230098CF4E /* EXRootViewModel.m in Sources */,
@@ -1480,11 +1493,12 @@
 				08EE345120160E8C001B42FC /* NSDictionary+EXAdditions.m in Sources */,
 				0850092820933A35009C2061 /* EXProductBriefItemViewModel.m in Sources */,
 				089A71E12019CD2E00697439 /* ACArchiverCenter+EXDefault.m in Sources */,
-				0853A46E208E2AFF00F8A04C /* EXQRCodeScaner.m in Sources */,
+				0853A46E208E2AFF00F8A04C /* EXQRCodeScanner.m in Sources */,
 				0850095420949CF9009C2061 /* EXSearchProductViewController.m in Sources */,
 				08EE342C2015FE22001B42FC /* RACSignal+RACReduce.m in Sources */,
 				0853A487208E408400F8A04C /* EXTrade.m in Sources */,
 				080B9FD92016D89B0098CF4E /* EXMarketViewModel.m in Sources */,
+				0856E6A220A95BCF0063C2D5 /* EXImagePickerViewModel.m in Sources */,
 				0853A484208E3F1700F8A04C /* EXDepth.m in Sources */,
 				089A720C2019DB3100697439 /* EXLauncher.m in Sources */,
 				08B35CA3209C4956007B83DF /* EXProductDetailDepthView.m in Sources */,

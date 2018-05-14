@@ -10,13 +10,14 @@
 #import "EXQRCodeViewController.h"
 #import "EXQRCodeViewModel.h"
 
-#import "EXQRCodeScaner.h"
+#import "EXQRCodeScanner.h"
 
 @interface EXQRCodeViewController ()
 
 @property (nonatomic, strong, readonly) EXQRCodeViewModel *viewModel;
 
 @property (nonatomic, strong) UIBarButtonItem *cancelBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *imagePickerBarButtonItem;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, assign, getter=isStatusBarHidden) BOOL statusBarHidden;
@@ -26,39 +27,44 @@
 @implementation EXQRCodeViewController
 @dynamic viewModel;
 
+- (instancetype)initWithViewModel:(EXQRCodeViewModel *)viewModel{
+    if (self = [super initWithViewModel:viewModel]) {
+        @weakify(self);
+        [[self rac_signalForSelector:@selector(viewDidLoad)] subscribeNext:^(RACTuple *x) {
+            @strongify(self);
+            [viewModel.startCommand execute:self.view];
+        }];
+    }
+    return self;
+}
+
 - (void)loadView{
     [super loadView];
     
-    self.view.backgroundColor = [UIColor blackColor];
-    self.cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:nil action:nil];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.imagePickerBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:UIBarButtonItemStyleDone target:nil action:nil];
     
-    self.navigationItem.leftBarButtonItem = [self cancelBarButtonItem];
+    self.navigationItem.rightBarButtonItem = [self imagePickerBarButtonItem];
     
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickBackgroundView:)];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self.viewModel.scaner startInView:self.view immediately:NO];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.viewModel.scaner resume];
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self.viewModel.scaner pause];
-}
-
 - (void)bindViewModel{
     [super bindViewModel];
     
-    self.cancelBarButtonItem.rac_command = [[self viewModel] cancelCommand];
+    @weakify(self);
+    self.imagePickerBarButtonItem.rac_command = [[self viewModel] imagePickerCommand];
+    
+    __block MBProgressHUD *progressHUD = nil;
+    [self.viewModel.scanImageCommand.executing subscribeNext:^(NSNumber *executing) {
+        @strongify(self);
+        if (executing.boolValue) progressHUD = [MBProgressHUD showProgressInView:self.view];
+        else [progressHUD hideAnimated:NO];
+    }];
 }
+
+#pragma mark - accessor
 
 - (BOOL)prefersStatusBarHidden{
     return self.statusBarHidden;

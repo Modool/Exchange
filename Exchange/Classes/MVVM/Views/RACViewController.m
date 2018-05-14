@@ -98,7 +98,7 @@
     }];
     [[[self viewModel] errors] subscribeNext:^(NSError *error) {
         @strongify(self);
-        [MBProgressHUD showText:error.localizedDescription inView:[self view]];
+        [MBProgressHUD showText:error.localizedDescription inView:self.view];
     }];
 }
 

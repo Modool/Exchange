@@ -63,15 +63,14 @@ NSString * const EXExchangeViewModelSecretKey = @"secretKey";
     self.scanCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         @strongify(self);
         EXQRCodeViewModel *viewModel = [[EXQRCodeViewModel alloc] initWithServices:self.services params:nil];
-        viewModel.callback = ^(NSString *result) {
+        viewModel.callback = ^(NSString *string) {
             @strongify(self);
-            NSDictionary *JSONObject = [result objectFromJSONString];
-            self.APIKey = JSONObject[EXExchangeViewModelAPIKey];
-            self.secretKey = JSONObject[EXExchangeViewModelSecretKey];
-            
-            [[self services] dismissViewModelAnimated:YES completion:nil];
+            [[self services] popViewModelAnimated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self _scanCompleteWithString:string];
+            });
         };
-        [[self services] presentNavigationWithRootViewModel:viewModel animated:YES completion:nil];
+        [[self services] pushViewModel:viewModel animated:YES];
         return [RACSignal empty];
     }];
     
@@ -92,13 +91,24 @@ NSString * const EXExchangeViewModelSecretKey = @"secretKey";
     }];
     
     [self.saveCommand.executionSignals.switchToLatest subscribeToCommand:self.loginCommand];
-    [self.loginCommand.errors subscribe:[self errors]];
+    [self.loginCommand.errors subscribe:self.errors];
 }
 
 #pragma mark - private
 
 - (void)_completeWithExchange:(EXExchange *)exchange{
     if (self.callback) self.callback(exchange);
+}
+
+- (void)_scanCompleteWithString:(NSString *)string{
+    NSDictionary *JSONObject = [string objectFromJSONString];
+    if (JSONObject) {
+        self.APIKey = JSONObject[EXExchangeViewModelAPIKey];
+        self.secretKey = JSONObject[EXExchangeViewModelSecretKey];
+    } else {
+        NSError *error = [NSError errorWithDomain:EXExchangeErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"扫描结果异常", NSLocalizedFailureReasonErrorKey: ntoe(string)}];
+        [self.errors sendNext:error];
+    }
 }
 
 @end

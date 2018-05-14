@@ -36,7 +36,7 @@
 #pragma mark - protected
 
 - (void)initialize {
-    [[self errors] subscribeNext:^(NSError *error) {
+    [self.errors subscribeNext:^(NSError *error) {
         NSLog(@"error: %@", error);
     }];
 }

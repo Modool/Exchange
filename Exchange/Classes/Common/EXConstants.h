@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, EXChannel) {
     EXChannelTicker,        // ok_sub_spot_#{symbol}_ticker
     EXChannelDepth,         // ok_sub_spot_#{symbol}_depth
     EXChannelLimitDepth,    // ok_sub_spot_#{symbol}_depth_#{size}
-    EXChannelTrade,          // ok_sub_spot_#{symbol}_deals
+    EXChannelTrade,         // ok_sub_spot_#{symbol}_deals
     EXChannelKLine,         // ok_sub_spot_#{symbol}_kline_#{EXKLineTimeRangeTypeString}
     EXChannelOrder,         // ok_sub_spot_#{symbol}_order
     EXChannelBalance,       // ok_sub_spot_#{symbol}_balance

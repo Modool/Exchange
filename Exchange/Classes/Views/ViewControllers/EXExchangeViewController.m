@@ -35,7 +35,6 @@
     [super loadView];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     
     self.saveBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:nil action:nil];
     self.navigationItem.rightBarButtonItem = self.saveBarButtonItem;

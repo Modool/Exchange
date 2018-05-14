@@ -8,11 +8,14 @@
 
 #import "RACControllerViewModel.h"
 
-@class EXQRCodeScaner;
+@class EXQRCodeScanner;
 @interface EXQRCodeViewModel : RACControllerViewModel
 
-@property (nonatomic, strong, readonly) RACCommand *cancelCommand;
+@property (nonatomic, strong, readonly) RACCommand *imagePickerCommand;
+@property (nonatomic, strong, readonly) RACCommand *scanImageCommand;
 
-@property (nonatomic, strong, readonly) EXQRCodeScaner *scaner;
+@property (nonatomic, strong, readonly) RACCommand *startCommand;
+
+@property (nonatomic, strong, readonly) EXQRCodeScanner *scanner;
 
 @end

@@ -64,7 +64,14 @@
 }
 
 - (void)subscribeToTarget:(id)target performSelector:(SEL)selector;{
-    return [self subscribeToTarget:target performSelector:selector object:nil];
+    @weakify(target);
+    [self subscribeNext:^(id x) {
+        @strongify(target);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [target performSelector:selector withObject:x];
+#pragma clang diagnostic pop
+    }];
 }
 
 - (void)subscribeToTarget:(id)target performSelector:(SEL)selector object:(id)object;{

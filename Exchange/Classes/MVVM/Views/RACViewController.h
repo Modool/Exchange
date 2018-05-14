@@ -8,25 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EXMacros.h"
-
-@class RACControllerViewModel;
-
-@protocol RACViewController <NSObject>
-
-/// The `viewModel` parameter in `-initWithViewModel:` method.
-@property (nonatomic, strong, readonly) RACControllerViewModel *viewModel;
-
-/// Initialization method. This is the preferred way to create a new view.
-///
-/// viewModel - corresponding view model
-///
-/// Returns a new view.
-- (instancetype)initWithViewModel:(RACControllerViewModel *)viewModel;
-
-/// Binds the corresponding view model to the view.
-- (void)bindViewModel;
-
-@end
+#import "RACControllerViewModel.h"
 
 @interface RACViewController : UIViewController<RACViewController>
 
