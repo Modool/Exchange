@@ -10,6 +10,10 @@
 
 @interface EXKLineMetadata : EXModel
 
+@property (nonatomic, copy, readonly) NSString *productID;
+@property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
+
 @property (nonatomic, assign, readonly) double open;
 
 @property (nonatomic, assign, readonly) double close;
@@ -24,7 +28,7 @@
 
 @property (nonatomic, copy, class, readonly) NSArray<NSString *> *sortedKeys;
 
-+ (instancetype)dataWithOpen:(double)open close:(double)close highest:(double)highest lowest:(double)lowest volume:(double)volume time:(NSTimeInterval)time;
-- (instancetype)initWithOpen:(double)open close:(double)close highest:(double)highest lowest:(double)lowest volume:(double)volume time:(NSTimeInterval)time;
++ (instancetype)dataWithOpen:(double)open close:(double)close highest:(double)highest lowest:(double)lowest volume:(double)volume time:(NSTimeInterval)time symbol:(NSString *)symbol domain:(NSString *)domain;
+- (instancetype)initWithOpen:(double)open close:(double)close highest:(double)highest lowest:(double)lowest volume:(double)volume time:(NSTimeInterval)time symbol:(NSString *)symbol domain:(NSString *)domain;
 
 @end

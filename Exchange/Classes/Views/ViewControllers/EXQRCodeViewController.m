@@ -44,9 +44,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.imagePickerBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:UIBarButtonItemStyleDone target:nil action:nil];
     
-    self.navigationItem.rightBarButtonItem = [self imagePickerBarButtonItem];
+    self.navigationItem.rightBarButtonItem = self.imagePickerBarButtonItem;
     
-    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickBackgroundView:)];
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBackgroundView:)];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
@@ -54,7 +54,7 @@
     [super bindViewModel];
     
     @weakify(self);
-    self.imagePickerBarButtonItem.rac_command = [[self viewModel] imagePickerCommand];
+    self.imagePickerBarButtonItem.rac_command = self.viewModel.imagePickerCommand;
     
     __block MBProgressHUD *progressHUD = nil;
     [self.viewModel.scanImageCommand.executing subscribeNext:^(NSNumber *executing) {
@@ -72,7 +72,9 @@
 
 #pragma mark - actions
 
-- (IBAction)didClickBackgroundView:(id)sender{
+- (IBAction)didTapBackgroundView:(UITapGestureRecognizer *)tapGestureRecognizer{
+    if (tapGestureRecognizer.state == UIGestureRecognizerStateBegan) return;
+    
     BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
     [self.navigationController setNavigationBarHidden:!navigationBarHidden animated:YES];
     

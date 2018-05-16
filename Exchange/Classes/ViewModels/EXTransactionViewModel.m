@@ -135,11 +135,11 @@
 }
 
 - (RACSignal *)collectSignalWithViewModel:(EXProductItemViewModel *)viewModel collected:(BOOL)collected{
-    NSString *symbol = viewModel.product.symbol;
+    EXProduct *product = viewModel.product;
     
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            BOOL state = collected ? [accessor collectProductWithSymbol:symbol] : [accessor descollectProductWithSymbol:symbol];
+            BOOL state = [accessor updateProductByID:product.objectID collected:collected];
             RACSignal *signal = nil;
             if (state) signal = [RACSignal return:viewModel];
             else signal = [RACSignal error:[NSError errorWithDomain:EXExchangeErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"操作失败"}]];

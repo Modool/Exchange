@@ -9,6 +9,7 @@
 #import "EXProduct.h"
 #import "EXProduct+Private.h"
 #import "EXProductManager.h"
+#import "EXExchange.h"
 
 @implementation EXProduct
 
@@ -20,6 +21,8 @@
                @keypath(product, symbol): @"symbol",
                @keypath(product, minimumUnit): @"minimum_unit",
                @keypath(product, precision): @"precision",
+               @keypath(product, exchangeDomain): @"exchange_domain",
+               @keypath(product, collected): @"collected",
                }];
 }
 
@@ -45,14 +48,14 @@
     NSArray<NSString *> *fromSymbols = self.class.sortedFromSymbols;
     NSArray<NSString *> *toSymbols = self.class.sortedToSymbols;
     
-    NSUInteger index1 = [toSymbols indexOfObject:self.to];
-    NSUInteger index2 = [toSymbols indexOfObject:product.to];
+    NSUInteger index1 = [toSymbols indexOfObject:self.basic];
+    NSUInteger index2 = [toSymbols indexOfObject:product.basic];
     NSComparisonResult result = index1 < index2 ? NSOrderedAscending : (index1 > index2 ? NSOrderedDescending : NSOrderedSame);
     
     if (result != NSOrderedSame) return result;
     
-    index1 = [fromSymbols indexOfObject:self.from];
-    index2 = [fromSymbols indexOfObject:product.from];
+    index1 = [fromSymbols indexOfObject:self.name];
+    index2 = [fromSymbols indexOfObject:product.name];
     
     if (index1 != NSNotFound || index2 != NSNotFound) {
         if (index1 == NSNotFound) return NSOrderedDescending;
@@ -60,7 +63,7 @@
         if (index1 > index2) return NSOrderedDescending;
         if (index1 < index2) return NSOrderedAscending;
     }
-    return [self.from compare:product.from];
+    return [self.name compare:product.name];
 }
 
 - (void)setSymbol:(NSString *)symbol{
@@ -68,19 +71,29 @@
         _symbol = symbol;
         
         NSArray *components = [symbol componentsSeparatedByString:@"_"];
-        _from = components.firstObject;
-        _to = components.lastObject;
+        _name = components.firstObject;
+        _basic = components.lastObject;
+        
+        self.objectID = EXProductID(_exchangeDomain, symbol);
+    }
+}
+
+- (void)setExchangeDomain:(NSString *)exchangeDomain{
+    if (_exchangeDomain != exchangeDomain) {
+        _exchangeDomain = exchangeDomain;
+        
+        self.objectID = EXProductID(exchangeDomain, _symbol);
     }
 }
 
 - (NSString *)normalizedSymbol{
-    return fmts(@"%@/%@", _from, _to);
+    return fmts(@"%@/%@", _name, _basic);
 }
 
 - (double)rateInExchange:(EXExchange *)exchange;{
     __block double rate = 0;
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        rate = [accessor rateFromSymbol:self.from toSymbol:self.to exchange:exchange];
+        rate = [accessor rateByExchange:exchange.domain name:self.name basic:self.basic];
     }];
     return rate;
 }

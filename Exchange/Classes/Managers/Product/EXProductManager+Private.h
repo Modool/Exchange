@@ -8,8 +8,6 @@
 //
 
 #import "EXProductManager.h"
-#import "EXProduct.h"
-#import "EXBalance+Private.h"
 
 @interface EXProductManager () <EXProductManager>
 
@@ -17,28 +15,26 @@
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *, MDMulticastDelegate<EXProductManagerSymbolDelegate> *> *symbolDelegates;
 
-@property (nonatomic, strong) NSMutableDictionary<NSString *, EXProduct *> *products;
+@end
 
-@property (nonatomic, strong) NSArray<NSString *> *allSymbols;
-@property (nonatomic, strong) NSArray<EXProduct *> *allProducts;
+@interface EXProductManager (Private)
 
-@property (nonatomic, strong) NSMutableArray<NSString *> *collectedSymbols;
-
-@property (nonatomic, strong) EXBalance *balance;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, EXBalance *> *mutableBalances;
-
-@property (nonatomic, strong) NSMutableDictionary<NSString *, EXOrder *> *mutableOrders;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableDictionary<NSString *, EXOrder *> *> *orders;
-
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSArray<EXTrade *> *> *trades;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSArray<EXKLineMetadata *> *> *lines;
-
-@property (nonatomic, strong) NSMutableDictionary<NSString *, EXTicker *> *tickers;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, EXDepth *> *depths;
-
-- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_nonNullDelegatesForSymbol:(NSString *)symbol;
-- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_delegatesForSymbol:(NSString *)symbol;
+- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_nonNullDelegatesByProductID:(NSString *)productID;
+- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_delegatesByProductID:(NSString *)productID;
 
 - (NSDictionary<NSString *, EXBalance *> *)_synchronizeRemoteBalances;
+
+- (void)_respondDelegateForUpdatedProduct:(EXProduct *)product collected:(BOOL)collected;
+- (void)_respondDelegateForUpdatedTicker:(EXTicker *)ticker;
+- (void)_respondDelegateForUpdatedBalance:(EXBalance *)balance;
+
+- (void)_respondDelegateForAppendedOrder:(EXOrder *)order;
+- (void)_respondDelegateForUpdatedOrder:(EXOrder *)order;
+- (void)_respondDelegateForAppendedTrade:(EXTrade *)trade;
+
+- (void)_respondDelegateForUpdatedDepthSet:(EXDepthSet *)depthSet forProductID:(NSString *)productID;
+
+- (void)_respondDelegateForAppendedTrades:(NSArray<EXTrade *> *)trades forProductID:(NSString *)productID;
+- (void)_respondDelegateForAppendedKLines:(NSArray<EXKLineMetadata *> *)lines forProductID:(NSString *)productID;
 
 @end

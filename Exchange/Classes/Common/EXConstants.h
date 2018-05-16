@@ -144,6 +144,8 @@ EX_EXTERN NSString *EXExchangeRateTypeString(EXExchangeRateType type);
 
 EX_EXTERN NSString *EXOKExErrorDescription(NSInteger code);
 
+EX_EXTERN NSString *EXProductID(NSString *domain, NSString *symbol);
+
 EX_EXTERN NSNotificationName EXExchangeDidDoubleClickTabBarItemNotification;
 
 @interface EXConstants : NSObject

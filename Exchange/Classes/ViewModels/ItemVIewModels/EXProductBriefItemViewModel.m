@@ -19,13 +19,7 @@
 - (instancetype)initWithProduct:(EXProduct *)product;{
     if (self = [super init]) {
         _product = product;
-        
-        __block BOOL collected = NO;
-        [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            collected = [accessor isCollectedProductForSymbol:product.symbol];
-        }];
-        
-        _collected = collected;
+        _collected = product.collected;
         
         [self initialize];
     }
@@ -35,8 +29,8 @@
 - (void)initialize{
     [super initialize];
     
-    RAC(self, from) = [RACObserve(self, product) mapForKeypath:@keypath(self.product, from)];
-    RAC(self, to) = [RACObserve(self, product) mapForKeypath:@keypath(self.product, to)];
+    RAC(self, name) = [RACObserve(self, product) mapForKeypath:@keypath(self.product, name)];
+    RAC(self, basic) = [RACObserve(self, product) mapForKeypath:@keypath(self.product, basic)];
 }
 
 @end

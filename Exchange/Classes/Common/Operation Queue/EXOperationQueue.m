@@ -264,8 +264,6 @@
 }
 
 - (long)_wait:(dispatch_time_t)timeout;{
-    if (!_executing) return 0;
-    
     return dispatch_group_wait([self group], timeout);
 }
 

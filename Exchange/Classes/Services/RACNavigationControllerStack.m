@@ -19,10 +19,10 @@
 
 @implementation RACNavigationControllerStack
 
-- (instancetype)initWithServices:(NSObject<RACViewModelServices> *)services {
+- (instancetype)initWithServices:(id<RACViewModelServices>)services {
     self = [super init];
     if (self) {
-        self.services = services;
+        self.services = (id)services;
         self.viewControllersStack = [[NSMutableArray alloc] init];
         [self registerNavigationHooks];
     }

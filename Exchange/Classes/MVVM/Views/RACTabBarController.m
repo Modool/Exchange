@@ -23,8 +23,8 @@
 @implementation RACTabBarController
 @dynamic viewModel;
 
-- (void)viewDidLoad{
-    [super viewDidLoad];
+- (void)loadView{
+    [super loadView];
     
     self.tabBarController = [UITabBarController new];
     

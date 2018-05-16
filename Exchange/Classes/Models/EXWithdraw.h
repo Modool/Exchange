@@ -11,6 +11,10 @@
 
 @interface EXWithdraw : EXModel
 
+@property (nonatomic, copy, readonly) NSString *productID;
+@property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
+
 @property (nonatomic, copy, readonly) NSString *address;
 
 @property (nonatomic, assign, readonly) double amount;

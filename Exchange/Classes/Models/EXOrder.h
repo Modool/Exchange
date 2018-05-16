@@ -11,9 +11,12 @@
 
 @interface EXOrder : EXModel
 
-@property (nonatomic, copy, readonly) NSString *from;
-@property (nonatomic, copy, readonly) NSString *to;
+@property (nonatomic, copy, readonly) NSString *productID;
 @property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
+
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *basic;
 
 @property (nonatomic, assign, readonly) EXTradeType type;
 @property (nonatomic, assign, readonly) BOOL buy;

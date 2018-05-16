@@ -92,53 +92,53 @@
  */
 #define SDTemporaryDirectory                                NSTemporaryDirectory()
 /**
- *  Document 路径 folderName 文件夹
+ *  Document 路径 filename 文件/文件夹名称
  */
-#define SDDocumentFile(folderName)                          [SDDocumentDirectory stringByAppendingPathComponent:folderName]
+#define SDDocumentFile(filename)                            [SDDocumentDirectory stringByAppendingPathComponent:filename]
 /**
- *  Cache 路径 folderName 文件夹
+ *  Cache 路径 filename 文件/文件夹名称
  */
-#define SDCacheFolder(folderName)                           [SDCacheDirectory stringByAppendingPathComponent:folderName]
+#define SDCacheFile(filename)                               [SDCacheDirectory stringByAppendingPathComponent:filename]
 
 /**
- *  Temporary 路径 folderName 文件夹
+ *  Temporary 路径 filename 文件/文件夹名称
  */
-#define SDTemporaryFolder(folderName)                       [SDTemporaryDirectory stringByAppendingPathComponent:folderName]
+#define SDTemporaryFile(filename)                           [SDTemporaryDirectory stringByAppendingPathComponent:filename]
 
 /**
- *  Library 路径 folderName 文件夹
+ *  Library 路径 filename 文件/文件夹名称
  */
-#define SDLibraryFolder(folderName)                         [SDLibraryDirectory stringByAppendingPathComponent:folderName]
+#define SDLibraryFile(filename)                             [SDLibraryDirectory stringByAppendingPathComponent:filename]
 
 /**
- *  Library/Config 路径 folderName 文件夹
+ *  Library/Config 路径 filename 文件/文件夹名称
  */
-#define SDConfigFolder(folderName)                          [SDConfigDirectory stringByAppendingPathComponent:folderName]
+#define SDConfigFile(filename)                              [SDConfigDirectory stringByAppendingPathComponent:filename]
 
 /**
- *  Library/Config/Archiver 路径 folderName 文件夹
+ *  Library/Config/Archiver 路径 filename 文件/文件夹名称
  */
-#define SDArchiverFolder(folderName)                        [SDArchiverDirectory stringByAppendingPathComponent:folderName]
+#define SDArchiverFile(filename)                            [SDArchiverDirectory stringByAppendingPathComponent:filename]
 
 /**
  *  网络数据缓存文件夹名
  */
-#define SDWebCacheFolderName                                @"EXWebCache"
+#define SDWebCacheFolderName                                @"web_cache"
 
 /**
  *  图片数据缓存文件夹名
  */
-#define SDImageCacheFolderName                              @"EXImageCache"
+#define SDImageCacheFolderName                              @"image_cache"
 
 /**
  *  配置文件存储文件夹名
  */
-#define SDConfigFolderName                                  @"EXConfig"
+#define SDConfigFolderName                                  @"config"
 
 /**
  *  归档文件存储文件夹名
  */
-#define SDArchiverFolderName                                @"EXArchiver"
+#define SDArchiverFolderName                                @"archiver"
 
 /**
  *  网络数据缓存文件夹路径

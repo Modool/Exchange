@@ -15,8 +15,8 @@
 
 @property (nonatomic, copy, readonly) NSString *orderID;
 
-@property (nonatomic, copy, readonly) NSString *from;
-@property (nonatomic, copy, readonly) NSString *to;
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *basic;
 
 @property (nonatomic, assign, readonly) EXTradeType type;
 

@@ -12,6 +12,8 @@
 #import "RACNavigationControllerStack.h"
 #import "UIViewController+EXAdditions.h"
 
+#import "EXFPSLabel.h"
+
 @interface EXRootViewController ()
 
 @property (nonatomic, strong, readonly) EXRootViewModel *viewModel;
@@ -20,6 +22,13 @@
 
 @implementation EXRootViewController
 @dynamic viewModel;
+
+- (void)loadView{
+    [super loadView];
+#ifdef DEBUG
+    [self.view addSubview:[[EXFPSLabel alloc] initWithFrame:CGRectMake(100, 100, 50, 50)]];
+#endif
+}
 
 - (void)viewDidLoad{
     [super viewDidLoad];

@@ -10,7 +10,10 @@
 
 @interface EXTrade ()
 
-@property (nonatomic, copy) EXTradeTypeString typeString;
+@property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
+
+@property (nonatomic, assign) EXTradeType type;
 
 @property (nonatomic, assign) double price;
 @property (nonatomic, assign) double amount;
@@ -21,17 +24,19 @@
 
 @implementation EXTrade
 
-+ (instancetype)tradeWithObjectID:(NSString *)objectID price:(double)price amount:(double)amount type:(EXTradeType)type time:(NSTimeInterval)time;{
-    return [[self alloc] initWithObjectID:objectID price:price amount:amount type:type time:time];
++ (instancetype)tradeWithObjectID:(NSString *)objectID price:(double)price amount:(double)amount type:(EXTradeType)type time:(NSTimeInterval)time symbol:(NSString *)symbol domain:(NSString *)domain;{
+    return [[self alloc] initWithObjectID:objectID price:price amount:amount type:type time:time symbol:symbol domain:domain];
 }
 
-- (instancetype)initWithObjectID:(NSString *)objectID price:(double)price amount:(double)amount type:(EXTradeType)type time:(NSTimeInterval)time;{
+- (instancetype)initWithObjectID:(NSString *)objectID price:(double)price amount:(double)amount type:(EXTradeType)type time:(NSTimeInterval)time symbol:(NSString *)symbol domain:(NSString *)domain;{
     if (self = [super init]) {
         self.objectID = objectID;
         _price = price;
         _amount = amount;
         _type = type;
         _time = time;
+        _symbol = symbol;
+        _exchangeDomain = domain;
     }
     return self;
 }
@@ -40,20 +45,23 @@
     EXTrade *trade;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(trade, objectID): @"tid",
-              @keypath(trade, price): @"price",
+              @keypath(trade, objectID): @[@"id", @"tid"],
+               @keypath(trade, exchangeDomain): @"exchange_domain",
+               @keypath(trade, symbol): @"symbol",
+               @keypath(trade, price): @"price",
                @keypath(trade, amount): @"amount",
                @keypath(trade, time): @"date_ms",
-               @keypath(trade, typeString): @"type",
+               @keypath(trade, type): @"type",
                }];
 }
 
-- (void)setTypeString:(EXTradeTypeString)typeString{
-    if (_typeString != typeString) {
-        _typeString = typeString;
-        
-        _type = EXTradeTypeFromString(typeString);
-    }
+- (NSDictionary *)modelCustomWillTransformFromDictionary:(NSDictionary *)dic{
+    NSMutableDictionary *dictinoary = dic.mutableCopy;
+    EXTradeTypeString typeString = dictinoary[@"type"];
+    
+    dictinoary[@"type"] = @(EXTradeTypeFromString(typeString));
+    
+    return dictinoary;
 }
 
 - (BOOL)buy{
@@ -62,6 +70,10 @@
 
 - (BOOL)market{
     return self.type & EXTradeTypeMarket;
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

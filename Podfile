@@ -9,6 +9,7 @@ use_frameworks!
 
 abstract_target ‘Exchange_targets’ do
     pod 'MDRouter', '~> 1.0.0'
+    pod 'MDObjectDatabase', '~> 1.0.0'
     pod 'ACArchiverCenter', '~> 1.0.1'
     pod 'MDMulticastDelegate', '~> 1.0.0'
     pod 'MDQueueObject', '~> 1.0.0'
@@ -24,7 +25,7 @@ abstract_target ‘Exchange_targets’ do
     pod 'CocoaLumberjack', '~> 2.4.0'
     pod 'CategoryKit', '~> 1.0.0'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.5.beta'
-    pod 'MDTransitioning', '~> 1.0.2'
+    pod 'MDTransitioning', '~> 1.0.3'
     pod 'SVPullToRefresh', '~> 0.4'
     pod 'SocketRocket', '~> 0.5'
     pod 'Masonry', '~> 1.0.1'

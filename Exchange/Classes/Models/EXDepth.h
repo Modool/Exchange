@@ -8,21 +8,27 @@
 
 #import "EXModel.h"
 
-@interface EXDepthItem : EXModel
+@interface EXDepth : EXModel
+
+@property (nonatomic, copy, readonly) NSString *productID;
+@property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
 
 @property (nonatomic, assign, readonly) double volume;
 
 @property (nonatomic, assign, readonly) double price;
 
+@property (nonatomic, assign, readonly) BOOL buy;
+
 @end
 
-@interface EXDepth : EXModel
+@interface EXDepthSet : EXModel
 
 // 卖方深度
 // [vol, price]
-@property (nonatomic, copy, readonly) NSArray<EXDepthItem *> *asks;
+@property (nonatomic, copy, readonly) NSArray<EXDepth *> *asks;
 
 // 买方深度
-@property (nonatomic, copy, readonly) NSArray<EXDepthItem *> *bids;
+@property (nonatomic, copy, readonly) NSArray<EXDepth *> *bids;
 
 @end

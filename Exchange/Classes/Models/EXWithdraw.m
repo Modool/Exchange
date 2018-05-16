@@ -10,6 +10,9 @@
 
 @interface EXWithdraw ()
 
+@property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
+
 @property (nonatomic, copy) NSString *address;
 
 @property (nonatomic, assign) double amount;
@@ -28,13 +31,19 @@
     EXWithdraw *withdraw;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(withdraw, objectID): @"withdraw_id",
+              @keypath(withdraw, objectID): @[@"id", @"withdraw_id"],
+               @keypath(withdraw, exchangeDomain): @"exchange_domain",
+               @keypath(withdraw, symbol): @"symbol",
                @keypath(withdraw, address): @"address",
                @keypath(withdraw, amount): @"amount",
                @keypath(withdraw, fee): @"chargefee",
                @keypath(withdraw, status): @"status",
                @keypath(withdraw, time): @"created_date",
                }];
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

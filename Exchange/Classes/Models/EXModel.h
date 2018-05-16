@@ -12,6 +12,9 @@
 
 @property (nonatomic, copy) NSString *objectID;
 
++ (instancetype)modelWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+
 @end
 
 @interface NSObject (MDSerialization)

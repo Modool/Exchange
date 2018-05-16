@@ -8,14 +8,14 @@
 
 #import "EXProductManager.h"
 #import "EXProductManager+Private.h"
-#import "EXProductManager+EXSelectedProduct.h"
+#import "EXProductManager+Database.h"
 
-#import "EXSocketManager.h"
 #import "EXExchangeManager.h"
-#import "EXHTTPClient.h"
+#import "EXSocketManager.h"
 
-#import "EXExchange.h"
 #import "EXTicker.h"
+#import "EXProduct.h"
+#import "EXExchange.h"
 
 @implementation EXProductManager
 @dynamic delegates;
@@ -28,55 +28,22 @@
     [super async:block];
 }
 
-- (NSArray<NSString *> *)allSymbols;{
-    if (!_allSymbols) {
-        _allSymbols = [self.products.allKeys sortedArrayUsingSelector:@selector(compare:)];
-    }
-    return _allSymbols;
-}
-
-- (NSArray<EXProduct *> *)allProducts;{
-    if (!_allProducts) {
-        _allProducts = [self.products.allValues sortedArrayUsingSelector:@selector(compare:)];
-    }
-    return _allProducts;
-}
-
-- (NSArray<EXProduct *> *)productsAtPage:(NSUInteger)page size:(NSUInteger)size;{
-    NSArray<EXProduct *> *products = self.allProducts;
-    NSUInteger location = (page - 1) * size;
-    if (location > products.count) return nil;
+- (double)rateByExchange:(NSString *)domain name:(NSString *)name basic:(NSString *)basic;{
+    NSParameterAssert(domain.length && name.length && basic.length);
+    __block EXExchange *exchange = nil;
+    [EXExchangeManager sync:^(EXDelegatesAccessor<EXExchangeManager> *accessor) {
+        exchange = [accessor exchangeByDomain:domain];
+    }];
     
-    NSUInteger count = MIN(products.count - location, size);
-    
-    return [products subarrayWithRange:NSMakeRange(location, count)];
-}
-
-- (NSArray<EXProduct *> *)productsWithKeyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;{
-    if (![keyword length]) return [self productsAtPage:page size:size];
-    
-    NSArray<EXProduct *> *products = [[self.allProducts.rac_sequence filter:^BOOL(EXProduct *product) {
-        return [[product symbol] containsString:[keyword lowercaseString]];
-    }] array];
-    
-    NSUInteger location = (page - 1) * size;
-    if (location > products.count) return nil;
-    
-    NSUInteger count = MIN(products.count - location, size);
-    
-    return [products subarrayWithRange:NSMakeRange(location, count)];
-}
-
-- (double)rateFromSymbol:(NSString *)fromSymbol toSymbol:(NSString *)toSymbol exchange:(EXExchange *)exchange;{
-    NSString *basicSymbol = @"usdt";
-    if (![toSymbol isEqualToString:basicSymbol]) {
-        NSString *symbol = fmts(@"%@_%@", toSymbol, basicSymbol);
-        EXProduct *product = [self productBySymbol:symbol];
-        if (product.ticker) {
-            return exchange.currentRate * product.ticker.lastestPrice;
+    NSString *defaultBasic = @"usdt";
+    if (![basic isEqualToString:defaultBasic]) {
+        NSString *symbol = fmts(@"%@_%@", basic, defaultBasic);
+        EXTicker *ticker = [self _tickerByExchange:domain symbol:symbol];
+        if (ticker) {
+            return exchange.currentRate * ticker.lastestPrice;
         } else {
             [EXSocketManager async:^(EXDelegatesAccessor<EXSocketManager> *accessor) {
-                [accessor addTickerChannelWithSymbol:product.symbol];
+                [accessor addTickerChannelWithSymbol:symbol];
             }];
         }
     } else {
@@ -85,195 +52,224 @@
     return 0;
 }
 
-- (EXProduct *)productBySymbol:(NSString *)symbol;{
-    return self.products[symbol];
+- (EXProduct *)productByProductID:(NSString *)productID;{
+    NSParameterAssert(productID.length);
+    return [self _productByProductID:productID];
 }
 
-- (NSArray<EXProduct *> *)collectedProducts{
-    return [self.products objectsForKeys:self.collectedSymbols notFoundMarker:[[EXProduct alloc] init]];
+- (EXBalance *)balanceByExchange:(NSString *)domain symbol:(NSString *)symbol;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _balanceByExchange:domain symbol:symbol];
+}
+
+- (EXTicker *)tickerByExchange:(NSString *)domain symbol:(NSString *)symbol;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _tickerByExchange:domain symbol:symbol];
+}
+
+- (NSArray<EXProduct *> *)products;{
+    return [self _productsByExchange:nil keyword:nil range:NSRangeUnset];
+}
+
+- (NSArray<EXProduct *> *)productsAtPage:(NSUInteger)page size:(NSUInteger)size;{
+    NSUInteger location = (page - 1) * size;
+    return [self _productsByExchange:nil keyword:nil range:NSMakeRange(location, size)];
+}
+
+- (NSArray<EXProduct *> *)productsWithKeyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;{
+    NSUInteger location = (page - 1) * size;
+    return [self _productsByExchange:nil keyword:nil range:NSMakeRange(location, size)];
+}
+
+- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain;{
+    NSParameterAssert(domain.length);
+    return [self _productsByExchange:domain keyword:nil range:NSRangeUnset];
+}
+
+- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;{
+    NSParameterAssert(domain.length);
+    NSUInteger location = (page - 1) * size;
+    return [self _productsByExchange:domain keyword:nil range:NSMakeRange(location, size)];
+}
+
+- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain keyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;{
+    NSParameterAssert(domain.length);
+    
+    NSUInteger location = (page - 1) * size;
+    return [self _productsByExchange:domain keyword:nil range:NSMakeRange(location, size)];
+}
+
+- (NSArray<EXProduct *> *)collectedProducts;{
+    return [self _collectedProductsInRange:NSRangeUnset];
 }
 
 - (NSArray<EXProduct *> *)collectedProductsAtPage:(NSUInteger)page size:(NSUInteger)size;{
-    NSArray<NSString *> *symbols = self.collectedSymbols;
     NSUInteger location = (page - 1) * size;
-    if (location > symbols.count) return nil;
     
-    NSUInteger count = MIN(symbols.count - location, size);
-    symbols = [symbols subarrayWithRange:NSMakeRange(location, count)];
+    return [self _collectedProductsInRange:NSMakeRange(location, size)];
+}
+
+- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain;{
+    NSParameterAssert(domain.length);
     
-    return [self.products objectsForKeys:symbols notFoundMarker:[[EXProduct alloc] init]];
+    return [self _collectedProductsByExchange:domain range:NSRangeUnset];
 }
 
-- (BOOL)isCollectedProductForSymbol:(NSString *)symbol;{
-    return [self.collectedSymbols.copy containsObject:symbol];
-}
-
-- (BOOL)collectProductWithSymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
+- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;{
+    NSParameterAssert(domain.length);
+    NSUInteger location = (page - 1) * size;
     
-    [self.collectedSymbols addObject:symbol];
-    
-    [self _saveCollectedProduct];
-    [self _respondDelegateForCollectedSymbol:symbol];
-    
-    return YES;
+    return [self _collectedProductsByExchange:domain range:NSMakeRange(location, size)];
 }
 
-- (BOOL)descollectProductWithSymbol:(NSString *)symbol;{
-    if (![self.collectedSymbols containsObject:symbol]) return NO;
-    
-    [self.collectedSymbols removeObject:symbol];
-    
-    [self _saveCollectedProduct];
-    [self _respondDelegateForDescollectedSymbol:symbol];
-    
-    return YES;
+- (NSArray<EXBalance *> *)balancesByExchange:(NSString *)domain;{
+    NSParameterAssert(domain.length);
+    return [self _balancesByExchange:domain];
 }
 
-- (EXDepth *)depthBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    return self.depths[symbol];
+- (NSArray<EXTicker *> *)tickersByExchange:(NSString *)domain;{
+    NSParameterAssert(domain.length);
+    return [self _tickersByExchange:domain];
 }
 
-- (EXTicker *)tickerBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    return self.tickers[symbol];
+- (NSArray<EXDepth *> *)depthsByExchange:(NSString *)domain symbol:(NSString *)symbol;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _depthsByExchange:domain symbol:symbol];
 }
 
-- (NSArray<EXTrade *> *)tradesBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    return self.trades[symbol];
+- (NSArray<EXDepth *> *)depthsByExchange:(NSString *)domain symbol:(NSString *)symbol buy:(BOOL)buy;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _depthsByExchange:domain symbol:symbol buy:buy];
 }
 
-- (NSArray<EXKLineMetadata *> *)linesBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    return self.lines[symbol];
+- (NSArray<EXTrade *> *)tradesByExchange:(NSString *)domain symbol:(NSString *)symbol;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _tradesByExchange:domain symbol:symbol];
 }
 
-- (NSArray<EXOrder *> *)allOrders;{
-    return self.mutableOrders.allValues;
+- (NSArray<EXTrade *> *)tradesByExchange:(NSString *)domain symbol:(NSString *)symbol buy:(BOOL)buy;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _tradesByExchange:domain symbol:symbol buy:buy];
 }
 
-- (NSArray<EXOrder *> *)ordersBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    NSDictionary<NSString *, EXOrder *> *orders = self.orders[symbol];
-    return orders.allValues;
+- (NSArray<EXOrder *> *)ordersByExchange:(NSString *)domain;{
+    NSParameterAssert(domain.length);
+    return [self _ordersByExchange:domain];
 }
 
-- (NSArray<EXBalance *> *)balances;{
-    return self.mutableBalances.allValues;
+- (NSArray<EXOrder *> *)ordersByExchange:(NSString *)domain symbol:(NSString *)symbol;{
+    NSParameterAssert(domain.length && symbol.length);
+    return [self _ordersByExchange:domain symbol:symbol];
 }
 
-- (EXBalance *)balanceBySymbol:(NSString *)symbol;{
-    NSParameterAssert(symbol.length);
-    return self.mutableBalances[symbol];
+- (BOOL)exsitOrderByID:(NSString *)orderID {
+    NSParameterAssert(orderID.length);
+    return [self _exsitOrderByID:orderID];
 }
 
-- (NSMutableDictionary<NSString *, EXBalance *> *)mutableBalances{
-    if (!_mutableBalances) {
-        _mutableBalances = [NSMutableDictionary dictionaryWithDictionary:[self _synchronizeRemoteBalances]];
+#pragma mark - insert
+
+- (BOOL)insertTrade:(EXTrade *)trade;{
+    NSParameterAssert(trade);
+    BOOL state = [self _insertTrade:trade];
+    if (state) {
+        [self _respondDelegateForAppendedTrade:trade];
     }
-    return _mutableBalances;
+    return state;
 }
 
-- (void)addDelegate:(id<EXProductManagerSymbolDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue forSymbol:(NSString *)symbol;{
-    NSParameterAssertReturnVoid(symbol.length);
+- (BOOL)insertTrades:(NSArray<EXTrade *> *)trades forProductByID:(NSString *)productID;{
+    NSParameterAssert(trades.count && productID.length);
+    if (trades.count == 1) return [self insertTrade:trades.firstObject];
     
-    MDMulticastDelegate<EXProductManagerSymbolDelegate> *delegates = [self _nonNullDelegatesForSymbol:symbol];
+    BOOL state = [self _insertTrades:trades];
+    if (state) {
+        [self _respondDelegateForAppendedTrades:trades forProductID:productID];
+    }
+    return state;
+}
+
+- (BOOL)insertKLines:(NSArray<EXKLineMetadata *> *)lines forProductByID:(NSString *)productID;{
+    NSParameterAssert(lines.count && productID.length);
+    BOOL state = [self _insertKLines:lines];
+    if (state) {
+        [self _respondDelegateForAppendedKLines:lines forProductID:productID];
+    }
+    return state;
+}
+
+- (BOOL)insertOrder:(EXOrder *)order;{
+    NSParameterAssert(order);
+    BOOL state = [self _insertOrder:order];
+    if (state) {
+        [self _respondDelegateForAppendedOrder:order];
+    }
+    return state;
+}
+
+#pragma mark - update
+
+- (BOOL)updateProductByID:(NSString *)productID collected:(BOOL)collected;{
+    NSParameterAssert(productID.length);
+    return [self _updateProductByID:productID collected:collected];
+}
+
+- (BOOL)updateTicker:(EXTicker *)ticker;{
+    NSParameterAssert(ticker);
+    BOOL state = [self _updateTicker:ticker];
+    if (state) {
+        [self _respondDelegateForUpdatedTicker:ticker];
+    }
+    return state;
+}
+
+- (BOOL)updateBalance:(EXBalance *)balance;{
+    NSParameterAssert(balance);
+    BOOL state = [self _updateBalance:balance];
+    if (state) {
+        [self _respondDelegateForUpdatedBalance:balance];
+    }
+    return state;
+}
+
+- (BOOL)updateOrder:(EXOrder *)order;{
+    NSParameterAssert(order);
+    BOOL state = [self _updateOrder:order];
+    if (state) {
+        [self _respondDelegateForUpdatedOrder:order];
+    }
+    return state;
+}
+
+#pragma mark - delegate
+
+- (void)addDelegate:(id<EXProductManagerSymbolDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue forProductID:(NSString *)productID;{
+    NSParameterAssertReturnVoid(productID.length);
+    
+    MDMulticastDelegate<EXProductManagerSymbolDelegate> *delegates = [self _nonNullDelegatesByProductID:productID];
     [delegates addDelegate:delegate delegateQueue:delegateQueue];
 }
 
-- (void)removeDelegate:(id<EXProductManagerSymbolDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue forSymbol:(NSString *)symbol;{
-    NSParameterAssertReturnVoid(symbol.length);
+- (void)removeDelegate:(id<EXProductManagerSymbolDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue forProductID:(NSString *)productID;{
+    NSParameterAssertReturnVoid(productID.length);
     
-    MDMulticastDelegate<EXProductManagerSymbolDelegate> *delegates = [self _nonNullDelegatesForSymbol:symbol];
+    MDMulticastDelegate<EXProductManagerSymbolDelegate> *delegates = [self _nonNullDelegatesByProductID:productID];
     if (delegateQueue) {
         [delegates removeDelegate:delegate delegateQueue:delegateQueue];
     } else {
         [delegates removeDelegate:delegate];
     }
     if (!delegates.count) {
-        [self.symbolDelegates removeObjectForKey:symbol];
+        [self.symbolDelegates removeObjectForKey:productID];
     }
 }
 
-- (void)removeDelegate:(id<EXProductManagerSymbolDelegate>)delegate forSymbol:(NSString *)symbol;{
-    [self removeDelegate:delegate delegateQueue:nil forSymbol:symbol];
+- (void)removeDelegate:(id<EXProductManagerSymbolDelegate>)delegate forProductID:(NSString *)productID;{
+    [self removeDelegate:delegate delegateQueue:nil forProductID:productID];
 }
 
-- (void)removeDelegatesForSymbol:(NSString *)symbol;{
-    [self.symbolDelegates removeObjectForKey:symbol];
-}
-
-#pragma mark - private
-
-- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_nonNullDelegatesForSymbol:(NSString *)symbol;{
-    NSParameterAssertReturnNil([symbol length]);
-    
-    MDMulticastDelegate<EXProductManagerSymbolDelegate> *delegates = [self _delegatesForSymbol:symbol] ?: [MDMulticastDelegate<EXProductManagerSymbolDelegate> new];
-    self.symbolDelegates[symbol] = delegates;
-    
-    return delegates;
-}
-
-- (MDMulticastDelegate<EXProductManagerSymbolDelegate> *)_delegatesForSymbol:(NSString *)symbol;{
-    NSParameterAssertReturnNil([symbol length]);
-    
-    return self.symbolDelegates[symbol];
-}
-
-- (NSDictionary<NSString *, EXBalance *> *)_synchronizeRemoteBalances{
-    __block EXExchange *exchange = nil;
-    [EXExchangeManager sync:^(EXDelegatesAccessor<EXExchangeManager> *accessor) {
-        exchange = [accessor exchangeByDomain:EXExchangeOKExDomain];
-    }];
-    
-    id<EXHTTPClient> client = exchange.client;
-    __block NSDictionary *dictionary = nil;
-    __block NSError *remoteError = nil;
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    RACDisposable *dsiposable = [[client fetchBalancesSignal] subscribeNext:^(NSDictionary *result) {
-        dictionary = result;
-    } error:^(NSError *error) {
-        remoteError = error;
-    } completed:^{
-        dispatch_semaphore_signal(semaphore);
-    }];
-    long state = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (10 * NSEC_PER_SEC)));
-    
-    [dsiposable dispose];
-    if (state || remoteError) return nil;
-    
-    NSDictionary *freeFunds = dictionary[@"free"];
-    NSDictionary *freezedFunds = dictionary[@"freezed"];
-    NSMutableDictionary<NSString *, EXBalance *> *balances = [NSMutableDictionary dictionary];
-    
-    NSMutableSet<EXChannelString> *channels = [NSMutableSet set];
-    for (NSString *symbol in freeFunds.allKeys) {
-        double free = [freeFunds[symbol] doubleValue];
-        
-        EXBalance *balance = [[EXBalance alloc] init];
-        balance.symbol = symbol;
-        balance.free = free;
-        
-        balances[symbol] = balance;
-        
-        if (free > 0) [channels addObject:fmts(EXChannelStringBalance, symbol)];
-    }
-    
-    for (NSString *symbol in freezedFunds.allKeys) {
-        double freezed = [freezedFunds[symbol] doubleValue];
-        EXBalance *balance = balances[symbol];
-        if (!balance) {
-            balance = [[EXBalance alloc] init];
-            balances[symbol] = balance;
-        }
-        balance.freezed = freezed;
-        if (freezed > 0) [channels addObject:fmts(EXChannelStringBalance, symbol)];
-    }
-    
-    return balances.copy;
+- (void)removeDelegatesByProductID:(NSString *)productID;{
+    [self.symbolDelegates removeObjectForKey:productID];
 }
 
 @end

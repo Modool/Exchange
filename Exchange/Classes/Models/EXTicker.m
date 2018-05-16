@@ -7,29 +7,7 @@
 //
 
 #import "EXTicker.h"
-
-@interface EXTicker ()
-
-@property (nonatomic, assign) double openPrice;
-@property (nonatomic, assign) double closePrice;
-
-@property (nonatomic, assign) double currentBuyPrice;
-@property (nonatomic, assign) double currentSellPrice;
-
-@property (nonatomic, assign) double highestPrice;
-@property (nonatomic, assign) double lowestPrice;
-
-@property (nonatomic, assign) double lastestPrice;
-
-@property (nonatomic, assign) double offset;
-@property (nonatomic, assign) double dayLowPrice;
-@property (nonatomic, assign) double dayHightPrice;
-
-@property (nonatomic, assign) double volume;
-
-@property (nonatomic, assign) NSTimeInterval time;
-
-@end
+#import "EXTicker+Private.h"
 
 @implementation EXTicker
 
@@ -37,7 +15,9 @@
     EXTicker *ticker;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(ticker, openPrice): @"open",
+              @keypath(ticker, objectID): @"id",
+               @keypath(ticker, exchangeDomain): @"exchange_domain",
+               @keypath(ticker, openPrice): @"open",
                @keypath(ticker, closePrice): @"close",
                @keypath(ticker, currentBuyPrice): @"buy",
                @keypath(ticker, currentSellPrice): @"sell",
@@ -50,6 +30,10 @@
                @keypath(ticker, dayHightPrice): @"dayHigh",
                @keypath(ticker, time): @"timestamp",
                }];
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

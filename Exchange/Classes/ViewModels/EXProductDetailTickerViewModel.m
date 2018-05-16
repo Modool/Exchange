@@ -30,7 +30,7 @@
     if (self = [super init]) {
         _product = product;
         _exchange = exchange;
-        _ticker = product.ticker;
+//        _ticker = product.ticker;
         
         [self initialize];
     }
@@ -50,13 +50,13 @@
 
 - (void)_registerDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
 - (void)_deregisterDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
@@ -80,7 +80,7 @@
     
     __block double rate = 0;
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        rate = [accessor rateFromSymbol:product.from toSymbol:product.to exchange:exchange];
+        rate = [accessor rateByExchange:exchange.domain name:product.name basic:product.basic];
     }];
     double legalRendePrice = rate * ticker.lastestPrice;
     NSString *typeString = EXExchangeRateTypeString(exchange.rateType);

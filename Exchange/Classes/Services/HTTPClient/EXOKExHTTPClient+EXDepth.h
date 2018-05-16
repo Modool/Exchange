@@ -10,10 +10,10 @@
 
 @interface EXOKExHTTPClient (EXDepth)<EXHTTPClientDepth>
 
-// result: EXDepth
+// result: EXDepthSet
 - (RACSignal *)fetchDepthWithSymbol:(NSString *)symbol;
 
-// result: EXDepth
+// result: EXDepthSet
 - (RACSignal *)fetchDepthWithSymbol:(NSString *)symbol size:(NSUInteger /* 200 */)size;
 
 @end

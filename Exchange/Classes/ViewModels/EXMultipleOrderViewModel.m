@@ -36,7 +36,7 @@
         
         __block EXProduct *product = nil;
         [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            product = [accessor productBySymbol:@"eos_btc"];
+            product = [accessor productByProductID:EXProductID(EXExchangeOKExDomain, @"eos_btc")];
         }];
         _product = product;
         
@@ -65,7 +65,7 @@
     }];
     
     RAC(self, rightBarButtonItemTitle) = [RACObserve(self, product) map:^id(EXProduct *product) {
-        return fmts(@"%@/%@", product.from.uppercaseString, product.to.uppercaseString);
+        return fmts(@"%@/%@", product.name.uppercaseString, product.basic.uppercaseString);
     }];
     
     [[RACSignal combineLatest:@[[[RACObserve(self, product) distinctUntilChanged] ignore:nil], [RACObserve(self, viewModels) ignore:nil]]] subscribeNext:^(RACTuple *tuple) {

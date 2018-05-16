@@ -28,8 +28,8 @@
     [super initialize];
     
     RAC(self, orderID) = RACObserve(self.order, objectID);
-    RAC(self, from) = RACObserve(self.order, from);
-    RAC(self, to) = RACObserve(self.order, to);
+    RAC(self, name) = RACObserve(self.order, name);
+    RAC(self, basic) = RACObserve(self.order, basic);
     RAC(self, type) = RACObserve(self.order, type);
     RAC(self, amount) = RACObserve(self.order, amount);
     RAC(self, dealAmount) = RACObserve(self.order, dealAmount);

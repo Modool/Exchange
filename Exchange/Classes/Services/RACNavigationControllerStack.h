@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @protocol RACViewModelServices;
-
 @interface RACNavigationControllerStack : NSObject
 
 /// Initialization method. This is the preferred way to create a new navigation controller stack.
@@ -17,7 +16,7 @@
 /// services - The service bus of the `Model` layer.
 ///
 /// Returns a new navigation controller stack.
-- (instancetype)initWithServices:(NSObject<RACViewModelServices> *)services;
+- (instancetype)initWithServices:(id<RACViewModelServices>)services;
 
 /// Pushes the navigation controller.
 ///

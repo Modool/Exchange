@@ -12,6 +12,8 @@
 #import "EXProductManager.h"
 #import "EXSocketManager.h"
 
+#import "EXTradeSet.h"
+
 @interface EXProductDetailViewModel ()<EXProductManagerSymbolDelegate>
 
 @property (nonatomic, strong) EXProductDetailTickerViewModel *tickerViewModel;
@@ -20,10 +22,8 @@
 
 @property (nonatomic, strong) RACCommand *collectCommand;
 
-@property (nonatomic, copy) NSArray<EXTrade *> *trades;
-
-@property (nonatomic, copy) NSArray<EXTrade *> *buyTrades;
-@property (nonatomic, copy) NSArray<EXTrade *> *sellTrades;
+@property (nonatomic, copy) NSArray<EXTradeSet *> *buyTrades;
+@property (nonatomic, copy) NSArray<EXTradeSet *> *sellTrades;
 
 @end
 
@@ -33,14 +33,8 @@
     if (self = [super initWithServices:services params:params]) {
         _product = params[@keypath(self, product)];
         _exchange = params[@keypath(self, exchange)];
+        _collected = _product.collected;
         
-        __block BOOL collected = NO;
-        [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            collected = [accessor isCollectedProductForSymbol:self->_product.symbol];
-        }];
-        _collected = collected;
-        
-        self.trades = _product.trades;
         self.title = _product.normalizedSymbol.uppercaseString;
         self.viewControllerClass = EXClass(EXProductDetailViewController);
         self.tradeViewModel = [[EXProductDetailTradeViewModel alloc] init];
@@ -69,20 +63,6 @@
     RAC(self.tradeViewModel, buyTrades) = RACObserve(self, buyTrades);
     RAC(self.tradeViewModel, sellTrades) = RACObserve(self, sellTrades);
     
-    [RACObserve(self, trades) subscribeNext:^(NSArray<EXTrade *> *trades) {
-        @strongify(self);
-        NSMutableArray<EXTrade *> *buyTrades = [NSMutableArray array];
-        NSMutableArray<EXTrade *> *sellTrades = [NSMutableArray array];
-        
-        for (EXTrade *trade in trades) {
-            NSMutableArray *mutableTrades = trade.buy ? buyTrades : sellTrades;
-            [mutableTrades addObject:trade];
-        }
-        
-        self.buyTrades = buyTrades;
-        self.sellTrades = sellTrades;
-    }];
-    
     [self.didAppearSignal subscribeToTarget:self performSelector:@selector(_registerChannel)];
     [[self rac_willDeallocSignal] subscribeToTarget:self performSelector:@selector(_deregisterDelegate)];
     [self _registerDelegate];
@@ -92,13 +72,13 @@
 
 - (void)_registerDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
 - (void)_deregisterDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
@@ -108,13 +88,48 @@
     }];
 }
 
+- (void)_updateTradeSet:(EXTradeSet *)tradeSet{
+//    NSArray<EXTradeSet *> *trades = tradeSet.buy ? self.buyTrades : self.sellTrades;
+//    NSDictionary<NSNumber *, EXTradeSet *> *tradeDictionary = tradeSet.buy ? self.buyTradeDictionary : self.sellTradeDictionary;
+//    
+//    NSMutableArray<EXTradeSet *> *mutableTrades = [trades ?: @[] mutableCopy];
+//    NSMutableDictionary<NSNumber *, EXTradeSet *> *mutableTradeDictionary = [tradeDictionary ?: @{} mutableCopy];
+//    
+//    EXTradeSet *local = tradeDictionary[@(tradeSet.price)];
+//    if (local) {
+//        NSUInteger index = [trades indexOfObject:tradeSet];
+//        if (index != NSNotFound) {
+//            [mutableTrades replaceObjectAtIndex:index withObject:tradeSet];
+//        } else {
+//            [mutableTrades addObject:tradeSet];
+//            [mutableTrades sortWithOptions:NSSortConcurrent usingComparator:^NSComparisonResult(EXTradeSet *trade1, EXTradeSet *trade2) {
+//                return tradeSet.buy && trade1.price > trade2.price;
+//            }];
+//        }
+//    } else {
+//        [mutableTrades addObject:tradeSet];
+//        [mutableTrades sortWithOptions:NSSortConcurrent usingComparator:^NSComparisonResult(EXTradeSet *trade1, EXTradeSet *trade2) {
+//            return tradeSet.buy && trade1.price > trade2.price;
+//        }];
+//    }
+//    mutableTradeDictionary[@(tradeSet.price)] = tradeSet;
+//    
+//    if (tradeSet.buy) {
+//        self.buyTrades = mutableTrades.copy;
+//        self.buyTradeDictionary = mutableTradeDictionary.copy;
+//    } else {
+//        self.sellTrades = mutableTrades.copy;
+//        self.sellTradeDictionary = mutableTradeDictionary.copy;
+//    }
+}
+
 #pragma mark - signal
 
 - (RACSignal *)collectSignalWithProduct:(EXProduct *)product collected:(BOOL)collected{
     return [RACSignal defer:^RACSignal *{
         __block BOOL state = NO;
         [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            state = collected ? [accessor collectProductWithSymbol:product.symbol] : [accessor descollectProductWithSymbol:product.symbol];
+            state = [accessor updateProductByID:product.objectID collected:collected];
         }];
         return [RACSignal return:RACTuplePack(product, @(collected))];
     }];
@@ -122,22 +137,12 @@
 
 #pragma mark - EXProductManagerSymbolDelegate
 
-- (void)productManager:(EXProductManager *)productManager didAppendTrades:(NSArray<EXTrade *> *)trades forSymbol:(NSString *)symbol;{
-    NSMutableArray<EXTrade *> *buyTrades = [NSMutableArray array];
-    NSMutableArray<EXTrade *> *sellTrades = [NSMutableArray array];
-    
-    for (EXTrade *trade in trades) {
-        NSMutableArray *mutableTrades = trade.buy ? buyTrades : sellTrades;
-        [mutableTrades addObject:trade];
-    }
-    
-    if (buyTrades.count) {
-        self.buyTrades = [self.buyTrades ?: @[] arrayByAddingObjectsFromArray:buyTrades];
-    }
-    
-    if (sellTrades.count) {
-        self.sellTrades = [self.sellTrades ?: @[] arrayByAddingObjectsFromArray:sellTrades];
-    }
+- (void)productManager:(EXProductManager *)productManager didUpdateTradeSet:(EXTradeSet *)tradeSet forSymbol:(NSString *)symbol;{
+    [self _updateTradeSet:tradeSet];
+}
+
+- (void)productManager:(EXProductManager *)productManager didAppendTradeSet:(EXTradeSet *)tradeSet forSymbol:(NSString *)symbol;{
+    [self _updateTradeSet:tradeSet];
 }
 
 @end

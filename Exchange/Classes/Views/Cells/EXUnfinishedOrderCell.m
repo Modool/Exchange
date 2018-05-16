@@ -122,7 +122,7 @@
 - (void)bindViewModel:(EXUnfinishedOrderItemViewModel *)viewModel{
     _viewModel = viewModel;
     
-    RAC(self.symbolLabel, text) = [[RACObserve(viewModel, from) mapPerformSelector:@selector(uppercaseString)] takeUntil:self.rac_prepareForReuseSignal];
+    RAC(self.symbolLabel, text) = [[RACObserve(viewModel, name) mapPerformSelector:@selector(uppercaseString)] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.marketTypeLabel, text) = [[RACObserve(viewModel, type) map:^id(NSNumber *value) {
         return value.integerValue & EXTradeTypeMarket ? @"市价单" : @"限价单";

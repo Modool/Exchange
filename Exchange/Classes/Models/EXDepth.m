@@ -9,16 +9,16 @@
 
 #import "EXDepth.h"
 
-@implementation EXDepthItem
+@interface EXDepth ()
 
-+ (NSDictionary<NSString *,id> *)modelCustomPropertyMapper{
-    EXDepthItem *depthItem;
-    return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
-            @{
-              @keypath(depthItem, volume): @"volume",
-               @keypath(depthItem, price): @"price",
-               }];
-}
+@property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
+
+@property (nonatomic, assign) double volume;
+
+@property (nonatomic, assign) double price;
+
+@property (nonatomic, assign) BOOL buy;
 
 @end
 
@@ -28,8 +28,36 @@
     EXDepth *depth;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(depth, asks): @"asks",
-               @keypath(depth, bids): @"bids",
+               @keypath(depth, symbol): @"symbol",
+               @keypath(depth, exchangeDomain): @"exchange_domain",
+               @keypath(depth, volume): @"volume",
+               @keypath(depth, price): @"price",
+               @keypath(depth, buy): @"buy",
+               }];
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
+}
+
+@end
+
+@interface EXDepthSet ()
+
+@property (nonatomic, copy) NSArray<EXDepth *> *asks;
+
+@property (nonatomic, copy) NSArray<EXDepth *> *bids;
+
+@end
+
+@implementation EXDepthSet
+
++ (NSDictionary<NSString *,id> *)modelCustomPropertyMapper{
+    EXDepthSet *depthSet;
+    return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
+            @{
+              @keypath(depthSet, asks): @"asks",
+               @keypath(depthSet, bids): @"bids",
                }];
 }
 
@@ -43,12 +71,12 @@
     NSMutableArray<NSDictionary *> *bidItems = [NSMutableArray array];
     
     for (NSArray<NSNumber *> *items in asks) {
-        NSDictionary *askItem = @{@"volume": items.firstObject, @"price": items.lastObject};
+        NSDictionary *askItem = @{@"volume": items.firstObject, @"price": items.lastObject, @"buy": @YES};
         [askItems addObject:askItem];
     }
     
     for (NSArray<NSNumber *> *items in bids) {
-        NSDictionary *bidItem = @{@"volume": items.firstObject, @"price": items.lastObject};
+        NSDictionary *bidItem = @{@"volume": items.firstObject, @"price": items.lastObject, @"buy": @NO};
         [bidItems addObject:bidItem];
     }
     dictionary[@"asks"] = asks;

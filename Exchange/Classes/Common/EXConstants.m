@@ -153,6 +153,10 @@ NSString *EXOKExErrorDescription(NSInteger code){
     return dictionary[@(code)];
 }
 
+NSString *EXProductID(NSString *domain, NSString *symbol){
+    return fmts(@"%@_%@", domain, symbol);
+}
+
 NSNotificationName EXExchangeDidDoubleClickTabBarItemNotification = @"EXExchangeDidDoubleClickTabBarItemNotification";
 
 @implementation EXConstants

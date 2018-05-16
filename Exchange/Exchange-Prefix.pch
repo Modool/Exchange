@@ -16,6 +16,7 @@
 #import <CategoryKit/CategoryKit.h>
 #import <SocketRocket/SocketRocket.h>
 #import <ReactiveObjC/ReactiveObjC.h>
+#import <MDObjectDatabase/MDObjectDatabase.h>
 #import <MDQueueObject/MDQueueObject.h>
 #import <MDTransitioning/MDTransitioning.h>
 #import <SVPullToRefresh/SVPullToRefresh.h>
@@ -38,9 +39,11 @@
 #import "RACSignal+RACSubscribe.h"
 #import "RACCommand+RACMap.h"
 
+#import "NSString+EXAdditions.h"
 #import "UIColor+EXAdditions.h"
 #import "NSDictionary+EXAdditions.h"
 #import "MBProgressHUD+EXAdditions.h"
+#import "MDDConditionSet+EXAdditions.h"
 #import "ACArchiverCenter+EXDefault.h"
 
 #import "RACNavigationControllerStack.h"

@@ -145,23 +145,23 @@
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.amountLabel, text) = [[RACObserve(viewModel, amount) map:^id(NSNumber *value) {
-        return fmts(@"委托数量 %.4f %@", value.doubleValue, viewModel.from.uppercaseString);
+        return fmts(@"委托数量 %.4f %@", value.doubleValue, viewModel.name.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.dealAmountLabel, text) = [[RACObserve(viewModel, dealAmount) map:^id(NSNumber *value) {
-        return fmts(@"成交数量 %.4f %@", value.doubleValue, viewModel.from.uppercaseString);
+        return fmts(@"成交数量 %.4f %@", value.doubleValue, viewModel.name.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.priceLabel, text) = [[RACObserve(viewModel, price) map:^id(NSNumber *value) {
-        return fmts(@"委托价格 %.8f %@/%@", value.doubleValue, viewModel.from.uppercaseString, viewModel.to.uppercaseString);
+        return fmts(@"委托价格 %.8f %@/%@", value.doubleValue, viewModel.name.uppercaseString, viewModel.name.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.averagePriceLabel, text) = [[RACObserve(viewModel, averagePrice) map:^id(NSNumber *value) {
-        return fmts(@"成交均价 %.8f %@/%@", value.doubleValue, viewModel.from.uppercaseString, viewModel.to.uppercaseString);
+        return fmts(@"成交均价 %.8f %@/%@", value.doubleValue, viewModel.name.uppercaseString, viewModel.name.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.dealPriceLabel, text) = [[RACObserve(viewModel, dealPrice) map:^id(NSNumber *value) {
-        return fmts(@"成交均价 %.8f %@", value.doubleValue, viewModel.to.uppercaseString);
+        return fmts(@"成交均价 %.8f %@", value.doubleValue, viewModel.basic.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
     
     RAC(self.statusLabel, text) = [[RACObserve(viewModel, status) map:^id(NSNumber *value) {

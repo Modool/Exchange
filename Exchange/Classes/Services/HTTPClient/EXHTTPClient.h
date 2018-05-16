@@ -27,10 +27,10 @@ EX_EXTERN NSString * EXQueryStringFromParameters(NSDictionary *parameters, NSArr
 
 @protocol EXHTTPClientDepth <NSObject>
 
-// result: EXDepth
+// result: EXDepthSet
 - (RACSignal *)fetchDepthWithSymbol:(NSString *)symbol;
 
-// result: EXDepth
+// result: EXDepthSet
 - (RACSignal *)fetchDepthWithSymbol:(NSString *)symbol size:(NSUInteger /* 200 */)size;
 
 @end

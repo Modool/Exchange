@@ -11,6 +11,7 @@
 @interface EXBalance ()
 
 @property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
 
 @property (nonatomic, assign) double borrow;
 

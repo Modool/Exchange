@@ -22,4 +22,10 @@
 
 - (NSString *)encodeHmacWithAlgorithm:(CCHmacAlgorithm)algorithm secretKey:(NSString *)secretKey uppercase:(BOOL)uppercase;
 
++ (NSString *)stringFromDoubleValue:(double)doubleValue;
+
++ (NSString *)stringFromNumber:(NSNumber *)number;
++ (NSString *)stringFromNumber:(NSNumber *)number maximumFractionDigits:(NSUInteger)maximumFractionDigits;
++ (NSString *)stringFromNumber:(NSNumber *)number numberStyle:(NSNumberFormatterStyle)numberStyle maximumFractionDigits:(NSUInteger)maximumFractionDigits;
+
 @end

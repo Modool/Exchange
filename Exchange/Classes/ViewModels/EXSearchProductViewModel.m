@@ -11,6 +11,7 @@
 #import "EXProductBriefItemViewModel.h"
 
 #import "EXProductManager.h"
+#import "EXExchange.h"
 
 @interface EXSearchProductViewModel ()
 
@@ -70,22 +71,23 @@
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
     NSString *keyword = self.keyword;
+    NSString *domain = self.exchange.domain;
     if (!keyword.length) return [RACSignal return:nil];
     
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXProduct *> *products = [accessor productsWithKeyword:keyword page:page size:self.perPage];
+            NSArray<EXProduct *> *products = [accessor productsByExchange:domain keyword:keyword page:page size:self.perPage];
             [[[RACSignal return:products] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];
     }] replayLazily] setNameWithFormat:RACSignalDefaultNameFormat];
 }
 
 - (RACSignal *)collectSignalWithViewModel:(EXProductBriefItemViewModel *)viewModel collect:(BOOL)collect{
-    NSString *symbol = viewModel.product.symbol;
+    EXProduct *product = viewModel.product;
     
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            BOOL state = collect ? [accessor collectProductWithSymbol:symbol] : [accessor descollectProductWithSymbol:symbol];
+            BOOL state = [accessor updateProductByID:product.objectID collected:collect];
             RACSignal *signal = nil;
             if (state) signal = [RACSignal return:viewModel];
             else signal = [RACSignal error:[NSError errorWithDomain:EXExchangeErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"操作失败"}]];

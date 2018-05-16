@@ -82,9 +82,10 @@
 }
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
+    NSString *domain = self.exchange.domain;
     return [[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXBalance *> *balances = [accessor balances];
+            NSArray<EXBalance *> *balances = [accessor balancesByExchange:domain];
             
             [[[RACSignal return:balances] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];

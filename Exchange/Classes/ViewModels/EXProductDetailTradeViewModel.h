@@ -9,11 +9,11 @@
 #import "RACViewModel.h"
 #import "EXProduct.h"
 #import "EXExchange.h"
-#import "EXTrade.h"
+#import "EXTradeSet.h"
 
 @interface EXProductDetailTradeViewModel : RACViewModel
 
-@property (nonatomic, copy) NSArray<EXTrade *> *buyTrades;
-@property (nonatomic, copy) NSArray<EXTrade *> *sellTrades;
+@property (nonatomic, copy) NSArray<EXTradeSet *> *buyTrades;
+@property (nonatomic, copy) NSArray<EXTradeSet *> *sellTrades;
 
 @end

@@ -47,8 +47,8 @@
     
     RAC(self.selectedLayer, hidden) = [[RACObserve(viewModel, collected) not] takeUntil:self.rac_prepareForReuseSignal];
     
-    RAC(self.textLabel, text) = [[RACSignal combineLatest:@[RACObserve(viewModel, from), RACObserve(viewModel, to)] reduce:^id(NSString *from, NSString *to){
-        return fmts(@"%@/%@", from.uppercaseString, to.uppercaseString);
+    RAC(self.textLabel, text) = [[RACSignal combineLatest:@[RACObserve(viewModel, name), RACObserve(viewModel, basic)] reduce:^id(NSString *name, NSString *basic){
+        return fmts(@"%@/%@", name.uppercaseString, basic.uppercaseString);
     }] takeUntil:self.rac_prepareForReuseSignal];
 }
 

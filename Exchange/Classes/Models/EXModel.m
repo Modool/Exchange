@@ -64,9 +64,12 @@
     
     while (classInfo.cls != EXModel.class) {
         NSDictionary<NSString *, YYClassPropertyInfo *> *propertyInfos = classInfo.propertyInfos;
-        NSDictionary<NSString *, NSString *> *classProperties = [NSDictionary dictionaryWithObjects:propertyInfos.allKeys forKeys:propertyInfos.allKeys];
-        [properties addEntriesFromDictionary:classProperties];
-        
+        for (NSString *name in propertyInfos.allKeys) {
+            YYClassPropertyInfo *info = propertyInfos[name];
+            if (!info.setter) continue;
+            
+            properties[name] = name;
+        }
         classInfo = classInfo.superClassInfo;
         
         if (classInfo.cls == EXModel.class) {

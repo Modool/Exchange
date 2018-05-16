@@ -10,8 +10,9 @@
 
 @protocol EXLoaderItem <NSObject>
 
-@optional
+@property (strong, nonatomic, readonly) dispatch_queue_t queue;
 
+@optional
 - (void)reload;
 
 - (void)install;

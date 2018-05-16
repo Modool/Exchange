@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong, readonly) UITableView *tableView;
 
-@property (nonatomic, strong) NSArray<EXTrade *> *trades;
+@property (nonatomic, copy) NSArray<EXTradeSet *> *trades;
 
 @end
 
@@ -36,7 +36,7 @@
     return self;
 }
 
-- (void)setTrades:(NSArray<EXTrade *> *)trades{
+- (void)setTrades:(NSArray<EXTradeSet *> *)trades{
     if (_trades != trades) {
         _trades = trades;
         
@@ -47,7 +47,7 @@
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.trades.count;
+    return MIN(self.trades.count, 10);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -58,9 +58,16 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:EXClassName(UITableViewCell)];
     if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:EXClassName(UITableViewCell)];
     
-    EXTrade *trade = self.trades[indexPath.row];
-    cell.textLabel.text = fmts(@"%.8f", trade.price);
-    cell.detailTextLabel.text = fmts(@"%.8f", trade.amount);
+    NSUInteger count = self.trades.count;
+    EXTradeSet *trade = self.trades[count - indexPath.row - 1];
+    UIColor *textColor = trade.buy ? [UIColor colorWithRed:0.24 green:0.65 blue:0.35 alpha:1.00] : [UIColor colorWithRed:0.90 green:0.27 blue:0.26 alpha:1.00];
+    
+    cell.textLabel.textColor = textColor;
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.text = [NSString stringFromDoubleValue:trade.price];
+    
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
+    cell.detailTextLabel.text = [NSString stringFromDoubleValue:trade.amount];
     
     return cell;
 }
@@ -105,7 +112,7 @@
         make.right.equalTo(self.mas_centerX);
     }];
     
-    [self.buyContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.sellContentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(self);
         make.left.equalTo(self.mas_centerX);
     }];

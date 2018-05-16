@@ -27,7 +27,7 @@
 
 @interface EXLoader : EXDelegatesAccessor
 
-@property (nonatomic, copy, readonly) NSArray<MDQueueObject<EXLoaderItem> *> *items;
+@property (nonatomic, copy, readonly) NSArray<EXLoaderItem> *items;
 
 @property (nonatomic, strong, readonly) MDMulticastDelegate<EXLoaderDelegate> *delegates;
 

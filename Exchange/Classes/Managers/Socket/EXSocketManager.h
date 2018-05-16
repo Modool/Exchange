@@ -50,6 +50,8 @@
 
 @interface EXSocketManager : EXDelegatesAccessor
 
+@property (nonatomic, strong, readonly) EXExchange *exchange;
+
 + (void)async:(void (^)(EXDelegatesAccessor<EXSocketManager> *accessor))block;
 + (void)sync:(void (^)(EXDelegatesAccessor<EXSocketManager> *accessor))block;
 

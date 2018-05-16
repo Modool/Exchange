@@ -11,12 +11,25 @@
 
 @implementation EXBalance
 
++ (NSDictionary *)modelCustomPropertyMapper{
+    EXBalance *balance;
+    return [[self modelCustomPropertyMapper] dictionaryByAddingDictionary:
+            @{
+              @keypath(balance, objectID): @"id",
+               @keypath(balance, exchangeDomain): @"exchange_domain",
+               }];
+}
+
 - (double)all{
     return _free + _freezed + _borrow;
 }
 
 - (BOOL)isZero{
     return self.all == 0;
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

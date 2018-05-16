@@ -11,6 +11,10 @@
 
 @interface EXAccountRecord : EXModel
 
+@property (nonatomic, copy, readonly) NSString *productID;
+@property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
+
 // 地址
 @property (nonatomic, copy, readonly) NSString *address;
 

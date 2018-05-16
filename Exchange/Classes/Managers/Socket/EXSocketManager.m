@@ -90,12 +90,12 @@
     EXChannelString channelName = [[NSString alloc] initWithFormat:format arguments:arguments];
     
     va_end(arguments);
-    
     return [self addChannelWithName:channelName];
 }
 
 - (BOOL)addChannelWithName:(EXChannelString)name;{
     if ([self.channels containsObject:name]) return NO;
+    
     [[self channels] addObject:name];
     return [self _sendToAddChannel:name];
 }

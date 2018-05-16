@@ -12,7 +12,7 @@
 
 @interface EXLoader ()
 
-@property (nonatomic, copy) NSArray<MDQueueObject<EXLoaderItem> *> *items;
+@property (nonatomic, copy) NSArray<EXLoaderItem> *items;
 
 @end
 
@@ -21,9 +21,9 @@
 
 #pragma mark - accessor
 
-- (NSArray<MDQueueObject<EXLoaderItem> *> *)items{
+- (NSArray<EXLoaderItem> *)items{
     if (!_items) {
-        _items = @[];
+        _items = [NSArray<EXLoaderItem> array];
     }
     return _items;
 }
@@ -139,24 +139,24 @@
     }
 }
 
-- (BOOL)_addItem:(MDQueueObject<EXLoaderItem> *)item;{
+- (BOOL)_addItem:(id<EXLoaderItem>)item;{
     NSParameterAssertReturnFalse(item);
     NSParameterAssertReturnFalse(![[self items] containsObject:item]);
     
     [self addDelegate:item delegateQueue:[item queue]];
     
-    self.items = [[self items] arrayByAddingObject:item];
+    self.items = (id)[[self items] arrayByAddingObject:item];
     
     return YES;
 }
 
-- (BOOL)_removeItem:(MDQueueObject<EXLoaderItem> *)item;{
+- (BOOL)_removeItem:(id<EXLoaderItem>)item;{
     NSParameterAssertReturnFalse(item);
     NSParameterAssertReturnFalse([[self items] containsObject:item]);
     
     [self removeDelegate:item delegateQueue:[item queue]];
     
-    self.items = [[self items] arrayByRemovingObject:item];
+    self.items = (id)[[self items] arrayByRemovingObject:item];
     
     return YES;
 }

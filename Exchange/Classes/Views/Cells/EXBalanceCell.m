@@ -25,14 +25,10 @@
         return [value uppercaseString];
     }] takeUntil:self.rac_prepareForReuseSignal];
     RAC(self.detailTextLabel, attributedText) = [[RACSignal combineLatest:@[RACObserve(viewModel, free), RACObserve(viewModel, freezed)] reduce:^id(NSNumber *free, NSNumber *freezed){
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        formatter.maximumFractionDigits = 8;
-        formatter.numberStyle = NSNumberFormatterDecimalStyle;
-        
-        NSString *prefix = [formatter stringFromNumber:free];
+        NSString *prefix = [NSString stringFromNumber:free];
         if (freezed.doubleValue == 0) return [[NSAttributedString alloc] initWithString:prefix];
             
-        NSString *sufix = [formatter stringFromNumber:freezed];
+        NSString *sufix = [NSString stringFromNumber:freezed];
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:fmts(@"%@ / %@", prefix, sufix)];
         [attributedString addAttribute:NSStrikethroughColorAttributeName value:[UIColor redColor] range:NSMakeRange(prefix.length + 3, sufix.length)];
         [attributedString addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlineStyleSingle|NSUnderlinePatternSolid) range:NSMakeRange(prefix.length + 3, sufix.length)];

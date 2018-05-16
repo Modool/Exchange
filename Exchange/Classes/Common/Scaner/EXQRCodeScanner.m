@@ -29,7 +29,9 @@
         _sessionPreset = sessionPreset;
         _metadataObjectTypes = metadataObjectTypes;
         
+#if !TARGET_OS_SIMULATOR
         [self initialize];
+#endif
     }
     return self;
 }
@@ -49,9 +51,7 @@
     
     [_session addOutput:_videoDataOutput];
     [_session addOutput:_metadataOutput];
-#if !TARGET_OS_SIMULATOR
     [_session addInput:_deviceInput];
-#endif
     
     NSSet<AVMetadataObjectType> *availableTypes = [NSSet setWithArray:[_metadataOutput availableMetadataObjectTypes]];
     NSMutableSet<AVMetadataObjectType> *types = [NSMutableSet setWithArray:_metadataObjectTypes];
@@ -100,7 +100,10 @@
     
     _videoPreviewLayer.frame = view.bounds;
     [_videoPreviewLayer removeFromSuperlayer];
+    
+#if !TARGET_OS_SIMULATOR
     [view.layer addSublayer:_videoPreviewLayer];
+#endif
     
     if (!_session.isRunning && immediately) [_session startRunning];
 }

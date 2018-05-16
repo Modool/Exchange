@@ -11,8 +11,9 @@
 @interface EXOrder ()
 
 @property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
 
-@property (nonatomic, copy) EXTradeTypeString typeString;
+@property (nonatomic, assign) EXTradeType type;
 
 @property (nonatomic, assign) double amount;
 
@@ -35,10 +36,11 @@
     EXOrder *order;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(order, symbol): @"symbol",
+              @keypath(order, objectID): @[@"id", @"objectID", @"order_id", @"orderId"],
+               @keypath(order, exchangeDomain): @"exchange_domain",
+               @keypath(order, symbol): @"symbol",
                @keypath(order, status): @"status",
-               @keypath(order, objectID): @[@"order_id", @"orderId"],
-               @keypath(order, typeString): @[@"type", @"tradeType"],
+               @keypath(order, type): @[@"type", @"tradeType"],
                @keypath(order, amount): @[@"amount", @"tradeAmount"],
                @keypath(order, dealAmount): @[@"deal_amount", @"completedTradeAmount"],
                @keypath(order, price): @[@"price", @"tradePrice"],
@@ -48,12 +50,13 @@
                }];
 }
 
-- (void)setTypeString:(EXTradeTypeString)typeString{
-    if (_typeString != typeString) {
-        _typeString = typeString;
-        
-        _type = EXTradeTypeFromString(typeString);
-    }
+- (NSDictionary *)modelCustomWillTransformFromDictionary:(NSDictionary *)dic{
+    NSMutableDictionary *dictinoary = dic.mutableCopy;
+    EXTradeTypeString typeString = dictinoary[@"type"] ?: dictinoary[@"tradeType"];
+    
+    dictinoary[@"type"] = @(EXTradeTypeFromString(typeString));
+    
+    return dictinoary;
 }
 
 - (BOOL)buy{
@@ -69,9 +72,13 @@
         _symbol = symbol;
         
         NSArray *components = [symbol componentsSeparatedByString:@"_"];
-        _from = components.firstObject;
-        _to = components.lastObject;
+        _name = components.firstObject;
+        _basic = components.lastObject;
     }
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

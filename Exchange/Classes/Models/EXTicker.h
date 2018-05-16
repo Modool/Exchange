@@ -10,6 +10,10 @@
 
 @interface EXTicker : EXModel
 
+@property (nonatomic, copy, readonly) NSString *productID;
+@property (nonatomic, copy, readonly) NSString *symbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
+
 // 开盘价
 @property (nonatomic, assign, readonly) double openPrice;
 

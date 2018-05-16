@@ -27,15 +27,17 @@
     [super initialize];
     
     @weakify(self);
-    [[[self rac_signalForSelector:@selector(productManager:symbol:didCollectProduct:)] reduceEach:^id(id x, NSString *symbol, EXProduct *product){
+    [[self rac_signalForSelector:@selector(productManager:didUpdateProduct:collected:)] subscribeNext:^(RACTuple *tuple) {
+        RACTupleUnpack(id x, EXProduct *product, NSNumber *collected) = tuple;
         @strongify(self);
-        return [self viewModelWithProduct:product];
-    }] subscribeToCommand:self.insertCommand];
-    
-    [[[self rac_signalForSelector:@selector(productManager:symbol:didDescollectProduct:)] reduceEach:^id(id x, NSString *symbol, EXProduct *product){
-        @strongify(self);
-        return RACTuplePack([self viewModelOfProduct:product], @(UITableViewRowAnimationFade));
-    }] subscribeToCommand:self.deleteCommand];
+        if (collected.boolValue) {
+            EXProductItemViewModel *viewModel = [self viewModelWithProduct:product];
+            [self.insertCommand execute:viewModel];
+        } else {
+            EXProductItemViewModel *viewModel = [self viewModelOfProduct:product];
+            [self.deleteCommand execute:RACTuplePack(viewModel, @(UITableViewRowAnimationFade))];
+        }
+    }];
     
     [self _registerDelegate];
     [[self rac_willDeallocSignal] subscribeToTarget:self performSelector:@selector(_deregisterDelegate)];

@@ -239,13 +239,13 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    id<RACTableSection> tableSection = self.viewModel.dataSource[section];
+    RACTableSection<RACTableSection> *tableSection = self.viewModel.dataSource[section];
     
     return [tableSection header];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    id<RACTableSection> tableSection = self.viewModel.dataSource[section];
+    RACTableSection<RACTableSection> *tableSection = self.viewModel.dataSource[section];
     if (!tableSection || ![tableSection headerViewClass]) return nil;
     
     UITableViewHeaderFooterView<RACView> *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([tableSection headerViewClass])];
@@ -257,7 +257,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    id<RACTableSection> tableSection = self.viewModel.dataSource[section];
+    RACTableSection<RACTableSection> *tableSection = self.viewModel.dataSource[section];
     
     return [tableSection footerHeight] > 0 ? [tableSection footerHeight] : 0.5f;
 }
@@ -269,7 +269,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    id<RACTableSection> tableSection = self.viewModel.dataSource[section];
+    RACTableSection<RACTableSection> *tableSection = self.viewModel.dataSource[section];
     if (!tableSection || ![tableSection footerViewClass]) return nil;
     
     UITableViewHeaderFooterView<RACView> *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([tableSection footerViewClass])];

@@ -54,7 +54,7 @@
     [super viewDidLoad];
     
     if (@available(iOS 11, *)) {
-        self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+        self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAlways;
     } else {
         self.automaticallyAdjustsScrollViewInsets = YES;
     }
@@ -69,23 +69,21 @@
     
     [self.tickerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(self.scrollView);
-        make.width.equalTo(self.scrollView);
+        make.width.equalTo(self.view);
         make.height.mas_equalTo(100);
     }];
     
     [self.tradeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.scrollView);
         make.top.equalTo(self.tickerView.mas_bottom);
-        
-        make.width.equalTo(self.scrollView);
+        make.width.equalTo(self.view);
         make.height.mas_equalTo(300);
     }];
     
     [self.depthView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.scrollView);
         make.top.equalTo(self.tradeView.mas_bottom);
-        
-        make.width.equalTo(self.scrollView);
+        make.width.equalTo(self.view);
         make.height.mas_equalTo(300);
     }];
 }

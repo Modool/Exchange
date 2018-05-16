@@ -19,7 +19,7 @@
     size = MIN(200, size);
     size = MAX(1, size);
     
-    return [self GET:@"/api/v1/depth.do" parameters:@{@"symbol": ntoe(symbol), @"size": @(size)} resultClass:[EXDepth class] keyPath:nil];
+    return [self GET:@"/api/v1/depth.do" parameters:@{@"symbol": ntoe(symbol), @"size": @(size)} resultClass:[EXDepthSet class] keyPath:nil];
 }
 
 @end

@@ -36,16 +36,10 @@
         _product = product;
         _exchange = exchange;
         
-        _ticker = product.ticker;
+//        _ticker = product.ticker;
         _client = exchange.client;
+        _collected = product.collected;
         _symbolAttributedString = [self symbolAttributedStringWithProduct:product];
-        
-        __block BOOL collected = NO;
-        [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            collected = [accessor isCollectedProductForSymbol:product.symbol];
-        }];
-        
-        _collected = collected;
         
         [self initialize];
     }
@@ -65,13 +59,13 @@
 
 - (void)_registerDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor addDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
 - (void)_deregisterDelegate{
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forSymbol:self.product.symbol];
+        [accessor removeDelegate:self delegateQueue:dispatch_get_main_queue() forProductID:self.product.objectID];
     }];
 }
 
@@ -92,19 +86,11 @@
     
 }
 
-- (NSString *)formatDoubleStringWithValue:(double)value{
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    formatter.maximumFractionDigits = 8;
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
-    
-    return [formatter stringFromNumber:@(value)];
-}
-
 - (NSAttributedString *)symbolAttributedStringWithProduct:(EXProduct *)product{
-    NSString *symbol = fmts(@"%@/%@", product.from.uppercaseString, product.to.uppercaseString);
+    NSString *symbol = fmts(@"%@/%@", product.name.uppercaseString, product.basic.uppercaseString);
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:symbol];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(product.from.length, product.to.length + 1)];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(product.from.length, product.to.length + 1)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(product.name.length, product.basic.length + 1)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(product.name.length, product.basic.length + 1)];
     
     return attributedString.copy;
 }
@@ -114,13 +100,13 @@
     
     __block double rate = 0;
     [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-        rate = [accessor rateFromSymbol:product.from toSymbol:product.to exchange:exchange];
+        rate = [accessor rateByExchange:product.exchangeDomain name:product.name basic:product.basic];
     }];
     if (rate == 0) return nil;
     
     double legalRendePrice = rate * ticker.lastestPrice;
     NSString *typeString = EXExchangeRateTypeString(exchange.rateType);
-    NSString *string = fmts(@"%@ %@", [self formatDoubleStringWithValue:legalRendePrice], typeString);
+    NSString *string = fmts(@"%@ %@", [NSString stringFromDoubleValue:legalRendePrice], typeString);
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string];
     [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:9] range:NSMakeRange(string.length - typeString.length, typeString.length)];
     
@@ -130,10 +116,10 @@
 - (NSAttributedString *)priceAttributedStringWithProduct:(EXProduct *)product ticker:(EXTicker *)ticker{
     if (ticker.lastestPrice <= 0) return nil;
     
-    NSString *quote = product.to;
-    NSString *string = fmts(@"%@ %@", [self formatDoubleStringWithValue:ticker.lastestPrice], quote.uppercaseString);
+    NSString *basic = product.basic;
+    NSString *string = fmts(@"%@ %@", [NSString stringFromDoubleValue:ticker.lastestPrice], basic.uppercaseString);
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:11] range:NSMakeRange(string.length - quote.length, quote.length)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:11] range:NSMakeRange(string.length - basic.length, basic.length)];
     
     return attributedString.copy;
 }

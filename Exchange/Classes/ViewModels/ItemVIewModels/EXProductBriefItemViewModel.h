@@ -13,9 +13,9 @@
 
 @property (nonatomic, strong, readonly) EXProduct *product;
 
-@property (nonatomic, copy, readonly) NSString *from;
+@property (nonatomic, copy, readonly) NSString *name;
 
-@property (nonatomic, copy, readonly) NSString *to;
+@property (nonatomic, copy, readonly) NSString *basic;
 
 @property (nonatomic, assign) BOOL collected;
 

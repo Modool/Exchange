@@ -10,6 +10,9 @@
 
 @interface EXAccountRecord ()
 
+@property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
+
 @property (nonatomic, copy) NSString *address;
 
 @property (nonatomic, copy) NSString *account;
@@ -35,7 +38,9 @@
     EXAccountRecord *record;
     return [[super modelCustomPropertyMapper] dictionaryByAddingDictionary:
             @{
-              @keypath(record, address): @"addr",
+              @keypath(record, exchangeDomain): @"exchange_domain",
+               @keypath(record, symbol): @"symbol",
+               @keypath(record, address): @"addr",
                @keypath(record, account): @"account",
                @keypath(record, bank): @"bank",
                @keypath(record, benificiaryAddress): @"benificiary_addr",
@@ -45,6 +50,10 @@
                @keypath(record, time): @"date",
                @keypath(record, status): @"status",
                }];
+}
+
+- (NSString *)productID{
+    return EXProductID(self.exchangeDomain, self.symbol);
 }
 
 @end

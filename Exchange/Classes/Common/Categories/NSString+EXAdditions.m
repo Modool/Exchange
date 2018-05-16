@@ -1,4 +1,3 @@
-
 //
 //  NSString+EXAdditions.m
 //  Exchange
@@ -7,7 +6,6 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-#import <CommonCrypto/CommonCrypto.h>
 #import "NSString+EXAdditions.h"
 
 @implementation NSString (EXAdditions)
@@ -65,6 +63,27 @@
     free(buffer);
     
     return uppercase ? [hash uppercaseString] :[hash lowercaseString];
+}
+
++ (NSString *)stringFromDoubleValue:(double)doubleValue;{
+    return [self stringFromNumber:@(doubleValue) numberStyle:NSNumberFormatterDecimalStyle maximumFractionDigits:8];
+}
+
++ (NSString *)stringFromNumber:(NSNumber *)number{
+    return [[[NSNumberFormatter alloc] init] stringFromNumber:number];
+}
+
++ (NSString *)stringFromNumber:(NSNumber *)number maximumFractionDigits:(NSUInteger)maximumFractionDigits;{
+    return [self stringFromNumber:number numberStyle:NSNumberFormatterDecimalStyle maximumFractionDigits:maximumFractionDigits];
+}
+
++ (NSString *)stringFromNumber:(NSNumber *)number numberStyle:(NSNumberFormatterStyle)numberStyle maximumFractionDigits:(NSUInteger)maximumFractionDigits;{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    
+    formatter.numberStyle = numberStyle;
+    formatter.maximumFractionDigits = maximumFractionDigits;
+    
+    return [formatter stringFromNumber:number];
 }
 
 @end

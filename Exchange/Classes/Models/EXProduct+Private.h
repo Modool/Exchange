@@ -17,17 +17,12 @@
 @interface EXProduct ()
 
 @property (nonatomic, copy) NSString *symbol;
+@property (nonatomic, copy) NSString *exchangeDomain;
 
 @property (nonatomic, assign) double minimumUnit;
 
 @property (nonatomic, assign) double precision;
 
-@property (nonatomic, strong) EXTicker *ticker;
-
-@property (nonatomic, strong) EXDepth *depth;
-
-@property (nonatomic, copy) NSArray<EXTrade *> *trades;
-
-@property (nonatomic, copy) NSArray<EXKLineMetadata *> *lines;
+@property (nonatomic, assign) BOOL collected;
 
 @end

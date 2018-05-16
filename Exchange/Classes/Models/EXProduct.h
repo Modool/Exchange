@@ -8,25 +8,20 @@
 
 #import "EXModel.h"
 
-@class EXExchange, EXTicker, EXDepth, EXBalance, EXTrade, EXOrder, EXKLineMetadata;
+@class EXExchange, EXTicker, EXDepth, EXBalance, EXTradeSet, EXOrder, EXKLineMetadata;
 @interface EXProduct : EXModel
 
-@property (nonatomic, copy, readonly) NSString *from;
-@property (nonatomic, copy, readonly) NSString *to;
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *basic;
 @property (nonatomic, copy, readonly) NSString *symbol;
 @property (nonatomic, copy, readonly) NSString *normalizedSymbol;
+@property (nonatomic, copy, readonly) NSString *exchangeDomain;
 
 @property (nonatomic, assign, readonly) double minimumUnit;
 
 @property (nonatomic, assign, readonly) double precision;
 
-@property (nonatomic, strong, readonly) EXTicker *ticker;
-
-@property (nonatomic, strong, readonly) EXDepth *depth;
-
-@property (nonatomic, copy, readonly) NSArray<EXTrade *> *trades;
-
-@property (nonatomic, copy, readonly) NSArray<EXKLineMetadata *> *lines;
+@property (nonatomic, assign, readonly) BOOL collected;
 
 - (NSComparisonResult)compare:(EXProduct *)product;
 
