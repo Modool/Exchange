@@ -11,20 +11,15 @@
 
 @interface EXTradeSet : EXModel
 
-@property (nonatomic, assign, readonly) BOOL buy;
+@property (nonatomic, assign) BOOL buy;
 
-@property (nonatomic, assign, readonly) double price;
+@property (nonatomic, assign) double price;
 
-@property (nonatomic, assign, readonly) double amount;
+@property (nonatomic, assign) double amount;
 
-@property (nonatomic, assign, readonly) NSUInteger count;
+@property (nonatomic, assign) NSUInteger count;
 
-@property (nonatomic, copy) NSArray<EXTrade *> *trades;
-
-+ (instancetype)setWithPrice:(double)price buy:(BOOL)buy;
-+ (instancetype)setWithPrice:(double)price buy:(BOOL)buy trades:(NSArray<EXTrade *> *)trades;
-
-- (instancetype)initWithPrice:(double)price buy:(BOOL)buy;
-- (instancetype)initWithPrice:(double)price buy:(BOOL)buy trades:(NSArray<EXTrade *> *)trades;
++ (instancetype)setWithPrice:(double)price buy:(BOOL)buy amount:(double)amount count:(NSUInteger)count;
+- (instancetype)initWithPrice:(double)price buy:(BOOL)buy amount:(double)amount count:(NSUInteger)count;
 
 @end

@@ -8,15 +8,22 @@
 
 #import "EXOperation.h"
 
-@interface EXOperation ()
+@class EXOperationQueue;
+@interface EXOperation (){
+    void *_queueTag;
+    
+    NSString *_name;
+    dispatch_queue_t _queue;
+    
+    BOOL _concurrent;
+    BOOL _executing;
+    BOOL _finished;
+    BOOL _cancelled;
+    void (^_block)(EXOperation *operation);
+}
 
-@property (nonatomic, assign, getter=isConcurrent) BOOL concurrent;
-
-@property (nonatomic, copy) void (^block)(EXOperation *operation);
-
-@end
-
-@interface EXOperation (Private)
+- (void)_async:(dispatch_block_t)block;
+- (void)_sync:(dispatch_block_t)block;
 
 - (void)main;
 - (void)run;

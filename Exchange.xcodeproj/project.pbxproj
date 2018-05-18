@@ -134,11 +134,17 @@
 		08B35C7D209C340C007B83DF /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B35C7C209C340C007B83DF /* NetworkExtension.framework */; };
 		08B35C81209C3459007B83DF /* EXVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C80209C3459007B83DF /* EXVPNManager.m */; };
 		08B35C85209C34B0007B83DF /* EXVPNManager+EXLoaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C84209C34B0007B83DF /* EXVPNManager+EXLoaderItem.m */; };
-		08B35C9C209C4940007B83DF /* EXProductDetailTradeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C99209C4940007B83DF /* EXProductDetailTradeViewModel.m */; };
-		08B35C9D209C4940007B83DF /* EXProductDetailDepthViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C9B209C4940007B83DF /* EXProductDetailDepthViewModel.m */; };
-		08B35CA2209C4956007B83DF /* EXProductDetailTradeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C9E209C4955007B83DF /* EXProductDetailTradeView.m */; };
-		08B35CA3209C4956007B83DF /* EXProductDetailDepthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35CA0209C4956007B83DF /* EXProductDetailDepthView.m */; };
-		08D0AD5520AC34340050EECF /* EXProductManager+Compat.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0AD5420AC34340050EECF /* EXProductManager+Compat.m */; };
+		08D0AD5520AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0AD5420AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m */; };
+		08D0AD9C20AD83B70050EECF /* EXCommissionViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0AD9B20AD83B70050EECF /* EXCommissionViewModel.m */; };
+		08D0ADA220AD85750050EECF /* EXTradeRecordsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADA120AD85750050EECF /* EXTradeRecordsViewModel.m */; };
+		08D0ADA820AD8AB40050EECF /* EXDepthSetViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADA720AD8AB40050EECF /* EXDepthSetViewModel.m */; };
+		08D0ADAB20AD8B180050EECF /* EXDepthChartViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADAA20AD8B180050EECF /* EXDepthChartViewModel.m */; };
+		08D0ADAE20AD8B4A0050EECF /* EXDepthChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADAD20AD8B4A0050EECF /* EXDepthChartViewController.m */; };
+		08D0ADB120AD8C530050EECF /* EXTradeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADB020AD8C530050EECF /* EXTradeCell.m */; };
+		08D0ADB420AD8CED0050EECF /* EXTradeItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADB320AD8CED0050EECF /* EXTradeItemViewModel.m */; };
+		08D0ADB720AD93CE0050EECF /* EXTradeRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADB620AD93CE0050EECF /* EXTradeRecordsViewController.m */; };
+		08D0ADBD20AD98FA0050EECF /* EXDepthItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADBC20AD98FA0050EECF /* EXDepthItemViewModel.m */; };
+		08D0ADC020AD990B0050EECF /* EXDepthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D0ADBF20AD990B0050EECF /* EXDepthCell.m */; };
 		08E38F1B2019E888008C88E6 /* EXExchangeManager+EXLoaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E38F1A2019E888008C88E6 /* EXExchangeManager+EXLoaderItem.m */; };
 		08EE33EC2015F1FC001B42FC /* EXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE33EB2015F1FC001B42FC /* EXModel.m */; };
 		08EE33F32015F34F001B42FC /* EXUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EE33F22015F34F001B42FC /* EXUtils.m */; };
@@ -492,17 +498,30 @@
 		08B35C82209C3480007B83DF /* EXVPNManager+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXVPNManager+Private.h"; sourceTree = "<group>"; };
 		08B35C83209C34B0007B83DF /* EXVPNManager+EXLoaderItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXVPNManager+EXLoaderItem.h"; sourceTree = "<group>"; };
 		08B35C84209C34B0007B83DF /* EXVPNManager+EXLoaderItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EXVPNManager+EXLoaderItem.m"; sourceTree = "<group>"; };
-		08B35C98209C4940007B83DF /* EXProductDetailDepthViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXProductDetailDepthViewModel.h; sourceTree = "<group>"; };
-		08B35C99209C4940007B83DF /* EXProductDetailTradeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXProductDetailTradeViewModel.m; sourceTree = "<group>"; };
-		08B35C9A209C4940007B83DF /* EXProductDetailTradeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXProductDetailTradeViewModel.h; sourceTree = "<group>"; };
-		08B35C9B209C4940007B83DF /* EXProductDetailDepthViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXProductDetailDepthViewModel.m; sourceTree = "<group>"; };
-		08B35C9E209C4955007B83DF /* EXProductDetailTradeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXProductDetailTradeView.m; sourceTree = "<group>"; };
-		08B35C9F209C4956007B83DF /* EXProductDetailDepthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXProductDetailDepthView.h; sourceTree = "<group>"; };
-		08B35CA0209C4956007B83DF /* EXProductDetailDepthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXProductDetailDepthView.m; sourceTree = "<group>"; };
-		08B35CA1209C4956007B83DF /* EXProductDetailTradeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXProductDetailTradeView.h; sourceTree = "<group>"; };
 		08C0B4072090902D00A01F70 /* EXProduct+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXProduct+Private.h"; sourceTree = "<group>"; };
-		08D0AD5320AC34340050EECF /* EXProductManager+Compat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXProductManager+Compat.h"; sourceTree = "<group>"; };
-		08D0AD5420AC34340050EECF /* EXProductManager+Compat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EXProductManager+Compat.m"; sourceTree = "<group>"; };
+		08D0AD5320AC34340050EECF /* EXProductManager+EXLoaderCompatItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXProductManager+EXLoaderCompatItem.h"; sourceTree = "<group>"; };
+		08D0AD5420AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EXProductManager+EXLoaderCompatItem.m"; sourceTree = "<group>"; };
+		08D0AD6620AD1E4F0050EECF /* EXOperationQueue+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXOperationQueue+Private.h"; sourceTree = "<group>"; };
+		08D0AD9A20AD83B70050EECF /* EXCommissionViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCommissionViewModel.h; sourceTree = "<group>"; };
+		08D0AD9B20AD83B70050EECF /* EXCommissionViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXCommissionViewModel.m; sourceTree = "<group>"; };
+		08D0ADA020AD85750050EECF /* EXTradeRecordsViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTradeRecordsViewModel.h; sourceTree = "<group>"; };
+		08D0ADA120AD85750050EECF /* EXTradeRecordsViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXTradeRecordsViewModel.m; sourceTree = "<group>"; };
+		08D0ADA620AD8AB40050EECF /* EXDepthSetViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXDepthSetViewModel.h; sourceTree = "<group>"; };
+		08D0ADA720AD8AB40050EECF /* EXDepthSetViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXDepthSetViewModel.m; sourceTree = "<group>"; };
+		08D0ADA920AD8B180050EECF /* EXDepthChartViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXDepthChartViewModel.h; sourceTree = "<group>"; };
+		08D0ADAA20AD8B180050EECF /* EXDepthChartViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXDepthChartViewModel.m; sourceTree = "<group>"; };
+		08D0ADAC20AD8B4A0050EECF /* EXDepthChartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXDepthChartViewController.h; sourceTree = "<group>"; };
+		08D0ADAD20AD8B4A0050EECF /* EXDepthChartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXDepthChartViewController.m; sourceTree = "<group>"; };
+		08D0ADAF20AD8C530050EECF /* EXTradeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTradeCell.h; sourceTree = "<group>"; };
+		08D0ADB020AD8C530050EECF /* EXTradeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXTradeCell.m; sourceTree = "<group>"; };
+		08D0ADB220AD8CED0050EECF /* EXTradeItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTradeItemViewModel.h; sourceTree = "<group>"; };
+		08D0ADB320AD8CED0050EECF /* EXTradeItemViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXTradeItemViewModel.m; sourceTree = "<group>"; };
+		08D0ADB520AD93CE0050EECF /* EXTradeRecordsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTradeRecordsViewController.h; sourceTree = "<group>"; };
+		08D0ADB620AD93CE0050EECF /* EXTradeRecordsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXTradeRecordsViewController.m; sourceTree = "<group>"; };
+		08D0ADBB20AD98FA0050EECF /* EXDepthItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXDepthItemViewModel.h; sourceTree = "<group>"; };
+		08D0ADBC20AD98FA0050EECF /* EXDepthItemViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXDepthItemViewModel.m; sourceTree = "<group>"; };
+		08D0ADBE20AD990B0050EECF /* EXDepthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXDepthCell.h; sourceTree = "<group>"; };
+		08D0ADBF20AD990B0050EECF /* EXDepthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXDepthCell.m; sourceTree = "<group>"; };
 		08E38F182019E7AB008C88E6 /* EXExchangeManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXExchangeManager+Private.h"; sourceTree = "<group>"; };
 		08E38F192019E888008C88E6 /* EXExchangeManager+EXLoaderItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXExchangeManager+EXLoaderItem.h"; sourceTree = "<group>"; };
 		08E38F1A2019E888008C88E6 /* EXExchangeManager+EXLoaderItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EXExchangeManager+EXLoaderItem.m"; sourceTree = "<group>"; };
@@ -690,10 +709,14 @@
 				0886C4F7209AA2CF005E6688 /* EXProductDetailViewModel.m */,
 				0886C524209AE414005E6688 /* EXProductDetailTickerViewModel.h */,
 				0886C525209AE414005E6688 /* EXProductDetailTickerViewModel.m */,
-				08B35C9A209C4940007B83DF /* EXProductDetailTradeViewModel.h */,
-				08B35C99209C4940007B83DF /* EXProductDetailTradeViewModel.m */,
-				08B35C98209C4940007B83DF /* EXProductDetailDepthViewModel.h */,
-				08B35C9B209C4940007B83DF /* EXProductDetailDepthViewModel.m */,
+				08D0ADA020AD85750050EECF /* EXTradeRecordsViewModel.h */,
+				08D0ADA120AD85750050EECF /* EXTradeRecordsViewModel.m */,
+				08D0AD9A20AD83B70050EECF /* EXCommissionViewModel.h */,
+				08D0AD9B20AD83B70050EECF /* EXCommissionViewModel.m */,
+				08D0ADA620AD8AB40050EECF /* EXDepthSetViewModel.h */,
+				08D0ADA720AD8AB40050EECF /* EXDepthSetViewModel.m */,
+				08D0ADA920AD8B180050EECF /* EXDepthChartViewModel.h */,
+				08D0ADAA20AD8B180050EECF /* EXDepthChartViewModel.m */,
 				0856E6A020A95BCF0063C2D5 /* EXImagePickerViewModel.h */,
 				0856E6A120A95BCF0063C2D5 /* EXImagePickerViewModel.m */,
 			);
@@ -715,10 +738,6 @@
 			children = (
 				0886C527209AED79005E6688 /* EXProductDetailTickerView.h */,
 				0886C528209AED79005E6688 /* EXProductDetailTickerView.m */,
-				08B35CA1209C4956007B83DF /* EXProductDetailTradeView.h */,
-				08B35C9E209C4955007B83DF /* EXProductDetailTradeView.m */,
-				08B35C9F209C4956007B83DF /* EXProductDetailDepthView.h */,
-				08B35CA0209C4956007B83DF /* EXProductDetailDepthView.m */,
 				0856E6BA20AABF740063C2D5 /* EXFPSLabel.h */,
 				0856E6BB20AABF740063C2D5 /* EXFPSLabel.m */,
 			);
@@ -752,6 +771,10 @@
 				0850095320949CF9009C2061 /* EXSearchProductViewController.m */,
 				0886C521209AE375005E6688 /* EXProductDetailViewController.h */,
 				0886C522209AE375005E6688 /* EXProductDetailViewController.m */,
+				08D0ADB520AD93CE0050EECF /* EXTradeRecordsViewController.h */,
+				08D0ADB620AD93CE0050EECF /* EXTradeRecordsViewController.m */,
+				08D0ADAC20AD8B4A0050EECF /* EXDepthChartViewController.h */,
+				08D0ADAD20AD8B4A0050EECF /* EXDepthChartViewController.m */,
 				0856E69D20A95B090063C2D5 /* EXImagePickerController.h */,
 				0856E69E20A95B090063C2D5 /* EXImagePickerController.m */,
 			);
@@ -839,8 +862,8 @@
 				085E3AE220ABD7DB00B0E645 /* EXProductManager+Private.m */,
 				085E3AE420ABD91A00B0E645 /* EXProductManager+Database.h */,
 				085E3AE520ABD91A00B0E645 /* EXProductManager+Database.m */,
-				08D0AD5320AC34340050EECF /* EXProductManager+Compat.h */,
-				08D0AD5420AC34340050EECF /* EXProductManager+Compat.m */,
+				08D0AD5320AC34340050EECF /* EXProductManager+EXLoaderCompatItem.h */,
+				08D0AD5420AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m */,
 				0853A504208F7B2400F8A04C /* EXProductManager+EXLoaderItem.h */,
 				0853A505208F7B2400F8A04C /* EXProductManager+EXLoaderItem.m */,
 				0853A5562090634700F8A04C /* EXProductManager+EXSocketManagerDelegate.h */,
@@ -962,6 +985,10 @@
 				085008E62092F58A009C2061 /* EXOrderItemViewModel.m */,
 				08500900209310AE009C2061 /* EXUnfinishedOrderItemViewModel.h */,
 				08500901209310AE009C2061 /* EXUnfinishedOrderItemViewModel.m */,
+				08D0ADB220AD8CED0050EECF /* EXTradeItemViewModel.h */,
+				08D0ADB320AD8CED0050EECF /* EXTradeItemViewModel.m */,
+				08D0ADBB20AD98FA0050EECF /* EXDepthItemViewModel.h */,
+				08D0ADBC20AD98FA0050EECF /* EXDepthItemViewModel.m */,
 			);
 			path = ItemVIewModels;
 			sourceTree = "<group>";
@@ -985,6 +1012,10 @@
 				085008F52092FAA1009C2061 /* EXOrderCell.m */,
 				085008FD20931070009C2061 /* EXUnfinishedOrderCell.h */,
 				085008FE20931070009C2061 /* EXUnfinishedOrderCell.m */,
+				08D0ADAF20AD8C530050EECF /* EXTradeCell.h */,
+				08D0ADB020AD8C530050EECF /* EXTradeCell.m */,
+				08D0ADBE20AD990B0050EECF /* EXDepthCell.h */,
+				08D0ADBF20AD990B0050EECF /* EXDepthCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1035,6 +1066,7 @@
 				089A72042019DB3100697439 /* EXOperation.m */,
 				089A72052019DB3100697439 /* EXOperationQueue.h */,
 				089A72062019DB3100697439 /* EXOperationQueue.m */,
+				08D0AD6620AD1E4F0050EECF /* EXOperationQueue+Private.h */,
 			);
 			path = "Operation Queue";
 			sourceTree = "<group>";
@@ -1450,6 +1482,7 @@
 				0886C529209AED79005E6688 /* EXProductDetailTickerView.m in Sources */,
 				089A72132019DB3100697439 /* EXOperation.m in Sources */,
 				08EE34222015FE22001B42FC /* RACTableViewModel.m in Sources */,
+				08D0ADB720AD93CE0050EECF /* EXTradeRecordsViewController.m in Sources */,
 				0856E6BC20AABF740063C2D5 /* EXFPSLabel.m in Sources */,
 				0853A50A208F866100F8A04C /* EXProductItemViewModel.m in Sources */,
 				0827912C2015DFE600D5EEE7 /* EXRootViewController.m in Sources */,
@@ -1459,6 +1492,7 @@
 				0853A471208E3C5700F8A04C /* EXBalance.m in Sources */,
 				08EE342B2015FE22001B42FC /* RACSignal+RACMap.m in Sources */,
 				0853A50D208F882A00F8A04C /* EXTimer.m in Sources */,
+				08D0ADAB20AD8B180050EECF /* EXDepthChartViewModel.m in Sources */,
 				0853A5582090634700F8A04C /* EXProductManager+EXSocketManagerDelegate.m in Sources */,
 				0853A503208F7AC800F8A04C /* EXProductManager.m in Sources */,
 				089A72202019E0D200697439 /* EXExchangeManager.m in Sources */,
@@ -1466,12 +1500,14 @@
 				089A72102019DB3100697439 /* EXCompatQueue.m in Sources */,
 				0850094E209493E0009C2061 /* EXSearchProductViewModel.m in Sources */,
 				0853A55220904C1900F8A04C /* EXSocketManager+SRWebSocketDelegate.m in Sources */,
+				08D0ADBD20AD98FA0050EECF /* EXDepthItemViewModel.m in Sources */,
 				085008ED2092F5FF009C2061 /* EXOrderViewController.m in Sources */,
 				08EE34242015FE22001B42FC /* RACTableViewController+EmptyDataSet.m in Sources */,
 				0851D3982091F3BA00ABF3AB /* EXBalanceCell.m in Sources */,
 				08EE345020160E8C001B42FC /* NSData+EXAdditions.m in Sources */,
 				0886C526209AE414005E6688 /* EXProductDetailTickerViewModel.m in Sources */,
 				085E3AB920AAD52F00B0E645 /* EXRACHTTPClient.m in Sources */,
+				08D0ADAE20AD8B4A0050EECF /* EXDepthChartViewController.m in Sources */,
 				0856E69F20A95B090063C2D5 /* EXImagePickerController.m in Sources */,
 				0851D3832091A4CE00ABF3AB /* EXCollectedTransactionViewModel.m in Sources */,
 				08EE342A2015FE22001B42FC /* RACSignal+RACFilter.m in Sources */,
@@ -1497,11 +1533,12 @@
 				080B9FDF2016D8DA0098CF4E /* EXTradeViewController.m in Sources */,
 				0886C523209AE375005E6688 /* EXProductDetailViewController.m in Sources */,
 				0853A4F6208F58AB00F8A04C /* EXWithdraw.m in Sources */,
+				08D0ADB420AD8CED0050EECF /* EXTradeItemViewModel.m in Sources */,
 				0873901920170A1F00CF9D48 /* EXExchangeEntranceItemViewModel.m in Sources */,
 				085E3AE320ABD7DB00B0E645 /* EXProductManager+Private.m in Sources */,
 				08B35C85209C34B0007B83DF /* EXVPNManager+EXLoaderItem.m in Sources */,
 				089A72142019DB3100697439 /* EXOperationQueue.m in Sources */,
-				08D0AD5520AC34340050EECF /* EXProductManager+Compat.m in Sources */,
+				08D0AD5520AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m in Sources */,
 				080B9FE22016D9750098CF4E /* EXTradeViewModel.m in Sources */,
 				085E3AB020AAD52F00B0E645 /* EXHTTPClient+Private.m in Sources */,
 				0886C4F8209AA2CF005E6688 /* EXProductDetailViewModel.m in Sources */,
@@ -1512,6 +1549,7 @@
 				0853A454208E117700F8A04C /* RACSignal+RACConstruct.m in Sources */,
 				080B9FB62016289E0098CF4E /* EXExchange.m in Sources */,
 				080B9FD3201630F10098CF4E /* UIViewController+RACViewController.m in Sources */,
+				08D0ADC020AD990B0050EECF /* EXDepthCell.m in Sources */,
 				0827912E2015DFE600D5EEE7 /* EXAppDelegate.m in Sources */,
 				085008DD2092C4C4009C2061 /* EXBalanceViewModel.m in Sources */,
 				0853A490208E470200F8A04C /* EXAccountRecord.m in Sources */,
@@ -1522,23 +1560,24 @@
 				0853A506208F7B2400F8A04C /* EXProductManager+EXLoaderItem.m in Sources */,
 				0853A52F2090241900F8A04C /* EXSocketManager.m in Sources */,
 				0851D39B2091F43D00ABF3AB /* EXBalanceItemViewModel.m in Sources */,
-				08B35C9D209C4940007B83DF /* EXProductDetailDepthViewModel.m in Sources */,
 				0873901E2017143700CF9D48 /* RACTableSection.m in Sources */,
 				089A71DC2019C51B00697439 /* EXConstants.m in Sources */,
 				08E38F1B2019E888008C88E6 /* EXExchangeManager+EXLoaderItem.m in Sources */,
 				085E3ABB20AAD52F00B0E645 /* EXDefaultLoader.m in Sources */,
 				085E3AB520AAD52F00B0E645 /* EXOKExHTTPClient+EXTicker.m in Sources */,
+				08D0ADB120AD8C530050EECF /* EXTradeCell.m in Sources */,
 				080B9FD0201630430098CF4E /* RACViewModelServicesImpl.m in Sources */,
 				08EE344E20160E8C001B42FC /* MBProgressHUD+EXAdditions.m in Sources */,
 				085E3AD020AAD7C600B0E645 /* EXDatabaseAccessor+EXLoaderItem.m in Sources */,
 				0853A42C208DE35C00F8A04C /* EXExchangeViewModel.m in Sources */,
 				085E3ABA20AAD52F00B0E645 /* EXLauncher.m in Sources */,
-				08B35C9C209C4940007B83DF /* EXProductDetailTradeViewModel.m in Sources */,
-				08B35CA2209C4956007B83DF /* EXProductDetailTradeView.m in Sources */,
+				08D0ADA220AD85750050EECF /* EXTradeRecordsViewModel.m in Sources */,
 				085E3AB820AAD52F00B0E645 /* EXOKExHTTPClient+EXWithdraw.m in Sources */,
 				0851D38C2091E93100ABF3AB /* EXEntranceItemViewModel.m in Sources */,
 				0853A5142090181E00F8A04C /* NSObject+EXKVO.m in Sources */,
+				08D0AD9C20AD83B70050EECF /* EXCommissionViewModel.m in Sources */,
 				085008DA2092C3C7009C2061 /* RACSegmentViewController.m in Sources */,
+				08D0ADA820AD8AB40050EECF /* EXDepthSetViewModel.m in Sources */,
 				085E3AB220AAD52F00B0E645 /* EXOKExHTTPClient+EXDepth.m in Sources */,
 				08EE345520160E8C001B42FC /* UIMenuItem+EXAdditions.m in Sources */,
 				085008F32092F938009C2061 /* EXMultipleOrderViewModel.m in Sources */,
@@ -1571,7 +1610,6 @@
 				085E3AB320AAD52F00B0E645 /* EXOKExHTTPClient+EXKLine.m in Sources */,
 				0853A484208E3F1700F8A04C /* EXDepth.m in Sources */,
 				085E3AE620ABD91A00B0E645 /* EXProductManager+Database.m in Sources */,
-				08B35CA3209C4956007B83DF /* EXProductDetailDepthView.m in Sources */,
 				0853A510208F8F1400F8A04C /* EXProductCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

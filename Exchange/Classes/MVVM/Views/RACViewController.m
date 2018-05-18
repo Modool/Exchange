@@ -44,6 +44,7 @@
     if (@available(iOS 11, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] init];
 }
 
 - (void)viewDidLoad{

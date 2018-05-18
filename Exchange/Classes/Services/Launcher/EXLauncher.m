@@ -23,9 +23,7 @@
 - (BOOL)launchWithDevice:(EXDevice *)device;{
     __block BOOL state = NO;
     EXOnce(&_onceToken, ^{
-        [self sync:^{
-            state = [self _launchWithDevice:device];
-        }];
+        state = [self _launchWithDevice:device];
     });
     return state;
 }
@@ -33,13 +31,7 @@
 #pragma mark - private
 
 - (BOOL)_launchWithDevice:(EXDevice *)device;{
-    EXOperationQueue *prelauncQueue = [EXOperationQueue queue];
-    NSArray<EXOperation *> *prelaunchOperations = [device prelaunchOperations];
-    NSArray<EXOperation *> *compatOperations = [device compatOperations];
-    
-    [prelauncQueue addOperations:prelaunchOperations];
-    [prelauncQueue addOperations:compatOperations];
-    
+    EXOperationQueue *prelauncQueue = [EXOperationQueue queueWithOperations:[device prelaunchOperations]];
     [prelauncQueue schedule];
     long state = [prelauncQueue waitUntilFinished];
     if (state) {
@@ -47,9 +39,7 @@
         return NO;
     }
     
-    [self async:^{
-        [[EXDefaultLoader defaultLoader] load];
-    }];
+    [[EXDefaultLoader defaultLoader] loadWithDevice:device];
     
     return YES;
 }

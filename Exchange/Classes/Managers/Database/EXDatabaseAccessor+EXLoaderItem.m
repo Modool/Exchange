@@ -187,27 +187,27 @@
     center.debugEnable = YES;
 
     FMDatabaseQueue *databaseQueue = [[FMDatabaseQueue alloc] initWithPath:filepath];
-    MDDatabase *database = [center requrieDatabaseWithDatabaseQueue:databaseQueue];
+    self.database = [center requrieDatabaseWithDatabaseQueue:databaseQueue];
 
     NSError *error = nil;
-    MDDTableConfiguration *tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXProduct class] propertyMapper:[EXProduct databaseMapper] primaryProperty:@"objectID"];
-    [database addTableConfiguration:tableConfiguration error:&error];
+    MDDTableConfiguration *tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXProduct class] name:@"t_product" propertyMapper:[EXProduct databaseMapper] autoincrement:NO primaryProperty:@"objectID"];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
     
-    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXTicker class] propertyMapper:[EXTicker databaseMapper] primaryProperties:[NSSet setWithArray:@[@"symbol", @"exchangeDomain"]]];
-    [database addTableConfiguration:tableConfiguration error:&error];
-    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXBalance class] propertyMapper:[EXTicker databaseMapper] primaryProperties:[NSSet setWithArray:@[@"symbol", @"exchangeDomain"]]];
-    [database addTableConfiguration:tableConfiguration error:&error];
+    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXTicker class] name:@"t_ticker" propertyMapper:[EXTicker databaseMapper] primaryProperties:[NSSet setWithArray:@[@"symbol", @"exchangeDomain"]]];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
+    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXBalance class] name:@"t_balance" propertyMapper:[EXTicker databaseMapper] primaryProperties:[NSSet setWithArray:@[@"symbol", @"exchangeDomain"]]];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
 
-    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXTrade class] propertyMapper:[EXTrade databaseMapper] primaryProperty:@"objectID"];
-    [database addTableConfiguration:tableConfiguration error:&error];
+    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXTrade class] name:@"t_trade" propertyMapper:[EXTrade databaseMapper] primaryProperty:@"objectID"];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
     
-    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXOrder class] propertyMapper:[EXOrder databaseMapper] primaryProperty:@"objectID"];
-    [database addTableConfiguration:tableConfiguration error:&error];
+    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXOrder class] name:@"t_order" propertyMapper:[EXOrder databaseMapper] primaryProperty:@"objectID"];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
     
-    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXWithdraw class] propertyMapper:[EXWithdraw databaseMapper] primaryProperty:@"objectID"];
-    [database addTableConfiguration:tableConfiguration error:&error];
+    tableConfiguration = [MDDTableConfiguration configurationWithClass:[EXWithdraw class] name:@"t_withdraw" propertyMapper:[EXWithdraw databaseMapper] primaryProperty:@"objectID"];
+    [self.database addTableConfiguration:tableConfiguration error:&error];
     
-    [database prepareWithError:&error];
+    [self.database prepareWithError:&error];
 }
 
 @end

@@ -20,3 +20,10 @@
 - (void)uninstall;
 
 @end
+
+@class EXCompatQueue;
+@protocol EXLoaderCompatItem <NSObject>
+
+@property (nonatomic, copy, readonly) EXCompatQueue *compatQueue;
+
+@end

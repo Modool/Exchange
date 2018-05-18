@@ -8,43 +8,62 @@
 
 #import "EXCompatOperation.h"
 #import "EXCompatOperation+Private.h"
+
 #import "EXCompatQueue+Private.h"
+
+#import "EXOperation+Private.h"
+#import "EXOperationQueue+Private.h"
 
 NSString * const EXCompatOperationVersionKeySuffix = @"VersionKey";
 
 @implementation EXCompatOperation
 
-+ (instancetype)operationWithVersion:(CGFloat)version block:(void (^)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion))block;{
-    return [[self alloc] initWithVersion:version block:block];
++ (instancetype)operationWithVersion:(CGFloat)version;{
+    return [[self alloc] initWithVersion:version];
 }
 
-- (instancetype)initWithVersion:(CGFloat)version block:(void (^)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion))block;{
-    if (self = [super initWithConcurrent:NO block:nil]) {
-        self.version = version;
-        self.compatBlock = block;
+- (instancetype)initWithVersion:(CGFloat)version;{
+    if (self = [super init]) {
+        _version = version;
     }
     return self;
 }
 
-- (instancetype)initWithConcurrent:(BOOL)concurrent block:(void (^)(EXOperation *operation))block;{
-    return nil;
+- (instancetype)init;{
+    return [self initWithVersion:0];
 }
 
-#pragma mark - private
+- (void)setCompatBlock:(void (^)(EXCompatOperation *, CGFloat, CGFloat))compatBlock{
+    [self _sync:^{
+        self->_compatBlock = compatBlock;
+    }];
+}
 
-- (void)_prepareCompatWithCurrentVersion:(CGFloat)currentVersion localVersion:(CGFloat)localVersion{
-    NSParameterAssertReturnVoid([self version] >= currentVersion);
-    
-    // Compatible with the old version
-    if (localVersion <= [self version]) {
-        [self compatWithVersion:[self version] localVersion:localVersion];
-    }
+- (void (^)(EXCompatOperation *, CGFloat, CGFloat))compatBlock{
+    __block void (^compatBlock)(EXCompatOperation *, CGFloat, CGFloat) = nil;
+    [self _sync:^{
+        compatBlock = self->_compatBlock;
+    }];
+    return compatBlock;
 }
 
 #pragma mark - protected
 
-- (void)compatWithVersion:(CGFloat)version localVersion:(CGFloat)localVersion{
-    if ([self compatBlock]) self.compatBlock(self, version, localVersion);
+- (void)prepareInQueue:(EXCompatQueue *)queue{
+    _currentVersion = queue.currentVersion;
+    _localVersion = queue.localVersion;
 }
+
+- (void)run{
+    if (_version > _currentVersion) return;
+    if (_localVersion >= _version) return;
+    
+    // Compatible with the old version
+    [self compatWithVersion:_version localVersion:_localVersion];
+    
+    if (_compatBlock) _compatBlock(self, _version, _localVersion);
+}
+
+- (void)compatWithVersion:(CGFloat)version localVersion:(CGFloat)localVersion{}
 
 @end

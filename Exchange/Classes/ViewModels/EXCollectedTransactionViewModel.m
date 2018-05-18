@@ -27,20 +27,19 @@
     [super initialize];
     
     @weakify(self);
-    [[self rac_signalForSelector:@selector(productManager:didUpdateProduct:collected:)] subscribeNext:^(RACTuple *tuple) {
-        RACTupleUnpack(id x, EXProduct *product, NSNumber *collected) = tuple;
+    [[self rac_signalForSelector:@selector(productManager:didUpdateProduct:collected:) fromProtocol:@protocol(EXProductManagerDelegate)] subscribeNext:^(RACTuple *tuple) {
         @strongify(self);
-        if (collected.boolValue) {
-            EXProductItemViewModel *viewModel = [self viewModelWithProduct:product];
+        if ([tuple.third boolValue]) {
+            EXProductItemViewModel *viewModel = [self viewModelWithProduct:tuple.second];
             [self.insertCommand execute:viewModel];
         } else {
-            EXProductItemViewModel *viewModel = [self viewModelOfProduct:product];
+            EXProductItemViewModel *viewModel = [self viewModelOfProduct:tuple.second];
             [self.deleteCommand execute:RACTuplePack(viewModel, @(UITableViewRowAnimationFade))];
         }
     }];
     
-    [self _registerDelegate];
     [[self rac_willDeallocSignal] subscribeToTarget:self performSelector:@selector(_deregisterDelegate)];
+    [self _registerDelegate];
 }
 
 #pragma mark - private
@@ -60,9 +59,10 @@
 #pragma mark - signal accessor
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
+    NSUInteger size = self.perPage;
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXProduct *> *products = [accessor collectedProductsAtPage:page size:self.perPage];
+            NSArray<EXProduct *> *products = [accessor productsByExchange:nil keywords:nil collected:YES page:page size:size];
             [[[RACSignal return:products] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];
     }] replayLazily] setNameWithFormat:RACSignalDefaultNameFormat];

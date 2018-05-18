@@ -35,9 +35,9 @@
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
-    self.launcher = [[EXLauncher alloc] initWithName:[[NSBundle mainBundle] bundleIdentifier]];
+    self.launcher = [[EXLauncher alloc] init];
     
-    return [[self launcher] launchWithDevice:[EXDevicePhone new]];
+    return [[self launcher] launchWithDevice:[EXDevicePhone device]];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

@@ -12,6 +12,4 @@
 
 + (instancetype)defaultLoader;
 
-- (void)load;
-
 @end

@@ -8,12 +8,11 @@
 
 #import "EXCompatOperation.h"
 
-@interface EXCompatOperation ()
-
-@property (nonatomic, assign) CGFloat version;
-
-@property (nonatomic, copy) void (^compatBlock)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion);
-
-- (void)_prepareCompatWithCurrentVersion:(CGFloat)currentVersion localVersion:(CGFloat)localVersion;
+@interface EXCompatOperation (){
+    CGFloat _version;
+    CGFloat _localVersion;
+    CGFloat _currentVersion;
+    void (^_compatBlock)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion);
+}
 
 @end

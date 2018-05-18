@@ -70,13 +70,14 @@
 #pragma mark - signal accessor
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
-    NSString *keyword = self.keyword;
-    NSString *domain = self.exchange.domain;
-    if (!keyword.length) return [RACSignal return:nil];
+    NSArray<NSString *> *keywords = [self.keyword componentsSeparatedByString:@" "];
+    if (!keywords.count) return [RACSignal return:nil];
     
+    NSUInteger size = self.perPage;
+    NSString *domain = self.exchange.domain;
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXProduct *> *products = [accessor productsByExchange:domain keyword:keyword page:page size:self.perPage];
+            NSArray<EXProduct *> *products = [accessor productsByExchange:domain keywords:keywords collected:-1 page:page size:size];
             [[[RACSignal return:products] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];
     }] replayLazily] setNameWithFormat:RACSignalDefaultNameFormat];

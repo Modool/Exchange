@@ -14,11 +14,11 @@
 @property (nonatomic, copy, readonly) NSString *symbol;
 @property (nonatomic, copy, readonly) NSString *exchangeDomain;
 
-@property (nonatomic, assign, readonly) double volume;
+@property (nonatomic, assign, readonly) BOOL buy;
 
 @property (nonatomic, assign, readonly) double price;
 
-@property (nonatomic, assign, readonly) BOOL buy;
+@property (atomic, assign) double volume;
 
 @end
 

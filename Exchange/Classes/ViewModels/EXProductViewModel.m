@@ -59,9 +59,11 @@
 #pragma mark - signal accessor
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
+    NSUInteger size = self.perPage;
+    
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXProduct *> *products = [accessor productsAtPage:page size:self.perPage];
+            NSArray<EXProduct *> *products = [accessor productsByExchange:nil keywords:nil collected:-1 page:page size:size];
             [[[RACSignal return:products] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];
     }] replayLazily] setNameWithFormat:RACSignalDefaultNameFormat];

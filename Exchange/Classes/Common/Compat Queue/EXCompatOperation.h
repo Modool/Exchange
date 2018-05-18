@@ -12,16 +12,15 @@ EX_EXTERN NSString * const EXCompatOperationVersionKeySuffix;
 
 @interface EXCompatOperation : EXOperation
 
-@property (nonatomic, assign, readonly) CGFloat version;
+@property (assign, readonly) CGFloat version;
 
-+ (instancetype)operationWithConcurrent:(BOOL)concurrent block:(void (^)(EXOperation *operation))block EX_UNAVAILABLE;
-- (instancetype)initWithConcurrent:(BOOL)concurrent block:(void (^)(EXOperation *operation))block EX_UNAVAILABLE;
+@property (copy) void (^compatBlock)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion);
 
-+ (instancetype)operationWithVersion:(CGFloat)version block:(void (^)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion))block;
-- (instancetype)initWithVersion:(CGFloat)version block:(void (^)(EXCompatOperation *operation, CGFloat version, CGFloat localVersion))block NS_DESIGNATED_INITIALIZER;
++ (instancetype)operationWithVersion:(CGFloat)version;
+- (instancetype)initWithVersion:(CGFloat)version NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - protected
 
-- (void)compatWithVersion:(CGFloat)version localVersion:(CGFloat)localVersionNS_REQUIRES_SUPER;
+- (void)compatWithVersion:(CGFloat)version localVersion:(CGFloat)localVersion NS_REQUIRES_SUPER;
 
 @end

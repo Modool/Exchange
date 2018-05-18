@@ -9,7 +9,7 @@
 #import "EXDelegatesAccessor.h"
 #import "EXLoaderItem.h"
 
-@class EXLoader;
+@class EXLoader, EXDevice;
 @protocol EXLoaderDelegate <NSObject>
 
 @optional
@@ -25,11 +25,22 @@
 
 @end
 
+@protocol EXLoaderCompatDelegate <NSObject>
+
+@optional
+- (void)loader:(EXLoader *)loader willCompatWithItem:(id<EXLoaderCompatItem>)item;
+- (void)loader:(EXLoader *)loader didCompatWithItem:(id<EXLoaderCompatItem>)item;
+
+- (void)loaderWillBeginCompats:(EXLoader *)loader;
+- (void)loaderDidEndCompats:(EXLoader *)loader;
+
+@end
+
 @interface EXLoader : EXDelegatesAccessor
 
-@property (nonatomic, copy, readonly) NSArray<EXLoaderItem> *items;
+@property (nonatomic, assign, readonly, getter=isCompatFinished) BOOL compatFinish;
 
-@property (nonatomic, strong, readonly) MDMulticastDelegate<EXLoaderDelegate> *delegates;
+@property (nonatomic, strong, readonly) MDMulticastDelegate<EXLoaderDelegate, EXLoaderCompatDelegate> *delegates;
 
 - (void)async:(dispatch_block_t)block EX_UNAVAILABLE;
 - (void)sync:(dispatch_block_t)block EX_UNAVAILABLE;
@@ -38,7 +49,6 @@
 - (void)uninstallItems;
 - (void)reloadItems;
 
-- (BOOL)addItem:(MDQueueObject<EXLoaderItem> *)item;
-- (BOOL)removeItem:(MDQueueObject<EXLoaderItem> *)item;
+- (void)loadWithDevice:(EXDevice *)device;
 
 @end

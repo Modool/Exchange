@@ -6,28 +6,26 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-#import <MDQueueObject/MDQueueObject.h>
 #import "EXMacros.h"
 #import "EXOperation.h"
 
-@interface EXOperationQueue : MDQueueObject
+@interface EXOperationQueue : NSObject
 
-@property (nonatomic, strong, readonly) dispatch_queue_t queue EX_UNAVAILABLE;
+@property (copy, readonly) NSArray<EXOperation *> *operations;
 
-@property (nonatomic, assign, readonly, getter=isExecuting) BOOL executing;
+@property (strong, readonly) dispatch_queue_t queue;
 
-@property (nonatomic, assign, readonly, getter=isCanceled) BOOL canceled;
+@property (assign, readonly, getter=isExecuting) BOOL executing;
 
-@property (nonatomic, copy, readonly) NSArray<EXOperation *> *operations;
+@property (assign, readonly, getter=isCanceled) BOOL canceled;
 
 // Default is NSUIntegerMax
-@property (nonatomic, assign) NSUInteger maximumConcurrentCount;
+@property (assign) NSUInteger maximumConcurrentCount;
 
-@property (nonatomic, copy) void (^completion)(EXOperationQueue *queue, BOOL success);
+@property (copy) void (^completion)(EXOperationQueue *queue, BOOL success);
 
 + (instancetype)queue;
 + (instancetype)queueWithOperations:(NSArray<EXOperation *> *)operations;
-
 - (instancetype)initWithOperations:(NSArray<EXOperation *> *)operations;
 
 - (void)async:(dispatch_block_t)block EX_UNAVAILABLE;

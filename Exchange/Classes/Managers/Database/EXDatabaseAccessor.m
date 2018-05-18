@@ -7,13 +7,8 @@
 //
 
 #import "EXDatabaseAccessor.h"
+#import "EXDatabaseAccessor+EXLoaderItem.h"
 #import "EXDelegatesAccessor+EXAccessors.h"
-
-@interface EXDatabaseAccessor()
-
-@property (nonatomic, strong, readonly) MDDatabase *database;
-
-@end
 
 @implementation EXDatabaseAccessor
 

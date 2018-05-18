@@ -9,6 +9,12 @@
 #import "EXDatabaseAccessor.h"
 #import "EXLoaderItem.h"
 
+@interface EXDatabaseAccessor()
+
+@property (nonatomic, strong) MDDatabase *database;
+
+@end
+
 @interface EXDatabaseAccessor (EXLoaderItem)<EXLoaderItem>
 
 @end

@@ -8,25 +8,21 @@
 
 #import "EXLoader.h"
 
+#import "EXCompatQueue.h"
+#import "EXDevice.h"
+
 #import "NSArray+EXAdditions.h"
 
 @interface EXLoader ()
 
-@property (nonatomic, copy) NSArray<EXLoaderItem> *items;
+@property (nonatomic, strong) EXDevice *device;
+
+@property (nonatomic, assign, getter=isCompatFinished) BOOL compatFinish;
 
 @end
 
 @implementation EXLoader
 @dynamic delegates;
-
-#pragma mark - accessor
-
-- (NSArray<EXLoaderItem> *)items{
-    if (!_items) {
-        _items = [NSArray<EXLoaderItem> array];
-    }
-    return _items;
-}
 
 #pragma mark - public
 
@@ -48,26 +44,24 @@
     }];
 }
 
-- (BOOL)addItem:(id<EXLoaderItem>)item;{
-    __block BOOL state = NO;
+- (void)compatItems {
     [super sync:^{
-        state = [self _addItem:item];
+        [self _compatItems];
     }];
-    return state;
 }
 
-- (BOOL)removeItem:(id<EXLoaderItem>)item;{
-    __block BOOL state = NO;
-    [super sync:^{
-        state = [self _removeItem:item];
-    }];
-    return state;
+- (void)loadWithDevice:(EXDevice *)device{
+    self.device = device;
+    
+    [self installItems];
+    [self compatItems];
+    [self reloadItems];
 }
 
 #pragma mark - private
 
 - (void)_installItems;{
-    for (MDQueueObject<EXLoaderItem> *item in [self items]) {
+    for (MDQueueObject<EXLoaderItem> *item in self.device.modulers) {
         if (![item respondsToSelector:@selector(install)]) continue;
         
         [self _respondWillInstallItem:item];
@@ -79,7 +73,7 @@
 }
 
 - (void)_uninstallItems;{
-    for (MDQueueObject<EXLoaderItem> *item in [self items]) {
+    for (MDQueueObject<EXLoaderItem> *item in self.device.modulers) {
         if (![item respondsToSelector:@selector(uninstall)]) continue;
         
         [self _respondWillUninstallItem:item];
@@ -92,7 +86,7 @@
 }
 
 - (void)_reloadItems;{
-    for (MDQueueObject<EXLoaderItem> *item in [self items]) {
+    for (MDQueueObject<EXLoaderItem> *item in self.device.modulers) {
         if (![item respondsToSelector:@selector(reload)]) continue;
         
         [self _respondWillReloadItem:item];
@@ -100,6 +94,55 @@
             [item reload];
         }];
         [self _respondDidReloadItem:item];
+    }
+}
+
+- (void)_compatItems{
+    EXLogger(@"Compat accessor items");
+    [self _respondWillBeginCompats];
+    
+    for (id<EXLoaderCompatItem> item in self.device.modulers) {
+        if (![item conformsToProtocol:@protocol(EXLoaderCompatItem)] ||
+            ![item respondsToSelector:@selector(compatQueue)]) continue;
+        
+        [self _respondWillCompatWithItem:item];
+        
+        EXCompatQueue *itemQueue = [item compatQueue];
+        [itemQueue schedule];
+        long state = [itemQueue waitUntilFinished];
+        if (state) EXLogger(@"Failed to compat item: %@.", item);
+        
+        [self _respondDidCompatWithItem:item];
+    }
+    
+    [self _respondDidEndCompats];
+}
+
+- (void)_respondWillBeginCompats{
+    self.compatFinish = NO;
+    
+    if ([[self delegates] respondsToSelector:@selector(loaderWillBeginCompats:)]) {
+        [[self delegates] loaderWillBeginCompats:self];
+    }
+}
+
+- (void)_respondDidEndCompats{
+    self.compatFinish = YES;
+    
+    if ([[self delegates] respondsToSelector:@selector(loaderDidEndCompats:)]) {
+        [[self delegates] loaderDidEndCompats:self];
+    }
+}
+
+- (void)_respondWillCompatWithItem:(id<EXLoaderCompatItem>)item{
+    if ([[self delegates] respondsToSelector:@selector(loader:willCompatWithItem:)]) {
+        [[self delegates] loader:self willCompatWithItem:item];
+    }
+}
+
+- (void)_respondDidCompatWithItem:(id<EXLoaderCompatItem>)item{
+    if ([[self delegates] respondsToSelector:@selector(loader:didCompatWithItem:)]) {
+        [[self delegates] loader:self didCompatWithItem:item];
     }
 }
 
@@ -137,28 +180,6 @@
     if ([[self delegates] respondsToSelector:@selector(loader:didReloadItem:)]) {
         [[self delegates] loader:self didReloadItem:item];
     }
-}
-
-- (BOOL)_addItem:(id<EXLoaderItem>)item;{
-    NSParameterAssertReturnFalse(item);
-    NSParameterAssertReturnFalse(![[self items] containsObject:item]);
-    
-    [self addDelegate:item delegateQueue:[item queue]];
-    
-    self.items = (id)[[self items] arrayByAddingObject:item];
-    
-    return YES;
-}
-
-- (BOOL)_removeItem:(id<EXLoaderItem>)item;{
-    NSParameterAssertReturnFalse(item);
-    NSParameterAssertReturnFalse([[self items] containsObject:item]);
-    
-    [self removeDelegate:item delegateQueue:[item queue]];
-    
-    self.items = (id)[[self items] arrayByRemovingObject:item];
-    
-    return YES;
 }
 
 @end

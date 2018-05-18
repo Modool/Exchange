@@ -8,19 +8,16 @@
 
 #import "RACControllerViewModel.h"
 #import "EXProductDetailTickerViewModel.h"
-#import "EXProductDetailTradeViewModel.h"
-#import "EXProductDetailDepthViewModel.h"
 
 @interface EXProductDetailViewModel : RACControllerViewModel
 
 @property (nonatomic, strong, readonly) EXProductDetailTickerViewModel *tickerViewModel;
-@property (nonatomic, strong, readonly) EXProductDetailTradeViewModel *tradeViewModel;
-@property (nonatomic, strong, readonly) EXProductDetailDepthViewModel *depthViewModel;
 
 @property (nonatomic, strong, readonly) EXProduct *product;
 @property (nonatomic, strong, readonly) EXExchange *exchange;
 
 @property (nonatomic, strong, readonly) RACCommand *collectCommand;
+@property (nonatomic, strong, readonly) RACCommand *analyseCommand;
 
 @property (nonatomic, assign, readonly) BOOL collected;
 

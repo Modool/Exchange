@@ -1,3 +1,4 @@
+
 //
 //  EXProductManager+EXSocketManagerDelegate.m
 //  Exchange
@@ -71,7 +72,7 @@
     [depthSet.bids setValue:symbol forKey:@keypath(EXDepth.new, symbol)];
     [depthSet.bids setValue:domain forKey:@keypath(EXDepth.new, exchangeDomain)];
     
-    [self _handleDepthSet:depthSet symbol:symbol];
+    [self _handleDepthSet:depthSet symbol:symbol domain:domain];
 }
 
 - (void)_matchTradeWithMessage:(NSArray *)message domain:(NSString *)domain channel:(EXChannelString)channel{
@@ -148,8 +149,9 @@
     if (!state) EXLogger(@"Failed to update balance: %@", balance);
 }
 
-- (void)_handleDepthSet:(EXDepthSet *)depthSet symbol:(NSString *)symbol{
-    
+- (void)_handleDepthSet:(EXDepthSet *)depthSet symbol:(NSString *)symbol domain:(NSString *)domain{
+    NSString *productID = EXProductID(domain, symbol);
+    [self _respondDelegateForUpdatedDepthSet:depthSet forProductID:productID];
 }
 
 - (void)_handleTrades:(NSArray<EXTrade *> *)trades symbol:(NSString *)symbol domain:(NSString *)domain{

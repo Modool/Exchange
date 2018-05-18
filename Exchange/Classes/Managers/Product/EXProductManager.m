@@ -68,58 +68,17 @@
 }
 
 - (NSArray<EXProduct *> *)products;{
-    return [self _productsByExchange:nil keyword:nil range:NSRangeUnset];
-}
-
-- (NSArray<EXProduct *> *)productsAtPage:(NSUInteger)page size:(NSUInteger)size;{
-    NSUInteger location = (page - 1) * size;
-    return [self _productsByExchange:nil keyword:nil range:NSMakeRange(location, size)];
-}
-
-- (NSArray<EXProduct *> *)productsWithKeyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;{
-    NSUInteger location = (page - 1) * size;
-    return [self _productsByExchange:nil keyword:nil range:NSMakeRange(location, size)];
-}
-
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain;{
-    NSParameterAssert(domain.length);
-    return [self _productsByExchange:domain keyword:nil range:NSRangeUnset];
-}
-
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;{
-    NSParameterAssert(domain.length);
-    NSUInteger location = (page - 1) * size;
-    return [self _productsByExchange:domain keyword:nil range:NSMakeRange(location, size)];
-}
-
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain keyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;{
-    NSParameterAssert(domain.length);
-    
-    NSUInteger location = (page - 1) * size;
-    return [self _productsByExchange:domain keyword:nil range:NSMakeRange(location, size)];
+    return [self _productsByExchange:nil keywords:nil collected:EXProductCollectStateUnkonwn range:NSRangeUnset];
 }
 
 - (NSArray<EXProduct *> *)collectedProducts;{
-    return [self _collectedProductsInRange:NSRangeUnset];
+    return [self _productsByExchange:nil keywords:nil collected:EXProductCollectStateCollected range:NSRangeUnset];
 }
 
-- (NSArray<EXProduct *> *)collectedProductsAtPage:(NSUInteger)page size:(NSUInteger)size;{
+- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain keywords:(NSArray<NSString *> *)keywords collected:(EXProductCollectState)collected page:(NSUInteger)page size:(NSUInteger)size;{
     NSUInteger location = (page - 1) * size;
     
-    return [self _collectedProductsInRange:NSMakeRange(location, size)];
-}
-
-- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain;{
-    NSParameterAssert(domain.length);
-    
-    return [self _collectedProductsByExchange:domain range:NSRangeUnset];
-}
-
-- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;{
-    NSParameterAssert(domain.length);
-    NSUInteger location = (page - 1) * size;
-    
-    return [self _collectedProductsByExchange:domain range:NSMakeRange(location, size)];
+    return [self _productsByExchange:domain keywords:keywords collected:collected range:NSMakeRange(location, size)];
 }
 
 - (NSArray<EXBalance *> *)balancesByExchange:(NSString *)domain;{
@@ -211,7 +170,12 @@
 
 - (BOOL)updateProductByID:(NSString *)productID collected:(BOOL)collected;{
     NSParameterAssert(productID.length);
-    return [self _updateProductByID:productID collected:collected];
+    BOOL state = [self _updateProductByID:productID collected:collected];
+    if (state) {
+        EXProduct *product = [self productByProductID:productID];
+        [self _respondDelegateForUpdatedProduct:product collected:collected];
+    }
+    return state;
 }
 
 - (BOOL)updateTicker:(EXTicker *)ticker;{

@@ -17,6 +17,8 @@
 
 @interface EXProductItemViewModel ()<EXProductManagerSymbolDelegate>
 
+@property (nonatomic, strong) EXProduct *product;
+
 @property (nonatomic, strong) id<EXHTTPClient> client;
 
 @property (nonatomic, strong) NSAttributedString *exchangeAttributedString;
@@ -36,7 +38,12 @@
         _product = product;
         _exchange = exchange;
         
-//        _ticker = product.ticker;
+        __block EXTicker *ticker = nil;
+        [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
+            ticker = [accessor tickerByExchange:exchange.domain symbol:product.symbol];
+        }];
+        
+        _ticker = ticker;
         _client = exchange.client;
         _collected = product.collected;
         _symbolAttributedString = [self symbolAttributedStringWithProduct:product];
@@ -160,7 +167,12 @@
 
 #pragma mark - EXProductManagerSymbolDelegate
 
-- (void)productManager:(EXProductManager *)productManager didUpdateTicker:(EXTicker *)ticker forSymbol:(NSString *)symbol;{
+- (void)productManager:(EXProductManager *)productManager productID:(NSString *)productID didUpdateProduct:(EXProduct *)product collected:(BOOL)collected;{
+    self.collected = collected;
+    self.product = product;
+}
+
+- (void)productManager:(EXProductManager *)productManager productID:(NSString *)productID didUpdateTicker:(EXTicker *)ticker;{
     [self _updateAttributedStringsWithTicker:ticker increasement:ticker.offset - self.ticker.offset];
     
     _ticker = ticker;

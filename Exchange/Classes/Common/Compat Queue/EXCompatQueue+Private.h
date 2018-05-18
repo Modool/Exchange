@@ -8,14 +8,11 @@
 
 #import "EXCompatQueue.h"
 
-@interface EXCompatQueue ()
+@interface EXCompatQueue (){
+    NSString *_key;
+    CGFloat _currentVersion;
+}
 
-@property (nonatomic, copy) NSString *key;
-
-@property (nonatomic, assign) CGFloat currentVersion;
-
-@property (nonatomic, assign) CGFloat localVersion;
-
-@property (nonatomic, strong, readonly) NSUserDefaults *userDefaults;
+@property (assign) CGFloat localVersion;
 
 @end

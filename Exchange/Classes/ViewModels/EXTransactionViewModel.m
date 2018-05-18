@@ -125,9 +125,11 @@
 #pragma mark - signal accessor
 
 - (RACSignal *)requestDataSignalWithPage:(NSUInteger)page{
+    NSUInteger size = self.perPage;
+    
     return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
         [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            NSArray<EXProduct *> *products = [accessor productsAtPage:page size:self.perPage];
+            NSArray<EXProduct *> *products = [accessor productsByExchange:nil keywords:nil collected:-1 page:page size:size];;
             
             [[[RACSignal return:products] subscribeOn:[RACScheduler mainThreadScheduler]] subscribe:subscriber];
         }];
@@ -137,17 +139,13 @@
 - (RACSignal *)collectSignalWithViewModel:(EXProductItemViewModel *)viewModel collected:(BOOL)collected{
     EXProduct *product = viewModel.product;
     
-    return [[[RACSignal createDispersedSignal:^(id<RACSubscriber> subscriber) {
-        [EXProductManager async:^(EXDelegatesAccessor<EXProductManager> *accessor) {
-            BOOL state = [accessor updateProductByID:product.objectID collected:collected];
-            RACSignal *signal = nil;
-            if (state) signal = [RACSignal return:viewModel];
-            else signal = [RACSignal error:[NSError errorWithDomain:EXExchangeErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"操作失败"}]];
-            
-            [[[signal subscribeOn:[RACScheduler mainThreadScheduler]] doNext:^(id x) {
-                viewModel.collected = collected;
-            }] subscribe:subscriber];
+    return [[[RACSignal defer:^RACSignal *{
+        __block BOOL state = NO;
+        [EXProductManager sync:^(EXDelegatesAccessor<EXProductManager> *accessor) {
+            state = [accessor updateProductByID:product.objectID collected:collected];
         }];
+        if (state) return [RACSignal return:viewModel];
+        else return [RACSignal error:[NSError errorWithDomain:EXExchangeErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"操作失败"}]];
     }] replayLazily] setNameWithFormat:RACSignalDefaultNameFormat];
 }
 

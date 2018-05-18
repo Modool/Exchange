@@ -17,18 +17,9 @@
     static EXDefaultLoader *loader = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        loader = [self new];
-        
-        for (EXDelegatesAccessor<EXLoaderItem> *accessor in [EXDelegatesAccessor sharedAccessors]) {
-            [loader addItem:accessor];
-        }
+        loader = [[self alloc] init];
     });
     return loader;
-}
-
-- (void)load{
-    [self installItems];
-    [self reloadItems];
 }
 
 @end

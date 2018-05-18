@@ -4824,16 +4824,6 @@
         </dict>
         <dict>
             <key>id</key>
-            <string>514</string>
-            <key>minimum_unit</key>
-            <real>0.0</real>
-            <key>precision</key>
-            <real>0.0</real>
-            <key>symbol</key>
-            <string>ont_usdt</string>
-        </dict>
-        <dict>
-            <key>id</key>
             <string>515</string>
             <key>minimum_unit</key>
             <real>0.0</real>

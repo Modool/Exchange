@@ -6,25 +6,24 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-#import <MDQueueObject/MDQueueObject.h>
 #import "EXMacros.h"
 
-@interface EXOperation : MDQueueObject
+@interface EXOperation : NSObject
 
-@property (nonatomic, assign, readonly, getter=isConcurrent) BOOL concurrent;
+@property (strong, readonly) dispatch_queue_t queue;
 
-@property (nonatomic, assign, readonly, getter=isExecuting) BOOL executing;
+@property (assign, readonly, getter=isExecuting) BOOL executing;
 
-@property (nonatomic, assign, readonly, getter=isFinished) BOOL finished;
+@property (assign, readonly, getter=isFinished) BOOL finished;
 
-@property (nonatomic, assign, readonly, getter=isCancelled) BOOL cancelled;
+@property (assign, readonly, getter=isCancelled) BOOL cancelled;
 
-- (instancetype)init EX_UNAVAILABLE;
-- (instancetype)initWithName:(NSString *)name EX_UNAVAILABLE;
+@property (assign, getter=isConcurrent) BOOL concurrent;
 
-+ (instancetype)operationWithConcurrent:(BOOL)concurrent block:(void (^)(EXOperation *operation))block;
-- (instancetype)initWithConcurrent:(BOOL)concurrent block:(void (^)(EXOperation *operation))block;
+@property (copy) void (^block)(EXOperation *operation);
 
 - (void)cancel;
+- (void)synchronize;
+- (void)asynchronize;
 
 @end

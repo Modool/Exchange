@@ -6,10 +6,10 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-#import <MDQueueObject/MDQueueObject.h>
+#import <Foundation/Foundation.h>
 
 @class EXDevice;
-@interface EXLauncher : MDQueueObject
+@interface EXLauncher : NSObject
 
 - (BOOL)launchWithDevice:(EXDevice *)device;
 

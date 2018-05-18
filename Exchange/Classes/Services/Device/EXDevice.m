@@ -11,17 +11,17 @@
 @implementation EXDevice
 
 + (instancetype)device;{
-    return [self deviceWithPrelaunchOperations:nil compatOperations:nil];
+    return [self deviceWithPrelaunchOperations:nil];
 }
 
 + (instancetype)deviceWithPrelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;{
-    return [self deviceWithPrelaunchOperations:prelaunchOperations compatOperations:nil];
+    return [self deviceWithModulers:nil prelaunchOperations:prelaunchOperations];
 }
 
-+ (instancetype)deviceWithPrelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations compatOperations:(NSArray<EXOperation *> *)compatOperations;{
++ (instancetype)deviceWithModulers:(NSArray<EXDelegatesAccessor> *)modulers prelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;{
     EXDevice *device = [self new];
+    device->_modulers = [modulers copy];
     device->_prelaunchOperations = [prelaunchOperations copy];
-    device->_compatOperations = [compatOperations copy];
     
     return device;
 }

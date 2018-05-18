@@ -40,7 +40,7 @@
 
 - (EXTicker *)_tickerByExchange:(NSString *)domain symbol:(NSString *)symbol;{
     __block EXTicker *ticker = nil;
-    [[EXDatabaseAccessor.database accessorForClass:EXBalance.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
+    [[EXDatabaseAccessor.database accessorForClass:EXTicker.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
         MDDCondition *condition1 = MDDConditionProperty1(processor.tableInfo, @keypath(ticker, exchangeDomain), domain);
         MDDCondition *condition2 = MDDConditionProperty1(processor.tableInfo, @keypath(ticker, symbol), symbol);
         ticker = [[processor queryWithConditionSet:MDDConditionSet6(condition1, condition2)] firstObject];
@@ -48,19 +48,25 @@
     return ticker;
 }
 
-- (NSArray<EXProduct *> *)_productsByExchange:(NSString *)domain keyword:(NSString *)keyword range:(NSRange)range;{
+- (NSArray<EXProduct *> *)_productsByExchange:(NSString *)domain keywords:(NSArray<NSString *> *)keywords collected:(EXProductCollectState)collected range:(NSRange)range;{
     EXProduct *sample;
+    NSString *keyword = [keywords componentsJoinedByString:@"%%"];
     
     __block NSArray<EXProduct *> *products = nil;
     [[EXDatabaseAccessor.database accessorForClass:EXProduct.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
         MDDCondition *condition1 = domain.length ? MDDConditionProperty1(processor.tableInfo, @keypath(sample, exchangeDomain), domain) : nil;
         MDDCondition *condition2 = keyword.length ? MDDConditionProperty2(processor.tableInfo, @keypath(sample, symbol), fmts(@"%%%@%%", keyword), MDDOperationLike) : nil;
+        MDDCondition *condition3 = collected != EXProductCollectStateUnkonwn ? MDDConditionProperty1(processor.tableInfo, @keypath(sample, collected), @(collected)) : nil;
         MDDConditionSet *set = nil;
         
         if (condition1) set = MDDConditionSet1(condition1);
         if (condition2) {
             if (set) [set and:condition2];
             else set = MDDConditionSet1(condition2);
+        }
+        if (condition3) {
+            if (set) [set and:condition3];
+            else set = MDDConditionSet1(condition3);
         }
         products = [processor queryWithConditionSet:set range:range orderByProperty:@keypath(sample, symbol) ascending:YES];
     }];
@@ -202,7 +208,7 @@
 
 - (BOOL)_insertProductsWithBlock:(EXProduct *(^)(NSUInteger index, BOOL *stop))block block:(void (^)(BOOL state, UInt64 rowID, NSUInteger index, BOOL *stop))resultBlock;{
     __block BOOL state = NO;
-    [[EXDatabaseAccessor.database accessorForClass:EXTrade.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
+    [[EXDatabaseAccessor.database accessorForClass:EXProduct.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
         state = [processor insertWithObjectsWithBlock:block block:resultBlock];
     }];
     return state;
@@ -259,7 +265,7 @@
         MDDCondition *condition2 = MDDConditionProperty1(processor.tableInfo, @keypath(sample, exchangeDomain), ticker.exchangeDomain);
         
         MDDConditionSet *set = MDDConditionSet6(condition1, condition2);
-        BOOL exsit = [processor queryCountWithConditionSet:set] > 0;
+        BOOL exsit = [processor queryCountWithProperty:@keypath(sample, symbol) conditionSet:set] > 0;
         if (exsit) state = [processor updateWithObject:ticker properties:nil ignoredProperties:nil conditionSet:set];
         else state = [processor insertWithObject:ticker];
     }];
@@ -274,7 +280,7 @@
         MDDCondition *condition2 = MDDConditionProperty1(processor.tableInfo, @keypath(sample, exchangeDomain), balance.exchangeDomain);
         
         MDDConditionSet *set = MDDConditionSet6(condition1, condition2);
-        BOOL exsit = [processor queryCountWithConditionSet:set] > 0;
+        BOOL exsit = [processor queryCountWithProperty:@keypath(sample, symbol) conditionSet:set] > 0;
         if (exsit) state = [processor updateWithObject:balance properties:nil ignoredProperties:nil conditionSet:set];
         else state = [processor insertWithObject:balance];
     }];
@@ -287,7 +293,7 @@
     [[EXDatabaseAccessor.database accessorForClass:EXBalance.class] sync:^(id<MDDProcessor, MDDCoreProcessor> processor) {
         MDDCondition *condition = MDDConditionProperty1(processor.tableInfo, @keypath(sample, objectID), order.objectID);
         MDDConditionSet *set = MDDConditionSet1(condition);
-        BOOL exsit = [processor queryCountWithConditionSet:set] > 0;
+        BOOL exsit = [processor queryCountWithProperty:@keypath(sample, symbol) conditionSet:set] > 0;
         if (exsit) state = [processor updateWithObject:order properties:nil ignoredProperties:nil conditionSet:set];
         else state = [processor insertWithObject:order];
     }];

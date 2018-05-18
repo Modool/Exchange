@@ -48,6 +48,12 @@
 
 @end
 
+typedef NS_ENUM(NSInteger, EXProductCollectState) {
+    EXProductCollectStateUnkonwn = -1,
+    EXProductCollectStateNone = 0,
+    EXProductCollectStateCollected = 1,
+};
+
 @protocol EXProductManager <NSObject>
 
 - (double)rateByExchange:(NSString *)domain name:(NSString *)name basic:(NSString *)basic;
@@ -58,18 +64,9 @@
 - (EXTicker *)tickerByExchange:(NSString *)domain symbol:(NSString *)symbol;
 
 - (NSArray<EXProduct *> *)products;
-- (NSArray<EXProduct *> *)productsAtPage:(NSUInteger)page size:(NSUInteger)size;
-- (NSArray<EXProduct *> *)productsWithKeyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;
-
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain;
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;
-- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain keyword:(NSString *)keyword page:(NSUInteger)page size:(NSUInteger)size;
-
 - (NSArray<EXProduct *> *)collectedProducts;
-- (NSArray<EXProduct *> *)collectedProductsAtPage:(NSUInteger)page size:(NSUInteger)size;
 
-- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain;
-- (NSArray<EXProduct *> *)collectedProductsByExchange:(NSString *)domain page:(NSUInteger)page size:(NSUInteger)size;
+- (NSArray<EXProduct *> *)productsByExchange:(NSString *)domain keywords:(NSArray<NSString *> *)keywords collected:(EXProductCollectState)collected page:(NSUInteger)page size:(NSUInteger)size;
 
 - (NSArray<EXBalance *> *)balancesByExchange:(NSString *)domain;
 - (NSArray<EXTicker *> *)tickersByExchange:(NSString *)domain;

@@ -8,6 +8,7 @@
 
 #import "EXCompatQueue.h"
 #import "EXCompatQueue+Private.h"
+#import "EXOperationQueue+Private.h"
 
 #import "EXOperation+Private.h"
 #import "EXCompatOperation+Private.h"
@@ -29,28 +30,35 @@
 
 - (instancetype)initWithKey:(NSString *)key currentVersion:(CGFloat)currentVersion operations:(NSArray<EXCompatOperation *> *)operations;{
     if (self = [super initWithOperations:operations]) {
-        self.key = key;
-        self.currentVersion = currentVersion;
-        
-        @weakify(self);
-        super.completion = ^(EXOperationQueue *queue, BOOL success){
-            if (!success) return;
-            
-            @strongify(self);
-            self.localVersion = currentVersion;
-        };
+        _key = key;
+        _currentVersion = currentVersion;
     }
     return self;
 }
 
 #pragma mark - accessor
 
+- (CGFloat)currentVersion{
+    [_lock lock];
+    CGFloat currentVersion = _currentVersion;
+    [_lock unlock];
+    return currentVersion;
+}
+
 - (CGFloat)localVersion{
-    return [[ACArchiverCenter defaultDeviceStorage] floatForKey:[self key]];
+    CGFloat localVersion = 0;
+    [_lock lock];
+    NSNumber *version = [ACArchiverCenter defaultDeviceStorage][[self key]];
+    if (!version) localVersion = -1;
+    else return localVersion = version.doubleValue;
+    [_lock unlock];
+    return localVersion;
 }
 
 - (void)setLocalVersion:(CGFloat)localVersion{
+    [_lock lock];
     [[ACArchiverCenter defaultDeviceStorage] setFloat:localVersion forKey:[self key]];
+    [_lock unlock];
 }
 
 #pragma mark - public
@@ -63,17 +71,13 @@
 }
 
 - (void)addOperations:(NSArray<EXCompatOperation *> *)operations;{
-    for (EXCompatOperation *operation in operations) {
-        NSParameterAssert([operation isKindOfClass:[EXCompatOperation class]]);
-        
-        @weakify(self);
-        operation.block = ^(EXOperation *op) {
-            @strongify(self);
-            [(EXCompatOperation *)op _prepareCompatWithCurrentVersion:[self currentVersion] localVersion:[self localVersion]];
-        };
-    }
-    
     [super addOperations:operations];
+}
+
+- (void)_didEndSchedule{
+    [super _didEndSchedule];
+    
+    self.localVersion = _currentVersion;
 }
 
 @end

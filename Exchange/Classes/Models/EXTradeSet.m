@@ -10,38 +10,18 @@
 
 @implementation EXTradeSet
 
-+ (instancetype)setWithPrice:(double)price buy:(BOOL)buy;{
-    return [self setWithPrice:price buy:buy trades:nil];
++ (instancetype)setWithPrice:(double)price buy:(BOOL)buy amount:(double)amount count:(NSUInteger)count;{
+    return [[self alloc] initWithPrice:price buy:buy amount:amount count:count];
 }
 
-+ (instancetype)setWithPrice:(double)price buy:(BOOL)buy trades:(NSArray<EXTrade *> *)trades;{
-    return [[self alloc] initWithPrice:price buy:buy trades:trades];
-}
-
-- (instancetype)initWithPrice:(double)price buy:(BOOL)buy;{
-    return [self initWithPrice:price buy:buy trades:nil];
-}
-
-- (instancetype)initWithPrice:(double)price buy:(BOOL)buy trades:(NSArray<EXTrade *> *)trades;{
+- (instancetype)initWithPrice:(double)price buy:(BOOL)buy amount:(double)amount count:(NSUInteger)count;{
     if (self = [super init]) {
-        _buy = buy;
-        _price = price;
-        
-        self.trades = trades;
+        self.price = price;
+        self.buy = buy;
+        self.amount = amount;
+        self.count = count;
     }
     return self;
-}
-
-- (void)setTrades:(NSArray<EXTrade *> *)trades{
-    if (_trades != trades) {
-        _trades = trades;
-        
-        _amount = [[trades valueForKeyPath:@"@sum.amount"] doubleValue];
-    }
-}
-
-- (NSUInteger)count{
-    return self.trades.count;
 }
 
 - (NSUInteger)hash{
@@ -53,6 +33,5 @@
     
     return object.price == self.price && object.buy == self.buy;
 }
-
 
 @end

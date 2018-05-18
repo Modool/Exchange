@@ -14,11 +14,9 @@
 @property (nonatomic, copy) NSString *symbol;
 @property (nonatomic, copy) NSString *exchangeDomain;
 
-@property (nonatomic, assign) double volume;
+@property (nonatomic, assign) BOOL buy;
 
 @property (nonatomic, assign) double price;
-
-@property (nonatomic, assign) BOOL buy;
 
 @end
 
@@ -61,6 +59,12 @@
                }];
 }
 
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass;{
+    EXDepthSet *depthSet;
+    return @{@keypath(depthSet, asks): EXDepth.class,
+             @keypath(depthSet, bids): EXDepth.class,};
+}
+
 - (NSDictionary *)modelCustomWillTransformFromDictionary:(NSDictionary *)dic;{
     NSMutableDictionary *dictionary = [dic mutableCopy];
     
@@ -71,16 +75,16 @@
     NSMutableArray<NSDictionary *> *bidItems = [NSMutableArray array];
     
     for (NSArray<NSNumber *> *items in asks) {
-        NSDictionary *askItem = @{@"volume": items.firstObject, @"price": items.lastObject, @"buy": @YES};
+        NSDictionary *askItem = @{@"volume": items.lastObject, @"price": items.firstObject, @"buy": @YES};
         [askItems addObject:askItem];
     }
     
     for (NSArray<NSNumber *> *items in bids) {
-        NSDictionary *bidItem = @{@"volume": items.firstObject, @"price": items.lastObject, @"buy": @NO};
+        NSDictionary *bidItem = @{@"volume": items.lastObject, @"price": items.firstObject, @"buy": @NO};
         [bidItems addObject:bidItem];
     }
-    dictionary[@"asks"] = asks;
-    dictionary[@"bids"] = bids;
+    dictionary[@"asks"] = askItems.copy;
+    dictionary[@"bids"] = bidItems.copy;
     
     return dictionary.copy;
 }

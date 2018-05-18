@@ -10,8 +10,6 @@
 #import "EXProductDetailViewModel.h"
 
 #import "EXProductDetailTickerView.h"
-#import "EXProductDetailTradeView.h"
-#import "EXProductDetailDepthView.h"
 
 @interface EXProductDetailViewController ()
 
@@ -19,10 +17,9 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIBarButtonItem *collectBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *analyseBarButtonItem;
 
 @property (nonatomic, strong) EXProductDetailTickerView *tickerView;
-@property (nonatomic, strong) EXProductDetailTradeView *tradeView;
-@property (nonatomic, strong) EXProductDetailDepthView *depthView;
 
 @end
 
@@ -36,16 +33,13 @@
     self.scrollView.backgroundColor = [UIColor whiteColor];
     
     self.collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_star_normal"] style:UIBarButtonItemStyleDone target:nil action:nil];
-    self.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
+    self.analyseBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:nil action:nil];
+    self.navigationItem.rightBarButtonItems = @[self.analyseBarButtonItem, self.collectBarButtonItem];
     
     self.tickerView = [[EXProductDetailTickerView alloc] init];
-    self.tradeView = [[EXProductDetailTradeView alloc] init];
-    self.depthView = [[EXProductDetailDepthView alloc] init];
     
     [self.view addSubview:self.scrollView];
     [self.scrollView addSubview:self.tickerView];
-    [self.scrollView addSubview:self.tradeView];
-    [self.scrollView addSubview:self.depthView];
     
     [self _installConstraints];
 }
@@ -68,23 +62,9 @@
     }];
     
     [self.tickerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.equalTo(self.scrollView);
+        make.edges.equalTo(self.scrollView);
         make.width.equalTo(self.view);
         make.height.mas_equalTo(100);
-    }];
-    
-    [self.tradeView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.scrollView);
-        make.top.equalTo(self.tickerView.mas_bottom);
-        make.width.equalTo(self.view);
-        make.height.mas_equalTo(300);
-    }];
-    
-    [self.depthView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.scrollView);
-        make.top.equalTo(self.tradeView.mas_bottom);
-        make.width.equalTo(self.view);
-        make.height.mas_equalTo(300);
     }];
 }
 
@@ -94,9 +74,10 @@
     [super bindViewModel];
     
     [self.tickerView bindViewModel:self.viewModel.tickerViewModel];
-    [self.tradeView bindViewModel:self.viewModel.tradeViewModel];
     
     self.collectBarButtonItem.rac_command = self.viewModel.collectCommand;
+    self.analyseBarButtonItem.rac_command = self.viewModel.analyseCommand;
+    
     RAC(self.collectBarButtonItem, image) = [RACObserve(self.viewModel, collected) mapSwitch:@{@NO: [UIImage imageNamed:@"btn_star_normal"], @YES: [UIImage imageNamed:@"btn_star_selected"]}];
 }
 

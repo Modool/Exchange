@@ -17,7 +17,7 @@
 
 - (EXTicker *)_tickerByExchange:(NSString *)domain symbol:(NSString *)symbol;
 
-- (NSArray<EXProduct *> *)_productsByExchange:(NSString *)domain keyword:(NSString *)keyword range:(NSRange)range;
+- (NSArray<EXProduct *> *)_productsByExchange:(NSString *)domain keywords:(NSArray<NSString *> *)keywords collected:(EXProductCollectState)collected range:(NSRange)range;
 
 - (NSArray<EXProduct *> *)_collectedProductsInRange:(NSRange)range;
 - (NSArray<EXProduct *> *)_collectedProductsByExchange:(NSString *)domain range:(NSRange)range;

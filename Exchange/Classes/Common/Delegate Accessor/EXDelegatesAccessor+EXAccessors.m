@@ -10,13 +10,13 @@
 
 @implementation EXDelegatesAccessor (EXAccessors)
 
-+ (dispatch_queue_t)accessorQueue;{
-    static dispatch_queue_t queue = nil;
++ (NSRecursiveLock *)accessorLock;{
+    static NSRecursiveLock *lock = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        queue = dispatch_queue_create("com.markejave.link.accessors.queue", DISPATCH_QUEUE_SERIAL);
+        lock = [[NSRecursiveLock alloc] init];
     });
-    return queue;
+    return lock;
 }
 
 + (NSMutableArray *)accessors{
@@ -31,35 +31,29 @@
 #pragma mark - public
 
 + (NSArray<EXDelegatesAccessor> *)sharedAccessors;{
-    __block NSArray<EXDelegatesAccessor> *accessors = nil;
-    
-    dispatch_sync([self accessorQueue], ^{
-        accessors = [[self accessors] copy];
-    });
-    
+    [self.accessorLock lock];
+    NSArray<EXDelegatesAccessor> *accessors = [[self accessors] copy];
+    [self.accessorLock unlock];
     return accessors;
 }
 
 + (id)accessorForClass:(Class<EXDelegatesAccessor>)class;{
-    __block id<EXDelegatesAccessor> accessor = nil;
-    
-    dispatch_sync([self accessorQueue], ^{
-        accessor = [self _accessorForClass:class];
-    });
-    
+    [self.accessorLock lock];
+    id<EXDelegatesAccessor> accessor = [self _accessorForClass:class];
+    [self.accessorLock unlock];
     return accessor;
 }
 
 + (void)addAccessor:(id<EXDelegatesAccessor>)accessor;{
-    dispatch_sync([self accessorQueue], ^{
-        [self _addAccessor:accessor];
-    });
+    [self.accessorLock lock];
+    [self _addAccessor:accessor];
+    [self.accessorLock unlock];
 }
 
 + (void)removeAccessor:(id<EXDelegatesAccessor>)accessor;{
-    dispatch_sync([self accessorQueue], ^{
-        [self _removeAccessor:accessor];
-    });
+    [self.accessorLock lock];
+    [self _removeAccessor:accessor];
+    [self.accessorLock unlock];
 }
 
 #pragma mark - private
