@@ -8,6 +8,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 abstract_target ‘Exchange_targets’ do
+    pod 'MDOperations', '~> 1.0.0'
     pod 'MDRouter', '~> 1.0.0'
     pod 'MDObjectDatabase', '~> 1.0.0'
     pod 'ACArchiverCenter', '~> 1.0.1'

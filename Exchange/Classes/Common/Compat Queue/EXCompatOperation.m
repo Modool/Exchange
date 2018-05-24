@@ -11,10 +11,14 @@
 
 #import "EXCompatQueue+Private.h"
 
-#import "EXOperation+Private.h"
-#import "EXOperationQueue+Private.h"
-
 NSString * const EXCompatOperationVersionKeySuffix = @"VersionKey";
+
+@interface MDOperation (EXPrivate)
+
+- (void)_async:(dispatch_block_t)block;
+- (void)_sync:(dispatch_block_t)block;
+
+@end
 
 @implementation EXCompatOperation
 

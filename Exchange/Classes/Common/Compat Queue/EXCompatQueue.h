@@ -6,19 +6,18 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-
-#import "EXOperationQueue.h"
+#import <MDOperations/MDOperations.h>
 
 @class EXCompatOperation;
-@interface EXCompatQueue : EXOperationQueue
+@interface EXCompatQueue : MDOperationQueue
 
 @property (copy, readonly) NSString *key;
 
 @property (assign, readonly) CGFloat currentVersion;
 
 + (instancetype)queue EX_UNAVAILABLE;
-+ (instancetype)queueWithOperations:(NSArray<EXOperation *> *)operations EX_UNAVAILABLE;
-- (instancetype)initWithOperations:(NSArray<EXOperation *> *)operations EX_UNAVAILABLE;
++ (instancetype)queueWithOperations:(NSArray<MDOperation *> *)operations EX_UNAVAILABLE;
+- (instancetype)initWithOperations:(NSArray<MDOperation *> *)operations EX_UNAVAILABLE;
 
 + (instancetype)queueWithKey:(NSString *)key currentVersion:(CGFloat)currentVersion;
 - (instancetype)initWithKey:(NSString *)key currentVersion:(CGFloat)currentVersion;

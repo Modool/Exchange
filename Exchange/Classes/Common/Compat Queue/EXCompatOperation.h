@@ -6,11 +6,11 @@
 //  Copyright © 2018年 markejave. All rights reserved.
 //
 
-#import "EXOperation.h"
+#import <MDOperations/MDOperations.h>
 
 EX_EXTERN NSString * const EXCompatOperationVersionKeySuffix;
 
-@interface EXCompatOperation : EXOperation
+@interface EXCompatOperation : MDOperation
 
 @property (assign, readonly) CGFloat version;
 

@@ -9,7 +9,7 @@
 #import "EXDevicePhone.h"
 #import "EXDelegatesAccessor+EXAccessors.h"
 
-#import "EXOperation.h"
+#import "MDOperation.h"
 #import "EXCompatQueue.h"
 #import "EXCompatOperation.h"
 
@@ -28,8 +28,8 @@
                                                    [[EXProductManager alloc] init],
                                                    [[EXSocketManager alloc] init]];
     
-    EXOperation *operation = [[EXOperation alloc] init];
-    operation.block = ^(EXOperation *operation) {
+    MDOperation *operation = [[MDOperation alloc] init];
+    operation.block = ^(MDOperation *operation) {
         for (id<EXDelegatesAccessor> moduler in modulers) {
             [EXDelegatesAccessor addAccessor:moduler];
         }

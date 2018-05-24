@@ -128,8 +128,6 @@
 		089A72102019DB3100697439 /* EXCompatQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A71FA2019DB3100697439 /* EXCompatQueue.m */; };
 		089A72112019DB3100697439 /* EXDelegatesAccessor+EXAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A71FD2019DB3100697439 /* EXDelegatesAccessor+EXAccessors.m */; };
 		089A72122019DB3100697439 /* EXDelegatesAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A72002019DB3100697439 /* EXDelegatesAccessor.m */; };
-		089A72132019DB3100697439 /* EXOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A72042019DB3100697439 /* EXOperation.m */; };
-		089A72142019DB3100697439 /* EXOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A72062019DB3100697439 /* EXOperationQueue.m */; };
 		089A72202019E0D200697439 /* EXExchangeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 089A721F2019E0D200697439 /* EXExchangeManager.m */; };
 		08B35C7D209C340C007B83DF /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B35C7C209C340C007B83DF /* NetworkExtension.framework */; };
 		08B35C81209C3459007B83DF /* EXVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B35C80209C3459007B83DF /* EXVPNManager.m */; };
@@ -485,11 +483,6 @@
 		089A71FE2019DB3100697439 /* EXDelegatesAccessor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXDelegatesAccessor+Private.h"; sourceTree = "<group>"; };
 		089A71FF2019DB3100697439 /* EXDelegatesAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXDelegatesAccessor.h; sourceTree = "<group>"; };
 		089A72002019DB3100697439 /* EXDelegatesAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXDelegatesAccessor.m; sourceTree = "<group>"; };
-		089A72022019DB3100697439 /* EXOperation+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXOperation+Private.h"; sourceTree = "<group>"; };
-		089A72032019DB3100697439 /* EXOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXOperation.h; sourceTree = "<group>"; };
-		089A72042019DB3100697439 /* EXOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXOperation.m; sourceTree = "<group>"; };
-		089A72052019DB3100697439 /* EXOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXOperationQueue.h; sourceTree = "<group>"; };
-		089A72062019DB3100697439 /* EXOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXOperationQueue.m; sourceTree = "<group>"; };
 		089A721E2019E0D200697439 /* EXExchangeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXExchangeManager.h; sourceTree = "<group>"; };
 		089A721F2019E0D200697439 /* EXExchangeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXExchangeManager.m; sourceTree = "<group>"; };
 		08B35C7C209C340C007B83DF /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -501,7 +494,6 @@
 		08C0B4072090902D00A01F70 /* EXProduct+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXProduct+Private.h"; sourceTree = "<group>"; };
 		08D0AD5320AC34340050EECF /* EXProductManager+EXLoaderCompatItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXProductManager+EXLoaderCompatItem.h"; sourceTree = "<group>"; };
 		08D0AD5420AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EXProductManager+EXLoaderCompatItem.m"; sourceTree = "<group>"; };
-		08D0AD6620AD1E4F0050EECF /* EXOperationQueue+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EXOperationQueue+Private.h"; sourceTree = "<group>"; };
 		08D0AD9A20AD83B70050EECF /* EXCommissionViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCommissionViewModel.h; sourceTree = "<group>"; };
 		08D0AD9B20AD83B70050EECF /* EXCommissionViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXCommissionViewModel.m; sourceTree = "<group>"; };
 		08D0ADA020AD85750050EECF /* EXTradeRecordsViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXTradeRecordsViewModel.h; sourceTree = "<group>"; };
@@ -1058,19 +1050,6 @@
 			path = "Delegate Accessor";
 			sourceTree = "<group>";
 		};
-		089A72012019DB3100697439 /* Operation Queue */ = {
-			isa = PBXGroup;
-			children = (
-				089A72022019DB3100697439 /* EXOperation+Private.h */,
-				089A72032019DB3100697439 /* EXOperation.h */,
-				089A72042019DB3100697439 /* EXOperation.m */,
-				089A72052019DB3100697439 /* EXOperationQueue.h */,
-				089A72062019DB3100697439 /* EXOperationQueue.m */,
-				08D0AD6620AD1E4F0050EECF /* EXOperationQueue+Private.h */,
-			);
-			path = "Operation Queue";
-			sourceTree = "<group>";
-		};
 		089A721D2019E0BE00697439 /* Exchange */ = {
 			isa = PBXGroup;
 			children = (
@@ -1182,7 +1161,6 @@
 				0853A46B208E2AEC00F8A04C /* Scaner */,
 				089A71F42019DB3100697439 /* Compat Queue */,
 				089A71FB2019DB3100697439 /* Delegate Accessor */,
-				089A72012019DB3100697439 /* Operation Queue */,
 				08EE342E20160E8C001B42FC /* Categories */,
 				08EE344320160E8C001B42FC /* PlaceholderView */,
 			);
@@ -1480,7 +1458,6 @@
 				080B9FBF20162FC80098CF4E /* EXUserViewModel.m in Sources */,
 				0827912D2015DFE600D5EEE7 /* main.m in Sources */,
 				0886C529209AED79005E6688 /* EXProductDetailTickerView.m in Sources */,
-				089A72132019DB3100697439 /* EXOperation.m in Sources */,
 				08EE34222015FE22001B42FC /* RACTableViewModel.m in Sources */,
 				08D0ADB720AD93CE0050EECF /* EXTradeRecordsViewController.m in Sources */,
 				0856E6BC20AABF740063C2D5 /* EXFPSLabel.m in Sources */,
@@ -1537,7 +1514,6 @@
 				0873901920170A1F00CF9D48 /* EXExchangeEntranceItemViewModel.m in Sources */,
 				085E3AE320ABD7DB00B0E645 /* EXProductManager+Private.m in Sources */,
 				08B35C85209C34B0007B83DF /* EXVPNManager+EXLoaderItem.m in Sources */,
-				089A72142019DB3100697439 /* EXOperationQueue.m in Sources */,
 				08D0AD5520AC34340050EECF /* EXProductManager+EXLoaderCompatItem.m in Sources */,
 				080B9FE22016D9750098CF4E /* EXTradeViewModel.m in Sources */,
 				085E3AB020AAD52F00B0E645 /* EXHTTPClient+Private.m in Sources */,

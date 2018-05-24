@@ -14,11 +14,11 @@
     return [self deviceWithPrelaunchOperations:nil];
 }
 
-+ (instancetype)deviceWithPrelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;{
++ (instancetype)deviceWithPrelaunchOperations:(NSArray<MDOperation *> *)prelaunchOperations;{
     return [self deviceWithModulers:nil prelaunchOperations:prelaunchOperations];
 }
 
-+ (instancetype)deviceWithModulers:(NSArray<EXDelegatesAccessor> *)modulers prelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;{
++ (instancetype)deviceWithModulers:(NSArray<EXDelegatesAccessor> *)modulers prelaunchOperations:(NSArray<MDOperation *> *)prelaunchOperations;{
     EXDevice *device = [self new];
     device->_modulers = [modulers copy];
     device->_prelaunchOperations = [prelaunchOperations copy];

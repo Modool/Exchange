@@ -8,18 +8,18 @@
 
 #import <MDQueueObject/MDQueueObject.h>
 
-@class EXOperation;
+@class MDOperation;
 @protocol EXDelegatesAccessor;
 
 @interface EXDevice : MDQueueObject
 
 @property (nonatomic, copy, readonly) NSArray<EXDelegatesAccessor> *modulers;
 
-@property (nonatomic, copy, readonly) NSArray<EXOperation *> *prelaunchOperations;
+@property (nonatomic, copy, readonly) NSArray<MDOperation *> *prelaunchOperations;
 
 + (instancetype)device;
-+ (instancetype)deviceWithPrelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;
-+ (instancetype)deviceWithModulers:(NSArray<EXDelegatesAccessor> *)modulers prelaunchOperations:(NSArray<EXOperation *> *)prelaunchOperations;
++ (instancetype)deviceWithPrelaunchOperations:(NSArray<MDOperation *> *)prelaunchOperations;
++ (instancetype)deviceWithModulers:(NSArray<EXDelegatesAccessor> *)modulers prelaunchOperations:(NSArray<MDOperation *> *)prelaunchOperations;
 
 
 @end

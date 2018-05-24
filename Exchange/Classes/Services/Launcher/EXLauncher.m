@@ -31,7 +31,7 @@
 #pragma mark - private
 
 - (BOOL)_launchWithDevice:(EXDevice *)device;{
-    EXOperationQueue *prelauncQueue = [EXOperationQueue queueWithOperations:[device prelaunchOperations]];
+    MDOperationQueue *prelauncQueue = [MDOperationQueue queueWithOperations:[device prelaunchOperations]];
     [prelauncQueue schedule];
     long state = [prelauncQueue waitUntilFinished];
     if (state) {
