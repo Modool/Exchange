@@ -81,7 +81,8 @@
 
 - (UIViewController*)topVisibleViewController;{
     UIViewController *topVisibleViewController = [super topVisibleViewController];
-    return topVisibleViewController ?: [[self tabBarController] topVisibleViewController];
+    if (topVisibleViewController == self) return [[self tabBarController] topVisibleViewController];
+    return topVisibleViewController;
 }
 
 @end

@@ -21,9 +21,9 @@ const CGFloat EXProductManagerVersion = 1.0;
 - (EXCompatQueue *)compatQueue;{
     NSString *key = [NSStringFromClass([self class]) stringByAppendingString:EXCompatOperationVersionKeySuffix];
     EXCompatQueue *queue = [EXCompatQueue queueWithKey:key currentVersion:EXProductManagerVersion];
-    
+
     [queue addOperation:self.firstCompatOperation];
-    
+
     return queue;
 }
 
@@ -38,6 +38,7 @@ const CGFloat EXProductManagerVersion = 1.0;
             *stop = index == (ditionaries.count - 1);
             EXProduct *product = [EXProduct modelWithDictionary:ditionaries[index]];
             product.exchangeDomain = EXExchangeOKExDomain;
+            product.collected = [@[@"eth_usdt", @"eos_usdt", @"btc_usdt", @"ltc_usdt", @"bch_usdt"] containsObject:product.symbol];
             return product;
         } block:nil];
     };

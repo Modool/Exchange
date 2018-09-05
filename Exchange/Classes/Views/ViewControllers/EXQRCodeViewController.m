@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, assign, getter=isStatusBarHidden) BOOL statusBarHidden;
+@property (nonatomic, assign, getter=isRotationEnabled) BOOL rotationEnabled;
 
 @end
 
@@ -43,8 +44,9 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.imagePickerBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:UIBarButtonItemStyleDone target:nil action:nil];
-    
-    self.navigationItem.rightBarButtonItem = self.imagePickerBarButtonItem;
+
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"旋屏" style:UIBarButtonItemStyleDone target:self action:@selector(didClickRatation:)];
+    self.navigationItem.rightBarButtonItems = @[barItem, self.imagePickerBarButtonItem];
     
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBackgroundView:)];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
@@ -70,7 +72,25 @@
     return self.statusBarHidden;
 }
 
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationPortrait;
+}
+
 #pragma mark - actions
+
+- (IBAction)didClickRatation:(UIBarButtonItem *)sender {
+    self.rotationEnabled = !self.rotationEnabled;
+
+    [UIViewController attemptRotationToDeviceOrientation];
+}
 
 - (IBAction)didTapBackgroundView:(UITapGestureRecognizer *)tapGestureRecognizer{
     if (tapGestureRecognizer.state == UIGestureRecognizerStateBegan) return;

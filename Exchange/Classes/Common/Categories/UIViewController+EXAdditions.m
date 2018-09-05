@@ -152,6 +152,36 @@
 
 @end
 
+@implementation UIViewController (EXRotate)
+
+#pragma mark - rotation accessor
+
+- (BOOL)shouldAutorotate {
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController shouldAutorotate];
+    }
+    return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController supportedInterfaceOrientations];
+    }
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController preferredInterfaceOrientationForPresentation];
+    }
+    return UIInterfaceOrientationPortrait;
+}
+
+@end
+
 @implementation UINavigationController (EXRotate)
 
 #pragma mark - rotation accessor

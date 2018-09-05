@@ -53,7 +53,6 @@
         UIScrollView *scrollView = tuple.first;
         [scrollView endEditing:YES];
     }];
-    
 }
 
 @end

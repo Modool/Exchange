@@ -8,9 +8,9 @@
 
 #import <MDObjectDatabase/MDObjectDatabase.h>
 
-#define MDDConditionSet6(CONDITION, ...)                    [MDDConditionSet setWithMultipleConditions:CONDITION, __VA_ARGS__]
-#define MDDConditionSet7(OPERATION, CONDITION, ...)         [MDDConditionSet setWithOperation:OPERATION conditions:CONDITION, __VA_ARGS__]
-#define MDDConditionSet8(OPERATION, SETS, CONDITION, ...)   [MDDConditionSet setWithOperation:OPERATION sets:SETS conditions:CONDITION, __VA_ARGS__]
+#define MDDConditionSet6(CONDITION, ...)                    [MDDConditionSet setWithMultipleConditions:CONDITION, __VA_ARGS__, nil]
+#define MDDConditionSet7(OPERATION, CONDITION, ...)         [MDDConditionSet setWithOperation:OPERATION conditions:CONDITION, __VA_ARGS__, nil]
+#define MDDConditionSet8(OPERATION, SETS, CONDITION, ...)   [MDDConditionSet setWithOperation:OPERATION sets:SETS conditions:CONDITION, __VA_ARGS__, nil]
 
 @interface MDDConditionSet (EXAdditions)
 

@@ -11,30 +11,30 @@
 @implementation MDDConditionSet (EXAdditions)
 
 + (instancetype)setWithMultipleConditions:(MDDCondition *)condition, ...;{
-    va_list list;
+    va_list list, copiedList;
     va_start(list, condition);
-    MDDConditionSet *set = [self setWithOperation:MDDConditionOperationAnd sets:nil condition:condition valist:list];
+    va_copy(copiedList, list);
     va_end(list);
-    
-    return set;
+
+    return [self setWithOperation:MDDConditionOperationAnd sets:nil condition:condition valist:copiedList];
 }
 
 + (instancetype)setWithOperation:(MDDConditionOperation)operation conditions:(MDDCondition *)condition, ...;{
-    va_list list;
+    va_list list, copiedList;
     va_start(list, condition);
-    MDDConditionSet *set = [self setWithOperation:operation sets:nil condition:condition valist:list];
+    va_copy(copiedList, list);
     va_end(list);
-    
-    return set;
+
+    return [self setWithOperation:operation sets:nil condition:condition valist:copiedList];
 }
 
 + (instancetype)setWithOperation:(MDDConditionOperation)operation sets:(NSArray<MDDConditionSet *> *)sets conditions:(MDDCondition *)condition, ...;{
-    va_list list;
+    va_list list, copiedList;
     va_start(list, condition);
-    MDDConditionSet *set = [self setWithOperation:operation sets:sets condition:condition valist:list];
+    va_copy(copiedList, list);
     va_end(list);
-    
-    return set;
+
+    return [self setWithOperation:operation sets:sets condition:condition valist:copiedList];
 }
 
 + (instancetype)setWithOperation:(MDDConditionOperation)operation sets:(NSArray<MDDConditionSet *> *)sets condition:(MDDCondition *)condition valist:(va_list)valist;{
