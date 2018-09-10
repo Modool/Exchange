@@ -25,9 +25,9 @@
 
 - (void)loadView{
     [super loadView];
-    
-    self.tabBarController = [UITabBarController new];
-    
+
+    self.tabBarController = [[UITabBarController alloc] init];
+
     [self addChildViewController:[self tabBarController]];
     [[self view] addSubview:[[self tabBarController] view]];
 }

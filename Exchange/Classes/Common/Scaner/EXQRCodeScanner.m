@@ -58,7 +58,8 @@
     [types intersectSet:availableTypes];
     
     _metadataOutput.metadataObjectTypes = types.allObjects;
-    
+    [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo].videoOrientation = AVCaptureVideoOrientationPortrait;
+
     _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 }

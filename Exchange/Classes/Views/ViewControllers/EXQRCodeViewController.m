@@ -66,6 +66,12 @@
     }];
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+
+    self.viewModel.scanner.videoPreviewLayer.frame = self.view.bounds;
+}
+
 #pragma mark - accessor
 
 - (BOOL)prefersStatusBarHidden{
@@ -73,7 +79,7 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return YES;
+    return self.rotationEnabled;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
