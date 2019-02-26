@@ -161,7 +161,7 @@
     if (topVisibleViewController != self) {
         return [topVisibleViewController shouldAutorotate];
     }
-    return NO;
+    return YES;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -169,7 +169,7 @@
     if (topVisibleViewController != self) {
         return [topVisibleViewController supportedInterfaceOrientations];
     }
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
@@ -196,6 +196,36 @@
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return [[self topVisibleViewController] preferredInterfaceOrientationForPresentation];
+}
+
+@end
+
+@implementation UIViewController (EXStatusBar)
+
+#pragma mark - status bar accessor
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController preferredStatusBarStyle];
+    }
+    return UIStatusBarStyleDefault;
+}
+
+- (BOOL)prefersStatusBarHidden{
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController prefersStatusBarHidden];
+    }
+    return NO;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
+    UIViewController *topVisibleViewController = [self topVisibleViewController];
+    if (topVisibleViewController != self) {
+        return [topVisibleViewController preferredStatusBarUpdateAnimation];
+    }
+    return UIStatusBarAnimationNone;
 }
 
 @end

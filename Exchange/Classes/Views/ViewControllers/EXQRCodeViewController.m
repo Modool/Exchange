@@ -35,6 +35,7 @@
             @strongify(self);
             [viewModel.startCommand execute:self.view];
         }];
+        self.statusBarHidden = NO;
     }
     return self;
 }
@@ -50,6 +51,13 @@
     
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBackgroundView:)];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [UIDevice.currentDevice setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 - (void)bindViewModel{
@@ -79,11 +87,11 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return self.rotationEnabled;
+    return YES;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
